@@ -1,0 +1,4 @@
+MDK-ARM/.*uvgui
+MDK-ARM/*.uvopt
+MDK-ARM/CubeMX_WB05
+MDK-ARM/RTE
