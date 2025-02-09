@@ -1,0 +1,428 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Core">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Core\Src">
+      <UniqueIdentifier>{a6c09756-0d5b-4640-84a3-ed5f2f9f5e1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Inc">
+      <UniqueIdentifier>{0e05b15a-7b23-4c05-9c1b-3d586b07f907}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Drivers">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Drivers\STM32WB0x_HAL_Driver">
+      <UniqueIdentifier>{8aa77a97-6738-42e9-98a6-a9ba867b7924}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Drivers\STM32WB0x_HAL_Driver\Src">
+      <UniqueIdentifier>{3024323b-9930-416a-9c14-38057cde46f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Drivers\STM32WB0x_HAL_Driver\Inc">
+      <UniqueIdentifier>{17c41111-fd25-4d94-b8b1-525824ce6c88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Virtual">
+      <UniqueIdentifier>{5de270c2-fb58-46e3-9efe-f36e18fefd75}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Core\Inc\main.h">
+      <Filter>Core\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Core\Inc\stm32wb0x_hal_conf.h">
+      <Filter>Core\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Core\Inc\stm32wb0x_it.h">
+      <Filter>Core\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Core\Inc\asm.h">
+      <Filter>Core\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb05.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_hal.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_hal_adc.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_hal_conf_template.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_hal_cortex.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_hal_crc.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_hal_crc_ex.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_hal_def.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_hal_dma.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_hal_flash.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_hal_flash_ex.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_hal_gpio.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_hal_gpio_ex.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_hal_i2c.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_hal_i2c_ex.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_hal_i2s.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_hal_irda.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_hal_irda_ex.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_hal_iwdg.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_hal_pka.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_hal_pwr.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_hal_pwr_ex.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_hal_radio.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_hal_radio_timer.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_hal_rcc.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_hal_rcc_ex.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_hal_rng.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_hal_rtc.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_hal_rtc_ex.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_hal_smartcard.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_hal_smartcard_ex.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_hal_smbus.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_hal_smbus_ex.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_hal_spi.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_hal_spi_ex.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_hal_tim.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_hal_tim_ex.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_hal_uart.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_hal_uart_ex.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_hal_usart.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_hal_usart_ex.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_ll_adc.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_ll_bus.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_ll_cortex.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_ll_crc.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_ll_dma.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_ll_dmamux.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_ll_gpio.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_ll_i2c.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_ll_iwdg.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_ll_lpuart.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_ll_pka.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_ll_pwr.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_ll_radio.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_ll_radio_timer.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_ll_rcc.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_ll_rng.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_ll_rtc.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_ll_spi.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_ll_system.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_ll_tim.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_ll_usart.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_ll_utils.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32_assert.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\system_stm32wb0x.h">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="VirtualMain.h">
+      <Filter>Virtual</Filter>
+    </ClInclude>
+    <ClInclude Include="core_cm0plus.h">
+      <Filter>Virtual</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Core\Src\main.c">
+      <Filter>Core\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Core\Src\stm32wb0x_hal_msp.c">
+      <Filter>Core\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Core\Src\stm32wb0x_it.c">
+      <Filter>Core\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Core\Src\system_stm32wb0x.c">
+      <Filter>Core\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_hal_adc.c">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_hal_cortex.c">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_hal_crc.c">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_hal_crc_ex.c">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_hal_dma.c">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_hal_flash.c">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_hal_flash_ex.c">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_hal_gpio.c">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_hal_i2c.c">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_hal_i2c_ex.c">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_hal_i2s.c">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_hal_irda.c">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_hal_iwdg.c">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_hal_pka.c">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_hal_pwr.c">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_hal_pwr_ex.c">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_hal_radio.c">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_hal_radio_timer.c">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_hal_rcc.c">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_hal_rcc_ex.c">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_hal_rng.c">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_hal_rtc.c">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_hal_rtc_ex.c">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_hal_smartcard.c">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_hal_smartcard_ex.c">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_hal_smbus.c">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_hal_smbus_ex.c">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_hal_spi.c">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_hal_spi_ex.c">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_hal_tim.c">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_hal_tim_ex.c">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_hal_uart.c">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_hal_uart_ex.c">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_hal_usart.c">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_hal_usart_ex.c">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_ll_adc.c">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_ll_crc.c">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_ll_dma.c">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_ll_gpio.c">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_ll_i2c.c">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_ll_lpuart.c">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_ll_pka.c">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_ll_pwr.c">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_ll_rcc.c">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_ll_rng.c">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_ll_rtc.c">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_ll_spi.c">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_ll_system.c">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_ll_tim.c">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_ll_usart.c">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_ll_utils.c">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="VirtualMain.c">
+      <Filter>Virtual</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_hal.c">
+      <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Core\Src\blue_unit_conversion.c">
+      <Filter>Core\Src</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

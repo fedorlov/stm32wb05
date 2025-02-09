@@ -30,55 +30,50 @@
 /* USER CODE END Header */
 
 /* Includes ------------------------------------------------------------------*/
-#include "../Inc/asm.h"
+#include "main.h"
 
-                __CODE__
-                __THUMB__
-                __EXPORT__ blue_unit_conversion
+#if defined(__GNUC__) || defined(__clang__)
+uint32_t mul32(uint32_t a, uint32_t b) 
+{
+    uint32_t result = a * b;     // ”множение двух чисел
+	
+    uint32_t temp = (128 << 13); // Ёквивалент MOVS r2, #128; LSLS r2, r2, #13
+	
+    temp += result;              // Ёквивалент ADDS r2, r2, r0
+	
+    temp >>= 21;                 // Ёквивалент LSRS r2, r2, #21
+	
+    return temp;                 // Ёквивалент MOV r0, r2 и возврат результата
+}
 
-EXPORT_FUNC(blue_unit_conversion)
-                  PUSH    {r4, lr}
-                  CMP     r0, r2
-                  BLS     mul32
-                  UXTH    r2, r1
-                  LSRS    r3, r0, #16
-                  LSRS    r1, r1, #16
-                  MOV     r4, r1
-                  MULS    r1, r3, r1
-                  UXTH    r0, r0
-                  MULS    r3, r2, r3
-                  MULS    r4, r0, r4
-                  MULS    r0, r2, r0
-                  ADDS    r3, r3, r4
-                  LSLS    r2, r3, #16
-                  LSRS    r3, r3, #16
-                  ADDS    r0, r2, r0
-                  ADCS    r1, r3
+uint32_t blue_unit_conversion(uint32_t time, uint32_t period_freq, uint32_t thr) 
+{
+    if (time <= thr)
+        return mul32(time, period_freq);
 
-                  MOVS    r2, #128
-                  LSLS    r2, r2, #13
-                  MOVS    r3, #0
-                  ADDS    r2, r2, r0
-                  ADCS    r3, r1
-                  LSRS    r2, r2, #21
-                  LSLS    r0, r3, #11
-                  ORRS    r0, r2
+    uint32_t low1 = period_freq & 0xFFFF;
+    uint32_t high1 = period_freq >> 16;
+    uint32_t low2 = time & 0xFFFF;
+    uint32_t high2 = time >> 16;
 
-                  POP {r4, pc}
+    uint32_t mul1 = high2 * high1;
+    uint32_t mul2 = low2 * high2;
+    uint32_t mul3 = high1 * low2;
+    uint32_t mul4 = low2 * low1;
 
-                  ENDFUNC
+    uint32_t mid = mul2 + mul3;
+    uint32_t mid_low = mid << 16;
+    uint32_t mid_high = mid >> 16;
 
-EXPORT_FUNC(mul32)
-                  MULS    r0, r1, r0
-                  MOVS    r2, #128
-                  LSLS    r2, r2, #13
-                  ADDS    r2, r2, r0
-                  LSRS    r2, r2, #21
-                  MOV     r0, r2
+    uint32_t result_low = mid_low + mul4;
+    uint32_t result_high = mul1 + mid_high + (result_low < mul4);
 
-                  POP {r4, pc}
+    uint32_t adjust = (128 << 13);
+    uint64_t result = ((uint64_t)result_high << 32) | result_low;
+    result += adjust;
+    result >>= 21;
 
-                  ENDFUNC
+    return (result_high << 11) | (uint32_t)result;
+}
 
-    ALIGN_MEM(4)
-	__END__
+#endif

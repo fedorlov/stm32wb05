@@ -1,5 +1,7 @@
 #include "main.h"
 
+#include <stdio.h>
+
 ADC_HandleTypeDef hadc1;
 
 RTC_HandleTypeDef hrtc;
@@ -13,7 +15,7 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.LSEState = RCC_LSE_ON;
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
-  {
+  {	  
     Error_Handler();
   }
 
@@ -219,51 +221,69 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : PA2 */
-  GPIO_InitStruct.Pin = GPIO_PIN_2;
-  GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+  /*Configure GPIO pin : BTN1_Pin */
+  GPIO_InitStruct.Pin = BTN1_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  GPIO_InitStruct.Alternate = GPIO_AF7_SWDIO;
-  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+  HAL_GPIO_Init(BTN1_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : PA10 */
-  GPIO_InitStruct.Pin = GPIO_PIN_10;
-  GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  GPIO_InitStruct.Alternate = GPIO_AF1_LCO;
-  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+//  /*Configure GPIO pin : PA2 */
+//  GPIO_InitStruct.Pin = GPIO_PIN_2 | GPIO_PIN_3;
+//  GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+//  GPIO_InitStruct.Pull = GPIO_PULLUP;
+//  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+//  GPIO_InitStruct.Alternate = GPIO_AF7_SWDIO;
+//  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  ///*Configure GPIO pin : PA10 */
+  //GPIO_InitStruct.Pin = GPIO_PIN_10;
+  //GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+  //GPIO_InitStruct.Pull = GPIO_NOPULL;
+  //GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  //GPIO_InitStruct.Alternate = GPIO_AF1_LCO;
+  //HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 }
 
 static void MX_GPIO_Deinit(void)
 {
-  GPIO_InitTypeDef GPIO_InitStruct = {0};
+	GPIO_InitTypeDef GPIO_InitStruct = {0};
 
-  /*Configure GPIO pins : LD3_Pin LD1_Pin LD2_Pin */
-  GPIO_InitStruct.Pin = LD3_Pin|LD1_Pin|LD2_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+	HAL_PWR_EnableWakeUpPin(PWR_WAKEUP_PA0, PWR_WUP_FALLEDG);
 
-  GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_15|GPIO_PIN_14|GPIO_PIN_7|GPIO_PIN_6;
-  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+	/*Configure GPIO pins : LD3_Pin LD1_Pin LD2_Pin */
+	GPIO_InitStruct.Pin = LD3_Pin|LD1_Pin|LD2_Pin;
+	GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
+	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+	HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-  GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_11;
-  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+	GPIO_InitStruct.Pin = GPIO_PIN_0 | GPIO_PIN_15| GPIO_PIN_14 | GPIO_PIN_7 | GPIO_PIN_6;
+	HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-   LL_PWR_SetNoPullB(LL_PWR_GPIO_BIT_2|LL_PWR_GPIO_BIT_1|LL_PWR_GPIO_BIT_0|LL_PWR_GPIO_BIT_15
-                          |LL_PWR_GPIO_BIT_14|LL_PWR_GPIO_BIT_7|LL_PWR_GPIO_BIT_6|LL_PWR_GPIO_BIT_4);
+	GPIO_InitStruct.Pin = GPIO_PIN_1 | GPIO_PIN_8 | GPIO_PIN_9 | GPIO_PIN_10 | GPIO_PIN_11;
+	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  /**/
-  LL_PWR_SetNoPullA(LL_PWR_GPIO_BIT_1|LL_PWR_GPIO_BIT_0|LL_PWR_GPIO_BIT_2|LL_PWR_GPIO_BIT_8|LL_PWR_GPIO_BIT_9
-                          |LL_PWR_GPIO_BIT_10|LL_PWR_GPIO_BIT_11);
+	LL_PWR_SetNoPullA(LL_PWR_GPIO_BIT_1  |  
+		              LL_PWR_GPIO_BIT_8  | 
+		              LL_PWR_GPIO_BIT_9  |
+		              LL_PWR_GPIO_BIT_10 | 
+		              LL_PWR_GPIO_BIT_11 );
 
-  HAL_PWREx_EnableGPIORetention();
+	//LL_PWR_EnableGPIOPullUp(LL_PWR_GPIO_A, LL_PWR_GPIO_BIT_2 | LL_PWR_GPIO_BIT_3);
 
-  __HAL_RCC_GPIOB_CLK_DISABLE();
-  __HAL_RCC_GPIOA_CLK_DISABLE();
+	LL_PWR_SetNoPullB(LL_PWR_GPIO_BIT_0  | 
+		              LL_PWR_GPIO_BIT_1  |
+		              LL_PWR_GPIO_BIT_2  |  
+					  LL_PWR_GPIO_BIT_4  | 
+		              LL_PWR_GPIO_BIT_6  |
+		              LL_PWR_GPIO_BIT_7  |
+		              LL_PWR_GPIO_BIT_14 |
+		              LL_PWR_GPIO_BIT_15 );
+
+	HAL_PWREx_EnableGPIORetention();
+
+	__HAL_RCC_GPIOB_CLK_DISABLE();
+	__HAL_RCC_GPIOA_CLK_DISABLE();
 }
 
 void Error_Handler(void)
@@ -288,7 +308,6 @@ void Error_Handler(void)
 }
 
 #ifdef  USE_FULL_ASSERT
-
 void assert_failed(uint8_t *file, uint32_t line)
 {
 
@@ -302,6 +321,12 @@ void __ARM_argv_veneer(void)
 
 int main(void)
 {	
+#ifdef _MSC_VER
+	printf("Nothing to do. Exit...");
+
+	return 0;
+#endif
+
 	HAL_Init();	
 
 	SystemClock_Config();
@@ -313,40 +338,51 @@ int main(void)
 	MX_RADIO_Init();	
 	MX_RADIO_TIMER_Init();	
 	MX_RTC_Init();
+
+	int sleep = 1;
 	
-	HAL_GPIO_WritePin(GPIOB, LD1_Pin, GPIO_PIN_RESET);
+	// если нажата кнопка или в режиме отладки
+	// TODO - добавить отслеживание состояния пинов SWDIO и SWCLK
+	if(HAL_GPIO_ReadPin(BTN1_GPIO_Port, BTN1_Pin) == GPIO_PIN_RESET)
+	{
+		// зажигаем зеленый светодиод и не уходим в сон
+		HAL_GPIO_WritePin(GPIOB, LD2_Pin, GPIO_PIN_RESET);
+		sleep = 0;
+	}
+	else
+	{
+		HAL_GPIO_WritePin(GPIOB, LD1_Pin, GPIO_PIN_RESET);
 
-	HAL_Delay(100);
+		HAL_Delay(100);
 
-	HAL_GPIO_WritePin(GPIOB, LD3_Pin|LD1_Pin|LD2_Pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(GPIOB, LD1_Pin, GPIO_PIN_SET);
+	}
 
 	while (1)
 	{
-		SystemClock_Config();
+		//SystemClock_Config();
 
-		MX_GPIO_Init();
+		//MX_GPIO_Init();
 
-		//HAL_GPIO_WritePin(GPIOB, LD3_Pin|LD1_Pin|LD2_Pin, GPIO_PIN_RESET);
 		HAL_GPIO_WritePin(GPIOB, LD3_Pin, GPIO_PIN_RESET);
 
 		HAL_Delay(100);
 
-		HAL_GPIO_WritePin(GPIOB, LD3_Pin|LD1_Pin|LD2_Pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(GPIOB, LD3_Pin, GPIO_PIN_SET);
 
-		MX_GPIO_Deinit();
+		if(sleep)
+		{
+			MX_GPIO_Deinit();
 
-		MX_RTC_Init();
+			MX_RTC_Init();
 
-		HAL_PWR_EnterDEEPSTOPMode();
-		  
-		//HAL_Delay(2000);
+			HAL_PWR_EnterDEEPSTOPMode();
 
-		HAL_RTCEx_DeactivateWakeUpTimer(&hrtc);
-		
-		HAL_GPIO_WritePin(GPIOB, LD2_Pin, GPIO_PIN_RESET);
-
-		HAL_Delay(100);
-
-		HAL_GPIO_WritePin(GPIOB, LD3_Pin|LD1_Pin|LD2_Pin, GPIO_PIN_SET);
+			//HAL_RTCEx_DeactivateWakeUpTimer(&hrtc);
+		}
+		else
+		{
+			HAL_Delay(2000);
+		}
 	}
 }

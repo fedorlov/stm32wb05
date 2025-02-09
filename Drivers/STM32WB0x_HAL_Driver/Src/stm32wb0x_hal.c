@@ -163,12 +163,14 @@ HAL_StatusTypeDef HAL_DeInit(void)
   * @brief  Initialize the MSP.
   * @retval None
   */
+#ifndef _MSC_VER
 __weak void HAL_MspInit(void)
 {
   /* NOTE : This function should not be modified, when the callback is needed,
             the HAL_MspInit could be implemented in the user file
    */
 }
+#endif
 
 /**
   * @brief  DeInitializes the MSP.

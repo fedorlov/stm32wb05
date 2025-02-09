@@ -1294,7 +1294,7 @@ static VTIMER_HandleType *_update_user_timeout(VTIMER_HandleType *rootNode, uint
           RADIO_TIMER_Context.radioTimer.active = FALSE;
         }
 #else
-        VTIMER_SetWakeupTime(delay, TRUE);
+        VTIMER_SetWakeupTime((uint32_t)delay, TRUE);
 #endif
       }
       else
@@ -1515,7 +1515,7 @@ static void _check_radio_activity(RADIO_TIMER_RadioHandleTypeDef *timerHandle, u
     {
       if (timerHandle->expiryTime - TIMER1_INIT_DELAY > (currentTime + TIMER1_MARGIN))
       {
-        *expired = TIMER_SetRadioTimerValue(timerHandle->expiryTime, timerHandle->event_type, timerHandle->cal_req);
+        *expired = TIMER_SetRadioTimerValue((uint32_t)timerHandle->expiryTime, timerHandle->event_type, timerHandle->cal_req);
         timerHandle->pending = FALSE; /* timer has been served. No more pending */
         timerHandle->active = TRUE; /* timer has been programmed and it becomes ACTIVE */
         timerHandle->intTxRx_to_be_served = TRUE;

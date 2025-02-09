@@ -559,6 +559,7 @@ HAL_StatusTypeDef HAL_RTC_UnRegisterCallback(RTC_HandleTypeDef *hrtc, HAL_RTC_Ca
   *                the configuration information for RTC.
   * @retval None
   */
+#ifndef _MSC_VER
 __weak void HAL_RTC_MspInit(RTC_HandleTypeDef *hrtc)
 {
   /* Prevent unused argument(s) compilation warning */
@@ -568,6 +569,7 @@ __weak void HAL_RTC_MspInit(RTC_HandleTypeDef *hrtc)
            the HAL_RTC_MspInit could be implemented in the user file
    */
 }
+#endif
 
 /**
   * @brief  DeInitializes the RTC MSP.
@@ -575,6 +577,7 @@ __weak void HAL_RTC_MspInit(RTC_HandleTypeDef *hrtc)
   *                the configuration information for RTC.
   * @retval None
   */
+#ifndef _MSC_VER
 __weak void HAL_RTC_MspDeInit(RTC_HandleTypeDef *hrtc)
 {
   /* Prevent unused argument(s) compilation warning */
@@ -584,6 +587,7 @@ __weak void HAL_RTC_MspDeInit(RTC_HandleTypeDef *hrtc)
            the HAL_RTC_MspDeInit could be implemented in the user file
    */
 }
+#endif
 
 /**
   * @}

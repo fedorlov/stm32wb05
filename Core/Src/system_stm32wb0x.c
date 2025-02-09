@@ -306,7 +306,7 @@ void SystemInit(void)
     SET_BIT(PWR->ENGTRIM, PWR_ENGTRIM_SMPSTRIMEN);    
   }
 
-  /* Set all the interrupt with low priprity */
+  /* Set all the interrupt with low priority */
   for (i=0; i<32; i++)
   {
     NVIC_SetPriority((IRQn_Type)i, IRQ_LOW_PRIORITY);

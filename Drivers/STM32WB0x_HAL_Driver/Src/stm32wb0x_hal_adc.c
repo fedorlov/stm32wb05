@@ -484,6 +484,7 @@ HAL_StatusTypeDef HAL_ADC_Init(ADC_HandleTypeDef *hadc)
 HAL_StatusTypeDef HAL_ADC_DeInit(ADC_HandleTypeDef *hadc)
 {
   HAL_StatusTypeDef tmp_hal_status;
+  uint32_t reg;
 
   /* Check ADC handle */
   if (hadc == NULL)
@@ -530,31 +531,34 @@ HAL_StatusTypeDef HAL_ADC_DeInit(ADC_HandleTypeDef *hadc)
   __HAL_ADC_CLEAR_FLAG(hadc, ADC_IRQ_FLAGS_MASK);
 #endif /* ADC_IRQ_FLAGS_MASK */
 
-  /* Reset all the registers */
-  CLEAR_BIT(hadc->Instance->CONF, (ADC_CONF_BIT_INVERT_DIFF
+  reg = ADC_CONF_BIT_INVERT_DIFF
 #if defined(ADC_CONF_SAMPLE_RATE_MSB)
-                                   | ADC_CONF_SAMPLE_RATE_MSB
+      | ADC_CONF_SAMPLE_RATE_MSB
 #endif /* ADC_CONF_SAMPLE_RATE_MSB */
-                                   | ADC_CONF_OVR_DS_CFG | ADC_CONF_DMA_DS_ENA
-                                   | ADC_CONF_SAMPLE_RATE
-                                   | ADC_CONF_SMPS_SYNCHRO_ENA
-                                   | ADC_CONF_SEQ_LEN
-                                   | ADC_CONF_CONT
+      | ADC_CONF_OVR_DS_CFG | ADC_CONF_DMA_DS_ENA
+      | ADC_CONF_SAMPLE_RATE
+      | ADC_CONF_SMPS_SYNCHRO_ENA
+      | ADC_CONF_SEQ_LEN
+      | ADC_CONF_CONT
 #if defined(ADC_SUPPORT_AUDIO_FEATURES)
-                                   | ADC_CONF_VBIAS_PRECH_FORCE
-                                   | ADC_CONF_OVR_DF_CFG | ADC_CONF_DMA_DF_ENA
-                                   | ADC_CONF_OP_MODE
+      | ADC_CONF_VBIAS_PRECH_FORCE
+      | ADC_CONF_OVR_DF_CFG | ADC_CONF_DMA_DF_ENA
+      | ADC_CONF_OP_MODE
 #endif /* ADC_SUPPORT_AUDIO_FEATURES */
-                                  ));
+      ;
+  /* Reset all the registers */
+  CLEAR_BIT(hadc->Instance->CONF, reg);
 
   SET_BIT(hadc->Instance->CONF, (ADC_CONF_ADC_CONT_1V2 | ADC_CONF_BIT_INVERT_SN | ADC_CONF_SEQUENCE));
 
-  CLEAR_BIT(hadc->Instance->CTRL, (ADC_CTRL_ADC_LDO_ENA
+  reg = ADC_CTRL_ADC_LDO_ENA
 #if defined(ADC_SUPPORT_AUDIO_FEATURES)
-                                   | ADC_CTRL_DIG_AUD_MODE
+      | ADC_CTRL_DIG_AUD_MODE
 #endif /* ADC_SUPPORT_AUDIO_FEATURES */
-                                   | ADC_CTRL_STOP_OP_MODE | ADC_CTRL_START_CONV
-                                   | ADC_CTRL_ADC_ON_OFF));
+      | ADC_CTRL_STOP_OP_MODE | ADC_CTRL_START_CONV
+      | ADC_CTRL_ADC_ON_OFF;
+
+  CLEAR_BIT(hadc->Instance->CTRL, reg);
 
 #if defined(ADC_SUPPORT_AUDIO_FEATURES)
   CLEAR_BIT(hadc->Instance->OCM_CTRL, (ADC_OCM_CTRL_OCM_ENA | ADC_OCM_CTRL_OCM_SRC));
@@ -605,36 +609,42 @@ HAL_StatusTypeDef HAL_ADC_DeInit(ADC_HandleTypeDef *hadc)
 
   CLEAR_BIT(hadc->Instance->WD_CONF, (ADC_WD_CONF_AWD_CHX));
 
-  CLEAR_BIT(hadc->Instance->IRQ_STATUS, (ADC_IRQ_STATUS_OVR_DS_IRQ
-                                         | ADC_IRQ_STATUS_AWD_IRQ
-                                         | ADC_IRQ_STATUS_EOS_IRQ
-                                         | ADC_IRQ_STATUS_EODS_IRQ
-                                         | ADC_IRQ_STATUS_EOC_IRQ
+  reg = ADC_IRQ_STATUS_OVR_DS_IRQ
+      | ADC_IRQ_STATUS_AWD_IRQ
+      | ADC_IRQ_STATUS_EOS_IRQ
+      | ADC_IRQ_STATUS_EODS_IRQ
+      | ADC_IRQ_STATUS_EOC_IRQ
 #if defined(ADC_SUPPORT_AUDIO_FEATURES)
-                                         | ADC_IRQ_STATUS_DF_OVRFL_IRQ
-                                         | ADC_IRQ_STATUS_OVR_DF_IRQ
-                                         | ADC_IRQ_STATUS_EODF_IRQ
+      | ADC_IRQ_STATUS_DF_OVRFL_IRQ
+      | ADC_IRQ_STATUS_OVR_DF_IRQ
+      | ADC_IRQ_STATUS_EODF_IRQ
 #endif /* ADC_SUPPORT_AUDIO_FEATURES */
-                                        ));
+      ;
+  CLEAR_BIT(hadc->Instance->IRQ_STATUS, reg);
 
-  CLEAR_BIT(hadc->Instance->IRQ_ENABLE, (ADC_IRQ_ENABLE_OVR_DS_IRQ_ENA
-                                         | ADC_IRQ_ENABLE_AWD_IRQ_ENA
-                                         | ADC_IRQ_ENABLE_EOS_IRQ_ENA
-                                         | ADC_IRQ_ENABLE_EODS_IRQ_ENA
-                                         | ADC_IRQ_ENABLE_EOC_IRQ_ENA
+  reg = ADC_IRQ_ENABLE_OVR_DS_IRQ_ENA
+      | ADC_IRQ_ENABLE_AWD_IRQ_ENA
+      | ADC_IRQ_ENABLE_EOS_IRQ_ENA
+      | ADC_IRQ_ENABLE_EODS_IRQ_ENA
+      | ADC_IRQ_ENABLE_EOC_IRQ_ENA
 #if defined(ADC_SUPPORT_AUDIO_FEATURES)
-                                         | ADC_IRQ_ENABLE_DF_OVRFL_IRQ_ENA
-                                         | ADC_IRQ_ENABLE_OVR_DF_IRQ_ENA
-                                         | ADC_IRQ_ENABLE_EODF_IRQ_ENA
+      | ADC_IRQ_ENABLE_DF_OVRFL_IRQ_ENA
+      | ADC_IRQ_ENABLE_OVR_DF_IRQ_ENA
+      | ADC_IRQ_ENABLE_EODF_IRQ_ENA
 #endif /* ADC_SUPPORT_AUDIO_FEATURES */
-                                        ));
+      ;
 
-  CLEAR_BIT(hadc->Instance->TIMER_CONF, (ADC_TIMER_CONF_ADC_LDO_DELAY
+  CLEAR_BIT(hadc->Instance->IRQ_ENABLE, reg);
+
+  reg = ADC_TIMER_CONF_ADC_LDO_DELAY
 #if defined(ADC_SUPPORT_AUDIO_FEATURES)
-                                         | ADC_TIMER_CONF_PRECH_DELAY_SEL
-                                         | ADC_TIMER_CONF_VBIAS_PRECH_DELAY
+      | ADC_TIMER_CONF_PRECH_DELAY_SEL
+      | ADC_TIMER_CONF_VBIAS_PRECH_DELAY
 #endif /* ADC_SUPPORT_AUDIO_FEATURES */
-                                        ));
+      ;
+
+  CLEAR_BIT(hadc->Instance->TIMER_CONF, reg);
+
 #if defined(ADC_SUPPORT_AUDIO_FEATURES)
   LL_ADC_SetVbiasPrechargeDelay(hadc->Instance, ADC_DEFAULT_VBIAS_PRECH_DELAY_US / 4UL);
 #endif /* ADC_SUPPORT_AUDIO_FEATURES */
@@ -671,6 +681,7 @@ HAL_StatusTypeDef HAL_ADC_DeInit(ADC_HandleTypeDef *hadc)
   * @param hadc ADC handle
   * @retval None
   */
+#ifndef _MSC_VER
 __weak void HAL_ADC_MspInit(ADC_HandleTypeDef *hadc)
 {
   /* Prevent unused argument(s) compilation warning */
@@ -680,6 +691,7 @@ __weak void HAL_ADC_MspInit(ADC_HandleTypeDef *hadc)
             function HAL_ADC_MspInit must be implemented in the user file.
    */
 }
+#endif
 
 /**
   * @brief  DeInitialize the ADC MSP.
@@ -688,6 +700,7 @@ __weak void HAL_ADC_MspInit(ADC_HandleTypeDef *hadc)
   *         the core clock reset all ADC instances).
   * @retval None
   */
+#ifndef _MSC_VER
 __weak void HAL_ADC_MspDeInit(ADC_HandleTypeDef *hadc)
 {
   /* Prevent unused argument(s) compilation warning */
@@ -697,6 +710,7 @@ __weak void HAL_ADC_MspDeInit(ADC_HandleTypeDef *hadc)
             function HAL_ADC_MspDeInit must be implemented in the user file.
    */
 }
+#endif
 
 #if (USE_HAL_ADC_REGISTER_CALLBACKS == 1)
 /**
