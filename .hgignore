@@ -1,10 +1,12 @@
 MDK-ARM/.*uvgui
 MDK-ARM/.*uvopt
 MDK-ARM/.*scvd
-MDK-ARM/CubeMX_WB05
+MDK-ARM/CubeMX_WB05/
 MDK-ARM/RTE
 
 VisualStudio/.vs/
 VisualStudio/CubeMX_WB05/
 VisualStudio/Debug/
 VisualStudio/.*user
+
+.git/
