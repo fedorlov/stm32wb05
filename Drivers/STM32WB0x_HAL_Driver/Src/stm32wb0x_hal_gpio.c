@@ -593,7 +593,7 @@ void HAL_GPIO_EXTI_IRQHandler(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
   * @param GPIO_Pin Specifies the port pin connected to corresponding EXTI line.
   * @retval None
   */
-__weak void HAL_GPIO_EXTI_Callback(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
+__weak void _HAL_GPIO_EXTI_Callback(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
 {
   /* Prevent unused argument(s) compilation warning */
   UNUSED(GPIO_Pin);

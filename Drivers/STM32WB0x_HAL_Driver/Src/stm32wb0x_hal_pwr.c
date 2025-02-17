@@ -579,7 +579,7 @@ void HAL_PWR_WKUP_IRQHandler(void)
   * @param WakeupIOs IO wakeup line
   * @retval None.
   */
-__weak void HAL_PWR_WKUPx_Callback(uint32_t WakeupIOs)
+__weak void _HAL_PWR_WKUPx_Callback(uint32_t WakeupIOs)
 {
   /* NOTE : This function should not be modified, when the callback is needed,
             the HAL_PWR_WKUPxCallback can be implemented in the user file

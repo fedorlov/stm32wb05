@@ -27,6 +27,102 @@
     <Filter Include="Virtual">
       <UniqueIdentifier>{5de270c2-fb58-46e3-9efe-f36e18fefd75}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utilites">
+      <UniqueIdentifier>{1948144a-1e1d-4d92-ae39-4a6c48f3cfab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System">
+      <UniqueIdentifier>{8eb359a0-5396-480e-a5c0-fcf2b2b4a0cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System\Interfaces">
+      <UniqueIdentifier>{08607116-9e09-4838-b028-4afdfe17634e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BLE">
+      <UniqueIdentifier>{f2484b06-e5c4-4bf5-9059-108f2faa4032}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BLE\Interfaces">
+      <UniqueIdentifier>{0cb99ec4-8eb9-445d-b018-59a7f45e4a6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BLE\Startup">
+      <UniqueIdentifier>{a6f56351-d873-459e-ac74-47684aa9fc17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BLE\Modules">
+      <UniqueIdentifier>{51765e56-6c54-439e-a735-83695753b2b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BLE\Modules\RTDebug">
+      <UniqueIdentifier>{0b8b5a60-2f98-40f0-9506-534272d8c4e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System\Config">
+      <UniqueIdentifier>{a839b373-d9b6-415e-9fe2-63a23818826a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System\Config\Debug_GPIO">
+      <UniqueIdentifier>{6d50945f-8f27-4289-a521-c545feb4660c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="STM32_BLE">
+      <UniqueIdentifier>{150f0a5d-89eb-425e-a9b6-8d32ed119dd3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="STM32_BLE\App">
+      <UniqueIdentifier>{277ced46-7578-4c04-88e7-73db1dca26b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="STM32_BLE\Target">
+      <UniqueIdentifier>{5a326334-123e-4ebf-9c8c-b66d29c1a666}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="STM32_BLE\Stack">
+      <UniqueIdentifier>{977d22a9-915a-42fd-ad36-026854204043}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Drivers\STM32WB0x-nucleo">
+      <UniqueIdentifier>{0e5fcb9d-7e1c-4ce0-8bd8-0b5ed85fcf97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BLE\Modules\Profiles">
+      <UniqueIdentifier>{4b83789e-4971-473a-beed-af34fe6c0f54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BLE\Modules\Profiles\Src">
+      <UniqueIdentifier>{1dc3c108-5d3b-4005-8f68-cf1adb2f187e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BLE\Modules\Profiles\Inc">
+      <UniqueIdentifier>{8ca71921-7bdc-4381-b3f1-ced7c16138ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BLE\Modules\NVMDB">
+      <UniqueIdentifier>{54429241-b60e-4b8f-bfa4-7490f7b0b689}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BLE\Modules\NVMDB\Src">
+      <UniqueIdentifier>{46f131f7-e54c-4de3-9c23-98865b7cc4b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BLE\Modules\NVMDB\Inc">
+      <UniqueIdentifier>{8442cb08-a085-46c1-a4f5-0b54bb346f3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BLE\Modules\PKAMGR">
+      <UniqueIdentifier>{a0233c00-7dba-4f0c-ad71-c95d5610ebae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BLE\Modules\PKAMGR\Src">
+      <UniqueIdentifier>{f402bbf8-cea5-49cb-97ce-06d8fa8a02d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BLE\Modules\PKAMGR\Inc">
+      <UniqueIdentifier>{0825b299-90a0-49fe-8775-c574fdb7a049}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="STM32_BLE\evt_handler">
+      <UniqueIdentifier>{0c464257-3bf9-455b-a3d6-f8f9dc89ae25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="STM32_BLE\evt_handler\src">
+      <UniqueIdentifier>{e1114e7a-92a0-4cff-9328-2fd55e2b9bb3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="STM32_BLE\evt_handler\inc">
+      <UniqueIdentifier>{00081d49-a656-42b3-a4fe-ed35e4a3f519}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="STM32_BLE\cryptolib">
+      <UniqueIdentifier>{c065ed3f-c301-4ce7-8a13-44eb51f243dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BLE\Modules\RADIO_utils">
+      <UniqueIdentifier>{cd8a0735-add8-40ff-baab-a4b4be929a09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BLE\Modules\RADIO_utils\Src">
+      <UniqueIdentifier>{1bf75da0-bdfc-4c74-8709-43cebe7de065}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BLE\Modules\RADIO_utils\Inc">
+      <UniqueIdentifier>{49dcbb37-ab25-4958-8421-576cf6a21207}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="STM32_BLE\cryptolib\Inc">
+      <UniqueIdentifier>{14742150-da77-4668-a09c-e7602c95189f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Core\Inc\main.h">
@@ -54,9 +150,6 @@
       <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
     </ClInclude>
     <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_hal_adc.h">
-      <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_hal_conf_template.h">
       <Filter>Drivers\STM32WB0x_HAL_Driver\Inc</Filter>
     </ClInclude>
     <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_hal_cortex.h">
@@ -248,6 +341,165 @@
     <ClInclude Include="core_cm0plus.h">
       <Filter>Virtual</Filter>
     </ClInclude>
+    <ClInclude Include="..\Utilites\stm32_lpm.h">
+      <Filter>Utilites</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utilites\stm32_mem.h">
+      <Filter>Utilites</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utilites\stm32_seq.h">
+      <Filter>Utilites</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utilites\stm32_adv_trace.h">
+      <Filter>Utilites</Filter>
+    </ClInclude>
+    <ClInclude Include="..\BLE\Interfaces\stm32_lpm_if.h">
+      <Filter>BLE\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\BLE\Startup\device_context_switch.h">
+      <Filter>BLE\Startup</Filter>
+    </ClInclude>
+    <ClInclude Include="..\BLE\Modules\RTDebug\RTDebug.h">
+      <Filter>BLE\Modules\RTDebug</Filter>
+    </ClInclude>
+    <ClInclude Include="..\BLE\Modules\osal.h">
+      <Filter>BLE\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\Config\Debug_GPIO\app_debug.h">
+      <Filter>System\Config\Debug_GPIO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\Config\Debug_GPIO\app_debug_signal_def.h">
+      <Filter>System\Config\Debug_GPIO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\Config\Debug_GPIO\debug_config.h">
+      <Filter>System\Config\Debug_GPIO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Core\Inc\utilities_conf.h">
+      <Filter>Core\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Core\Inc\app_common.h">
+      <Filter>Core\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Core\Inc\app_conf.h">
+      <Filter>Core\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Users\orlov\STM32Cube\Repository\STM32Cube_FW_WB0_V1.1.0\Projects\NUCLEO-WB05KZ\Applications\BLE\BLE_HealthThermometer\Core\Inc\app_entry.h">
+      <Filter>Core\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Users\orlov\STM32Cube\Repository\STM32Cube_FW_WB0_V1.1.0\Projects\NUCLEO-WB05KZ\Applications\BLE\BLE_HealthThermometer\STM32_BLE\Target\blenvm.h">
+      <Filter>STM32_BLE\Target</Filter>
+    </ClInclude>
+    <ClInclude Include="..\STM32_BLE\Stack\bleplat_cntr.h">
+      <Filter>STM32_BLE\Stack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\STM32_BLE\Stack\uuid.h">
+      <Filter>STM32_BLE\Stack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\STM32_BLE\Stack\ble_api.h">
+      <Filter>STM32_BLE\Stack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\STM32_BLE\Stack\ble_const.h">
+      <Filter>STM32_BLE\Stack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\STM32_BLE\Stack\ble_events.h">
+      <Filter>STM32_BLE\Stack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\STM32_BLE\Stack\ble_gatt.h">
+      <Filter>STM32_BLE\Stack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\STM32_BLE\Stack\ble_stack.h">
+      <Filter>STM32_BLE\Stack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\STM32_BLE\Stack\ble_stack_user_cfg.h">
+      <Filter>STM32_BLE\Stack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\STM32_BLE\Stack\ble_status.h">
+      <Filter>STM32_BLE\Stack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\STM32_BLE\Stack\ble_types.h">
+      <Filter>STM32_BLE\Stack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\STM32_BLE\Stack\bleplat.h">
+      <Filter>STM32_BLE\Stack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Core\Inc\stm32wb0x_nucleo_conf.h">
+      <Filter>Core\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x-nucleo\stm32wb0x_nucleo_errno.h">
+      <Filter>Drivers\STM32WB0x-nucleo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Drivers\STM32WB0x-nucleo\stm32wb0x_nucleo.h">
+      <Filter>Drivers\STM32WB0x-nucleo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\STM32_BLE\App\dis_app.h">
+      <Filter>STM32_BLE\App</Filter>
+    </ClInclude>
+    <ClInclude Include="..\STM32_BLE\App\hts.h">
+      <Filter>STM32_BLE\App</Filter>
+    </ClInclude>
+    <ClInclude Include="..\STM32_BLE\App\hts_app.h">
+      <Filter>STM32_BLE\App</Filter>
+    </ClInclude>
+    <ClInclude Include="..\STM32_BLE\App\app_ble.h">
+      <Filter>STM32_BLE\App</Filter>
+    </ClInclude>
+    <ClInclude Include="..\STM32_BLE\App\ble_conf.h">
+      <Filter>STM32_BLE\App</Filter>
+    </ClInclude>
+    <ClInclude Include="..\STM32_BLE\App\dis.h">
+      <Filter>STM32_BLE\App</Filter>
+    </ClInclude>
+    <ClInclude Include="..\BLE\Modules\Profiles\Inc\gap_profile.h">
+      <Filter>BLE\Modules\Profiles\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\BLE\Modules\Profiles\Inc\gatt_profile.h">
+      <Filter>BLE\Modules\Profiles\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\BLE\Modules\NVMDB\Inc\nvm_db_conf.h">
+      <Filter>BLE\Modules\NVMDB\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\BLE\Modules\NVMDB\Inc\nvm.h">
+      <Filter>BLE\Modules\NVMDB\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\BLE\Modules\NVMDB\Inc\nvm_db.h">
+      <Filter>BLE\Modules\NVMDB\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\BLE\Modules\PKAMGR\Inc\pka_manager.h">
+      <Filter>BLE\Modules\PKAMGR\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\STM32_BLE\evt_handler\inc\ble_evt.h">
+      <Filter>STM32_BLE\evt_handler\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\BLE\Modules\RADIO_utils\Inc\RADIO_utils.h">
+      <Filter>BLE\Modules\RADIO_utils\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\STM32_BLE\cryptolib\Inc\config.h">
+      <Filter>STM32_BLE\cryptolib\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\STM32_BLE\cryptolib\Inc\crypto.h">
+      <Filter>STM32_BLE\cryptolib\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="cmsis_compiler.h">
+      <Filter>Virtual</Filter>
+    </ClInclude>
+    <ClInclude Include="..\BLE\Interfaces\hw_rng.h">
+      <Filter>BLE\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\BLE\Interfaces\hw_aes.h">
+      <Filter>BLE\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\BLE\Interfaces\hw_pka.h">
+      <Filter>BLE\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\BLE\Modules\miscutil.h">
+      <Filter>BLE\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\BLE\Modules\stm_list.h">
+      <Filter>BLE\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\Interfaces\usart_if.h">
+      <Filter>System\Interfaces</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Core\Src\main.c">
@@ -421,8 +673,110 @@
     <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_hal.c">
       <Filter>Drivers\STM32WB0x_HAL_Driver\Src</Filter>
     </ClCompile>
-    <ClCompile Include="..\Core\Src\blue_unit_conversion.c">
+    <ClCompile Include="..\Utilites\stm32_lpm.c">
+      <Filter>Utilites</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utilites\stm32_mem.c">
+      <Filter>Utilites</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utilites\stm32_seq.c">
+      <Filter>Utilites</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utilites\stm32_adv_trace.c">
+      <Filter>Utilites</Filter>
+    </ClCompile>
+    <ClCompile Include="..\BLE\Interfaces\stm32_lpm_if.c">
+      <Filter>BLE\Interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="..\BLE\Startup\device_context_switch.c">
+      <Filter>BLE\Startup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\BLE\Modules\RTDebug\RTDebug.c">
+      <Filter>BLE\Modules\RTDebug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\BLE\Modules\osal.c">
+      <Filter>BLE\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="..\System\Config\Debug_GPIO\app_debug.c">
+      <Filter>System\Config\Debug_GPIO</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Users\orlov\STM32Cube\Repository\STM32Cube_FW_WB0_V1.1.0\Projects\NUCLEO-WB05KZ\Applications\BLE\BLE_HealthThermometer\Core\Src\app_entry.c">
       <Filter>Core\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Users\orlov\STM32Cube\Repository\STM32Cube_FW_WB0_V1.1.0\Projects\NUCLEO-WB05KZ\Applications\BLE\BLE_HealthThermometer\STM32_BLE\Target\bleplat_cntr.c">
+      <Filter>STM32_BLE\Target</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Users\orlov\STM32Cube\Repository\STM32Cube_FW_WB0_V1.1.0\Projects\NUCLEO-WB05KZ\Applications\BLE\BLE_HealthThermometer\STM32_BLE\Target\blenvm.c">
+      <Filter>STM32_BLE\Target</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Users\orlov\STM32Cube\Repository\STM32Cube_FW_WB0_V1.1.0\Projects\NUCLEO-WB05KZ\Applications\BLE\BLE_HealthThermometer\STM32_BLE\Target\bleplat.c">
+      <Filter>STM32_BLE\Target</Filter>
+    </ClCompile>
+    <ClCompile Include="..\STM32_BLE\Stack\ble_stack_user_cfg.c">
+      <Filter>STM32_BLE\Stack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Drivers\STM32WB0x-nucleo\stm32wb0x_nucleo.c">
+      <Filter>Drivers\STM32WB0x-nucleo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\STM32_BLE\App\hts.c">
+      <Filter>STM32_BLE\App</Filter>
+    </ClCompile>
+    <ClCompile Include="..\STM32_BLE\App\hts_app.c">
+      <Filter>STM32_BLE\App</Filter>
+    </ClCompile>
+    <ClCompile Include="..\STM32_BLE\App\app_ble.c">
+      <Filter>STM32_BLE\App</Filter>
+    </ClCompile>
+    <ClCompile Include="..\STM32_BLE\App\dis.c">
+      <Filter>STM32_BLE\App</Filter>
+    </ClCompile>
+    <ClCompile Include="..\STM32_BLE\App\dis_app.c">
+      <Filter>STM32_BLE\App</Filter>
+    </ClCompile>
+    <ClCompile Include="..\BLE\Modules\Profiles\Src\gap_profile.c">
+      <Filter>BLE\Modules\Profiles\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\BLE\Modules\Profiles\Src\gatt_profile.c">
+      <Filter>BLE\Modules\Profiles\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\BLE\Modules\NVMDB\Src\nvm_db.c">
+      <Filter>BLE\Modules\NVMDB\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\BLE\Modules\NVMDB\Src\nvm_db_conf.c">
+      <Filter>BLE\Modules\NVMDB\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\BLE\Modules\PKAMGR\Src\pka_manager.c">
+      <Filter>BLE\Modules\PKAMGR\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\STM32_BLE\evt_handler\src\ble_evt.c">
+      <Filter>STM32_BLE\evt_handler\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\BLE\Modules\RADIO_utils\Src\RADIO_utils.c">
+      <Filter>BLE\Modules\RADIO_utils\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\BLE\Interfaces\cryptolib_hw_aes.c">
+      <Filter>BLE\Interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="..\BLE\Interfaces\hw_aes.c">
+      <Filter>BLE\Interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="..\BLE\Interfaces\hw_pka.c">
+      <Filter>BLE\Interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="..\BLE\Interfaces\hw_rng.c">
+      <Filter>BLE\Interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="..\BLE\Modules\miscutil.c">
+      <Filter>BLE\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="..\BLE\Modules\stm_list.c">
+      <Filter>BLE\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="VirtualBLEstack.c">
+      <Filter>Virtual</Filter>
+    </ClCompile>
+    <ClCompile Include="..\System\Interfaces\usart_if.c">
+      <Filter>System\Interfaces</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

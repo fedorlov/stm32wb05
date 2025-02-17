@@ -77,7 +77,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;USE_HAL_DRIVER;STM32WB05;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard_C>stdc11</LanguageStandard_C>
-      <AdditionalIncludeDirectories>.;..\Core\Inc;..\Drivers\STM32WB0x_HAL_Driver\Inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\Core\Inc;..\Drivers\STM32WB0x-nucleo;..\Drivers\STM32WB0x_HAL_Driver\Inc;..\BLE\Interfaces;..\BLE\Modules;..\BLE\Modules\NVMDB\Inc;..\BLE\Modules\PKAMGR\Inc;..\BLE\Modules\Profiles\Inc;..\BLE\Modules\RADIO_utils\Inc;..\BLE\Modules\RTDebug;..\BLE\Startup;..\STM32_BLE\;..\STM32_BLE\App;..\STM32_BLE\cryptolib\Inc;..\STM32_BLE\evt_handler\inc;..\STM32_BLE\Stack;..\STM32_BLE\Target;..\System\Config\Debug_GPIO;..\Utilites;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>5101;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
@@ -107,7 +107,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;USE_HAL_DRIVER;STM32WB05;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.;..\Core\Inc;..\Drivers\STM32WB0x_HAL_Driver\Inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\Core\Inc;..\Drivers\STM32WB0x-nucleo;..\Drivers\STM32WB0x_HAL_Driver\Inc;..\BLE\Interfaces;..\BLE\Modules;..\BLE\Modules\NVMDB\Inc;..\BLE\Modules\PKAMGR\Inc;..\BLE\Modules\Profiles\Inc;..\BLE\Modules\RADIO_utils\Inc;..\BLE\Modules\RTDebug;..\BLE\Startup;..\STM32_BLE\;..\STM32_BLE\App;..\STM32_BLE\cryptolib\Inc;..\STM32_BLE\evt_handler\inc;..\STM32_BLE\Stack;..\STM32_BLE\Target;..\System\Config\Debug_GPIO;..\Utilites;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard_C>stdc11</LanguageStandard_C>
       <DisableSpecificWarnings>5101;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
@@ -133,16 +133,39 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\Users\orlov\STM32Cube\Repository\STM32Cube_FW_WB0_V1.1.0\Projects\NUCLEO-WB05KZ\Applications\BLE\BLE_HealthThermometer\Core\Inc\app_entry.h" />
+    <ClInclude Include="..\..\..\..\Users\orlov\STM32Cube\Repository\STM32Cube_FW_WB0_V1.1.0\Projects\NUCLEO-WB05KZ\Applications\BLE\BLE_HealthThermometer\STM32_BLE\Target\blenvm.h" />
+    <ClInclude Include="..\BLE\Interfaces\hw_aes.h" />
+    <ClInclude Include="..\BLE\Interfaces\hw_pka.h" />
+    <ClInclude Include="..\BLE\Interfaces\hw_rng.h" />
+    <ClInclude Include="..\BLE\Interfaces\stm32_lpm_if.h" />
+    <ClInclude Include="..\BLE\Modules\miscutil.h" />
+    <ClInclude Include="..\BLE\Modules\NVMDB\Inc\nvm.h" />
+    <ClInclude Include="..\BLE\Modules\NVMDB\Inc\nvm_db.h" />
+    <ClInclude Include="..\BLE\Modules\NVMDB\Inc\nvm_db_conf.h" />
+    <ClInclude Include="..\BLE\Modules\osal.h" />
+    <ClInclude Include="..\BLE\Modules\PKAMGR\Inc\pka_manager.h" />
+    <ClInclude Include="..\BLE\Modules\Profiles\Inc\gap_profile.h" />
+    <ClInclude Include="..\BLE\Modules\Profiles\Inc\gatt_profile.h" />
+    <ClInclude Include="..\BLE\Modules\RADIO_utils\Inc\RADIO_utils.h" />
+    <ClInclude Include="..\BLE\Modules\RTDebug\RTDebug.h" />
+    <ClInclude Include="..\BLE\Modules\stm_list.h" />
+    <ClInclude Include="..\BLE\Startup\device_context_switch.h" />
+    <ClInclude Include="..\Core\Inc\app_common.h" />
+    <ClInclude Include="..\Core\Inc\app_conf.h" />
     <ClInclude Include="..\Core\Inc\asm.h" />
     <ClInclude Include="..\Core\Inc\main.h" />
     <ClInclude Include="..\Core\Inc\stm32wb0x_hal_conf.h" />
     <ClInclude Include="..\Core\Inc\stm32wb0x_it.h" />
+    <ClInclude Include="..\Core\Inc\stm32wb0x_nucleo_conf.h" />
+    <ClInclude Include="..\Core\Inc\utilities_conf.h" />
+    <ClInclude Include="..\Drivers\STM32WB0x-nucleo\stm32wb0x_nucleo.h" />
+    <ClInclude Include="..\Drivers\STM32WB0x-nucleo\stm32wb0x_nucleo_errno.h" />
     <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h" />
     <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb05.h" />
     <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x.h" />
     <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_hal.h" />
     <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_hal_adc.h" />
-    <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_hal_conf_template.h" />
     <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_hal_cortex.h" />
     <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_hal_crc.h" />
     <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_hal_crc_ex.h" />
@@ -204,15 +227,64 @@
     <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32wb0x_ll_utils.h" />
     <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\stm32_assert.h" />
     <ClInclude Include="..\Drivers\STM32WB0x_HAL_Driver\Inc\system_stm32wb0x.h" />
+    <ClInclude Include="..\STM32_BLE\App\app_ble.h" />
+    <ClInclude Include="..\STM32_BLE\App\ble_conf.h" />
+    <ClInclude Include="..\STM32_BLE\App\dis.h" />
+    <ClInclude Include="..\STM32_BLE\App\dis_app.h" />
+    <ClInclude Include="..\STM32_BLE\App\hts.h" />
+    <ClInclude Include="..\STM32_BLE\App\hts_app.h" />
+    <ClInclude Include="..\STM32_BLE\cryptolib\Inc\config.h" />
+    <ClInclude Include="..\STM32_BLE\cryptolib\Inc\crypto.h" />
+    <ClInclude Include="..\STM32_BLE\evt_handler\inc\ble_evt.h" />
+    <ClInclude Include="..\STM32_BLE\Stack\bleplat.h" />
+    <ClInclude Include="..\STM32_BLE\Stack\bleplat_cntr.h" />
+    <ClInclude Include="..\STM32_BLE\Stack\ble_api.h" />
+    <ClInclude Include="..\STM32_BLE\Stack\ble_const.h" />
+    <ClInclude Include="..\STM32_BLE\Stack\ble_events.h" />
+    <ClInclude Include="..\STM32_BLE\Stack\ble_gatt.h" />
+    <ClInclude Include="..\STM32_BLE\Stack\ble_stack.h" />
+    <ClInclude Include="..\STM32_BLE\Stack\ble_stack_user_cfg.h" />
+    <ClInclude Include="..\STM32_BLE\Stack\ble_status.h" />
+    <ClInclude Include="..\STM32_BLE\Stack\ble_types.h" />
+    <ClInclude Include="..\STM32_BLE\Stack\uuid.h" />
+    <ClInclude Include="..\System\Config\Debug_GPIO\app_debug.h" />
+    <ClInclude Include="..\System\Config\Debug_GPIO\app_debug_signal_def.h" />
+    <ClInclude Include="..\System\Config\Debug_GPIO\debug_config.h" />
+    <ClInclude Include="..\System\Interfaces\usart_if.h" />
+    <ClInclude Include="..\Utilites\stm32_adv_trace.h" />
+    <ClInclude Include="..\Utilites\stm32_lpm.h" />
+    <ClInclude Include="..\Utilites\stm32_mem.h" />
+    <ClInclude Include="..\Utilites\stm32_seq.h" />
+    <ClInclude Include="cmsis_compiler.h" />
     <ClInclude Include="core_cm0plus.h" />
     <ClInclude Include="VirtualMain.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Core\Src\blue_unit_conversion.c" />
+    <ClCompile Include="..\..\..\..\Users\orlov\STM32Cube\Repository\STM32Cube_FW_WB0_V1.1.0\Projects\NUCLEO-WB05KZ\Applications\BLE\BLE_HealthThermometer\Core\Src\app_entry.c" />
+    <ClCompile Include="..\..\..\..\Users\orlov\STM32Cube\Repository\STM32Cube_FW_WB0_V1.1.0\Projects\NUCLEO-WB05KZ\Applications\BLE\BLE_HealthThermometer\STM32_BLE\Target\blenvm.c" />
+    <ClCompile Include="..\..\..\..\Users\orlov\STM32Cube\Repository\STM32Cube_FW_WB0_V1.1.0\Projects\NUCLEO-WB05KZ\Applications\BLE\BLE_HealthThermometer\STM32_BLE\Target\bleplat.c" />
+    <ClCompile Include="..\..\..\..\Users\orlov\STM32Cube\Repository\STM32Cube_FW_WB0_V1.1.0\Projects\NUCLEO-WB05KZ\Applications\BLE\BLE_HealthThermometer\STM32_BLE\Target\bleplat_cntr.c" />
+    <ClCompile Include="..\BLE\Interfaces\cryptolib_hw_aes.c" />
+    <ClCompile Include="..\BLE\Interfaces\hw_aes.c" />
+    <ClCompile Include="..\BLE\Interfaces\hw_pka.c" />
+    <ClCompile Include="..\BLE\Interfaces\hw_rng.c" />
+    <ClCompile Include="..\BLE\Interfaces\stm32_lpm_if.c" />
+    <ClCompile Include="..\BLE\Modules\miscutil.c" />
+    <ClCompile Include="..\BLE\Modules\NVMDB\Src\nvm_db.c" />
+    <ClCompile Include="..\BLE\Modules\NVMDB\Src\nvm_db_conf.c" />
+    <ClCompile Include="..\BLE\Modules\osal.c" />
+    <ClCompile Include="..\BLE\Modules\PKAMGR\Src\pka_manager.c" />
+    <ClCompile Include="..\BLE\Modules\Profiles\Src\gap_profile.c" />
+    <ClCompile Include="..\BLE\Modules\Profiles\Src\gatt_profile.c" />
+    <ClCompile Include="..\BLE\Modules\RADIO_utils\Src\RADIO_utils.c" />
+    <ClCompile Include="..\BLE\Modules\RTDebug\RTDebug.c" />
+    <ClCompile Include="..\BLE\Modules\stm_list.c" />
+    <ClCompile Include="..\BLE\Startup\device_context_switch.c" />
     <ClCompile Include="..\Core\Src\main.c" />
     <ClCompile Include="..\Core\Src\stm32wb0x_hal_msp.c" />
     <ClCompile Include="..\Core\Src\stm32wb0x_it.c" />
     <ClCompile Include="..\Core\Src\system_stm32wb0x.c" />
+    <ClCompile Include="..\Drivers\STM32WB0x-nucleo\stm32wb0x_nucleo.c" />
     <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_hal.c" />
     <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_hal_adc.c" />
     <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_hal_cortex.c" />
@@ -265,6 +337,20 @@
     <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_ll_tim.c" />
     <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_ll_usart.c" />
     <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_ll_utils.c" />
+    <ClCompile Include="..\STM32_BLE\App\app_ble.c" />
+    <ClCompile Include="..\STM32_BLE\App\dis.c" />
+    <ClCompile Include="..\STM32_BLE\App\dis_app.c" />
+    <ClCompile Include="..\STM32_BLE\App\hts.c" />
+    <ClCompile Include="..\STM32_BLE\App\hts_app.c" />
+    <ClCompile Include="..\STM32_BLE\evt_handler\src\ble_evt.c" />
+    <ClCompile Include="..\STM32_BLE\Stack\ble_stack_user_cfg.c" />
+    <ClCompile Include="..\System\Config\Debug_GPIO\app_debug.c" />
+    <ClCompile Include="..\System\Interfaces\usart_if.c" />
+    <ClCompile Include="..\Utilites\stm32_adv_trace.c" />
+    <ClCompile Include="..\Utilites\stm32_lpm.c" />
+    <ClCompile Include="..\Utilites\stm32_mem.c" />
+    <ClCompile Include="..\Utilites\stm32_seq.c" />
+    <ClCompile Include="VirtualBLEstack.c" />
     <ClCompile Include="VirtualMain.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

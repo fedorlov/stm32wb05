@@ -327,8 +327,8 @@
             <useXO>0</useXO>
             <v6Lang>3</v6Lang>
             <v6LangP>3</v6LangP>
-            <vShortEn>1</vShortEn>
-            <vShortWch>1</vShortWch>
+            <vShortEn>0</vShortEn>
+            <vShortWch>0</vShortWch>
             <v6Lto>0</v6Lto>
             <v6WtE>0</v6WtE>
             <v6Rtti>0</v6Rtti>
@@ -336,7 +336,7 @@
               <MiscControls>-fshort-enums</MiscControls>
               <Define>USE_HAL_DRIVER,STM32WB05</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32WB0x_HAL_Driver/Inc;../Drivers/STM32WB0x_HAL_Driver/Inc/Legacy</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32WB0x-nucleo;../Drivers/STM32WB0x_HAL_Driver/Inc;../Drivers/STM32WB0x_HAL_Driver/Inc/Legacy;../System/Config/Debug_GPIO;../Utilites;../BLE/Interfaces;../BLE/Modules;../BLE/Modules/NVMDB/Inc;../BLE/Modules/PKAMGR/Inc;../BLE/Modules/Profiles/Inc;../BLE/Modules/RADIO_utils/Inc;../BLE/Modules/RTDebug;../BLE/Startup;../STM32_BLE/;../STM32_BLE/App;../STM32_BLE/cryptolib/Inc;../STM32_BLE/evt_handler/inc;../STM32_BLE/Stack;../STM32_BLE/Target</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -349,7 +349,7 @@
             <NoWarn>0</NoWarn>
             <uSurpInc>0</uSurpInc>
             <useXO>0</useXO>
-            <uClangAs>1</uClangAs>
+            <uClangAs>0</uClangAs>
             <VariousControls>
               <MiscControls></MiscControls>
               <Define></Define>
@@ -372,6 +372,7 @@
             <IncludeLibsPath></IncludeLibsPath>
             <Misc>--diag_suppress=L6312W
 --diag_suppress=L6314W
+--diag_suppress=L6318W
 --diag_suppress=L6329W</Misc>
             <LinkerInputFile></LinkerInputFile>
             <DisabledWarnings></DisabledWarnings>
@@ -393,14 +394,79 @@
           <GroupName>Application/User/Core</GroupName>
           <Files>
             <File>
+              <FileName>app_entry.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\app_entry.c</FilePath>
+            </File>
+            <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Core/Src/main.c</FilePath>
             </File>
             <File>
-              <FileName>blue_unit_conversion.c</FileName>
+              <FileName>stm32wb0x_it.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Core\Src\blue_unit_conversion.c</FilePath>
+              <FilePath>../Core/Src/stm32wb0x_it.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32wb0x_hal_msp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Core/Src/stm32wb0x_hal_msp.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>BLE/Interfaces</GroupName>
+          <Files>
+            <File>
+              <FileName>cryptolib_hw_aes.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BLE\Interfaces\cryptolib_hw_aes.c</FilePath>
+            </File>
+            <File>
+              <FileName>hw_aes.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BLE\Interfaces\hw_aes.c</FilePath>
+            </File>
+            <File>
+              <FileName>hw_pka.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BLE\Interfaces\hw_pka.c</FilePath>
+            </File>
+            <File>
+              <FileName>hw_rng.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BLE\Interfaces\hw_rng.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32_lpm_if.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BLE\Interfaces\stm32_lpm_if.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>BLE/Modules</GroupName>
+          <Files>
+            <File>
+              <FileName>miscutil.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BLE\Modules\miscutil.c</FilePath>
+            </File>
+            <File>
+              <FileName>osal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BLE\Modules\osal.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm_list.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BLE\Modules\stm_list.c</FilePath>
+            </File>
+            <File>
+              <FileName>blue_unit_conversion.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>..\BLE\Modules\blue_unit_conversion.s</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>2</UseCPPCompiler>
@@ -419,48 +485,192 @@
                   <ComprImg>1</ComprImg>
                 </CommonProperty>
                 <FileArmAds>
-                  <Cads>
+                  <Aads>
                     <interw>2</interw>
-                    <Optim>7</Optim>
-                    <oTime>2</oTime>
-                    <SplitLS>2</SplitLS>
-                    <OneElfS>2</OneElfS>
-                    <Strict>2</Strict>
-                    <EnumInt>2</EnumInt>
-                    <PlainCh>2</PlainCh>
                     <Ropi>2</Ropi>
                     <Rwpi>2</Rwpi>
-                    <wLevel>0</wLevel>
-                    <uThumb>2</uThumb>
+                    <thumb>2</thumb>
+                    <SplitLS>2</SplitLS>
+                    <SwStkChk>2</SwStkChk>
+                    <NoWarn>2</NoWarn>
                     <uSurpInc>2</uSurpInc>
-                    <uC99>2</uC99>
                     <useXO>2</useXO>
-                    <v6Lang>0</v6Lang>
-                    <v6LangP>0</v6LangP>
-                    <vShortEn>2</vShortEn>
-                    <vShortWch>2</vShortWch>
-                    <v6Lto>2</v6Lto>
-                    <v6WtE>2</v6WtE>
-                    <v6Rtti>2</v6Rtti>
+                    <uClangAs>1</uClangAs>
                     <VariousControls>
                       <MiscControls></MiscControls>
                       <Define></Define>
                       <Undefine></Undefine>
                       <IncludePath></IncludePath>
                     </VariousControls>
-                  </Cads>
+                  </Aads>
                 </FileArmAds>
               </FileOption>
             </File>
             <File>
-              <FileName>stm32wb0x_it.c</FileName>
+              <FileName>osal_memcpy.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>..\BLE\Modules\osal_memcpy.s</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>2</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
+                </CommonProperty>
+                <FileArmAds>
+                  <Aads>
+                    <interw>2</interw>
+                    <Ropi>2</Ropi>
+                    <Rwpi>2</Rwpi>
+                    <thumb>2</thumb>
+                    <SplitLS>2</SplitLS>
+                    <SwStkChk>2</SwStkChk>
+                    <NoWarn>2</NoWarn>
+                    <uSurpInc>2</uSurpInc>
+                    <useXO>2</useXO>
+                    <uClangAs>1</uClangAs>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
+                  </Aads>
+                </FileArmAds>
+              </FileOption>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>BLE/Modules/NVMDB</GroupName>
+          <Files>
+            <File>
+              <FileName>nvm_db.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../Core/Src/stm32wb0x_it.c</FilePath>
+              <FilePath>..\BLE\Modules\NVMDB\Src\nvm_db.c</FilePath>
             </File>
             <File>
-              <FileName>stm32wb0x_hal_msp.c</FileName>
+              <FileName>nvm_db_conf.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../Core/Src/stm32wb0x_hal_msp.c</FilePath>
+              <FilePath>..\BLE\Modules\NVMDB\Src\nvm_db_conf.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>BLE/Modules/PKAMGR</GroupName>
+          <Files>
+            <File>
+              <FileName>pka_manager.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BLE\Modules\PKAMGR\Src\pka_manager.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>BLE/Modules/Profiles</GroupName>
+          <Files>
+            <File>
+              <FileName>gap_profile.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BLE\Modules\Profiles\Src\gap_profile.c</FilePath>
+            </File>
+            <File>
+              <FileName>gatt_profile.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BLE\Modules\Profiles\Src\gatt_profile.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>BLE/Modules/RADIO_utils</GroupName>
+          <Files>
+            <File>
+              <FileName>RADIO_utils.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BLE\Modules\RADIO_utils\Src\RADIO_utils.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>BLE/Modules/RTDebug</GroupName>
+          <Files>
+            <File>
+              <FileName>RTDebug.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BLE\Modules\RTDebug\RTDebug.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>BLE/Startup</GroupName>
+          <Files>
+            <File>
+              <FileName>cpu_context_switch.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>..\BLE\Startup\cpu_context_switch.s</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>2</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
+                </CommonProperty>
+                <FileArmAds>
+                  <Aads>
+                    <interw>2</interw>
+                    <Ropi>2</Ropi>
+                    <Rwpi>2</Rwpi>
+                    <thumb>2</thumb>
+                    <SplitLS>2</SplitLS>
+                    <SwStkChk>2</SwStkChk>
+                    <NoWarn>2</NoWarn>
+                    <uSurpInc>2</uSurpInc>
+                    <useXO>2</useXO>
+                    <uClangAs>1</uClangAs>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
+                  </Aads>
+                </FileArmAds>
+              </FileOption>
+            </File>
+            <File>
+              <FileName>device_context_switch.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BLE\Startup\device_context_switch.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Drivers/STM32WB0x-nucleo</GroupName>
+          <Files>
+            <File>
+              <FileName>stm32wb0x_nucleo.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\STM32WB0x-nucleo\stm32wb0x_nucleo.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -503,6 +713,11 @@
               <FilePath>../Drivers/STM32WB0x_HAL_Driver/Src/stm32wb0x_hal_dma.c</FilePath>
             </File>
             <File>
+              <FileName>stm32wb0x_hal_pka.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_hal_pka.c</FilePath>
+            </File>
+            <File>
               <FileName>stm32wb0x_hal_pwr.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Drivers/STM32WB0x_HAL_Driver/Src/stm32wb0x_hal_pwr.c</FilePath>
@@ -542,6 +757,16 @@
               <FileType>1</FileType>
               <FilePath>..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_hal_rtc_ex.c</FilePath>
             </File>
+            <File>
+              <FileName>stm32wb0x_hal_uart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_hal_uart.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32wb0x_hal_uart_ex.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_hal_uart_ex.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -551,6 +776,131 @@
               <FileName>system_stm32wb0x.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Core/Src/system_stm32wb0x.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>STM32_BLE/App</GroupName>
+          <Files>
+            <File>
+              <FileName>app_ble.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\STM32_BLE\App\app_ble.c</FilePath>
+            </File>
+            <File>
+              <FileName>dis.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\STM32_BLE\App\dis.c</FilePath>
+            </File>
+            <File>
+              <FileName>dis_app.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\STM32_BLE\App\dis_app.c</FilePath>
+            </File>
+            <File>
+              <FileName>hts.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\STM32_BLE\App\hts.c</FilePath>
+            </File>
+            <File>
+              <FileName>hts_app.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\STM32_BLE\App\hts_app.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>STM32_BLE/cryptolib</GroupName>
+          <Files>
+            <File>
+              <FileName>libcrypto.a</FileName>
+              <FileType>4</FileType>
+              <FilePath>..\STM32_BLE\cryptolib\libcrypto.a</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>STM32_BLE/evt_handler</GroupName>
+          <Files>
+            <File>
+              <FileName>ble_evt.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\STM32_BLE\evt_handler\src\ble_evt.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>STM32_BLE/stack</GroupName>
+          <Files>
+            <File>
+              <FileName>ble_stack_user_cfg.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\STM32_BLE\Stack\ble_stack_user_cfg.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32wb0x_ble_stack.a</FileName>
+              <FileType>4</FileType>
+              <FilePath>..\STM32_BLE\Stack\stm32wb0x_ble_stack.a</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>STM32_BLE/Target</GroupName>
+          <Files>
+            <File>
+              <FileName>blenvm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\STM32_BLE\Target\blenvm.c</FilePath>
+            </File>
+            <File>
+              <FileName>bleplat.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\STM32_BLE\Target\bleplat.c</FilePath>
+            </File>
+            <File>
+              <FileName>bleplat_cntr.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\STM32_BLE\Target\bleplat_cntr.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>System</GroupName>
+          <Files>
+            <File>
+              <FileName>app_debug.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\System\Config\Debug_GPIO\app_debug.c</FilePath>
+            </File>
+            <File>
+              <FileName>usart_if.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\System\Interfaces\usart_if.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Utilites</GroupName>
+          <Files>
+            <File>
+              <FileName>stm32_adv_trace.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Utilites\stm32_adv_trace.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32_lpm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Utilites\stm32_lpm.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32_mem.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Utilites\stm32_mem.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32_seq.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Utilites\stm32_seq.c</FilePath>
             </File>
           </Files>
         </Group>

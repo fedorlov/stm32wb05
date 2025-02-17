@@ -4,6 +4,8 @@
 
 ADC_HandleTypeDef hadc1;
 
+PKA_HandleTypeDef hpka;
+
 RTC_HandleTypeDef hrtc;
 
 void SystemClock_Config(void)
@@ -167,6 +169,32 @@ static void MX_RADIO_TIMER_Init(void)
 }
 
 /**
+  * @brief PKA Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_PKA_Init(void)
+{
+
+	/* USER CODE BEGIN PKA_Init 0 */
+
+	/* USER CODE END PKA_Init 0 */
+
+	/* USER CODE BEGIN PKA_Init 1 */
+
+	/* USER CODE END PKA_Init 1 */
+	hpka.Instance = PKA;
+	if(HAL_PKA_Init(&hpka) != HAL_OK)
+	{
+		Error_Handler();
+	}
+	/* USER CODE BEGIN PKA_Init 2 */
+
+	/* USER CODE END PKA_Init 2 */
+
+}
+
+/**
   * @brief RTC Initialization Function
   * @param None
   * @retval None
@@ -226,6 +254,8 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(BTN1_GPIO_Port, &GPIO_InitStruct);
+
+  RT_DEBUG_GPIO_Init();
 
 //  /*Configure GPIO pin : PA2 */
 //  GPIO_InitStruct.Pin = GPIO_PIN_2 | GPIO_PIN_3;
@@ -337,9 +367,10 @@ int main(void)
 	MX_ADC1_Init();	
 	MX_RADIO_Init();	
 	MX_RADIO_TIMER_Init();	
-	MX_RTC_Init();
+	MX_PKA_Init();
+	//MX_RTC_Init();
 
-	int sleep = 1;
+	//int sleep = 0;
 	
 	// если нажата кнопка или в режиме отладки
 	// TODO - добавить отслеживание состояния пинов SWDIO и SWCLK
@@ -347,7 +378,22 @@ int main(void)
 	{
 		// зажигаем зеленый светодиод и не уходим в сон
 		HAL_GPIO_WritePin(GPIOB, LD2_Pin, GPIO_PIN_RESET);
-		sleep = 0;
+		//sleep = 0;
+		
+		while (1) // при нажатой кнопке не запускаем BLE!
+		{
+			//SystemClock_Config();
+
+			//MX_GPIO_Init();
+
+			HAL_GPIO_WritePin(GPIOB, LD3_Pin, GPIO_PIN_RESET);
+
+			HAL_Delay(100);
+
+			HAL_GPIO_WritePin(GPIOB, LD3_Pin, GPIO_PIN_SET);
+			
+			HAL_Delay(2000);
+		}
 	}
 	else
 	{
@@ -357,6 +403,14 @@ int main(void)
 
 		HAL_GPIO_WritePin(GPIOB, LD1_Pin, GPIO_PIN_SET);
 	}
+	
+	// Init code for STM32_BLE
+	MX_APPE_Init(NULL);
+	
+	while (1)
+	{
+		MX_APPE_Process();
+	}
 
 	while (1)
 	{
@@ -364,25 +418,25 @@ int main(void)
 
 		//MX_GPIO_Init();
 
-		HAL_GPIO_WritePin(GPIOB, LD3_Pin, GPIO_PIN_RESET);
+//		HAL_GPIO_WritePin(GPIOB, LD3_Pin, GPIO_PIN_RESET);
 
-		HAL_Delay(100);
+//		HAL_Delay(100);
 
-		HAL_GPIO_WritePin(GPIOB, LD3_Pin, GPIO_PIN_SET);
+//		HAL_GPIO_WritePin(GPIOB, LD3_Pin, GPIO_PIN_SET);
 
-		if(sleep)
-		{
-			MX_GPIO_Deinit();
+//		if(sleep)
+//		{
+//			MX_GPIO_Deinit();
 
-			MX_RTC_Init();
+//			MX_RTC_Init();
 
-			HAL_PWR_EnterDEEPSTOPMode();
+//			HAL_PWR_EnterDEEPSTOPMode();
 
-			//HAL_RTCEx_DeactivateWakeUpTimer(&hrtc);
-		}
-		else
-		{
-			HAL_Delay(2000);
-		}
+//			//HAL_RTCEx_DeactivateWakeUpTimer(&hrtc);
+//		}
+//		else
+//		{
+//			HAL_Delay(2000);
+//		}
 	}
 }

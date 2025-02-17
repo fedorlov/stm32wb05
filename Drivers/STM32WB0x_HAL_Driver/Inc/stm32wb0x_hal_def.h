@@ -174,7 +174,7 @@ typedef enum
 */
 #define __RAM_FUNC __ramfunc
 
-#elif defined   (  __GNUC__  )
+#elif defined   (  __GNUC__  ) || defined ( __clang__ )
 /* GNU Compiler
    ------------
   RAM functions are defined using a specific toolchain attribute
@@ -187,7 +187,7 @@ typedef enum
 /**
   * @brief  __NOINLINE definition
   */
-#if defined ( __CC_ARM   ) || defined   (  __GNUC__  )
+#if defined ( __CC_ARM   ) || defined   (  __GNUC__  ) || defined ( __clang__ )
 /* ARM & GNUCompiler
    ----------------
 */

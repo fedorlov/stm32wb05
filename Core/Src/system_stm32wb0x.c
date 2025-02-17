@@ -161,7 +161,7 @@
 #else
 #if defined ( __ARMCC_VERSION )
   __attribute__((section(".bss" ".ram_vr")))
-#elif defined (  __GNUC__  )
+#elif defined (  __GNUC__  ) || defined ( __clang__ )
   __attribute__((section(".ram_vr")))
 #endif
   RAM_VR_TypeDef RAM_VR __attribute__((used));
@@ -174,8 +174,6 @@
   * @{
   */
 
-void CPUcontextRestore(void);
-
 /**
   * @}
   */
@@ -183,7 +181,7 @@ void CPUcontextRestore(void);
 /** @addtogroup STM32WB0x_System_Private_Functions
   * @{
   */
-
+extern void CPUcontextRestore(void);
 /**
   * @brief  Setup the microcontroller system.
   * @param  None
@@ -353,16 +351,6 @@ void SystemCoreClockUpdate(void)
   {
     SystemCoreClock = HSI_VALUE >> divPrescaler;
   }  
-}
-
-/**
-  * @brief  Restores the saved CPU state before to enter in power save 
-  *         by popping it from the stack 
-  * @param  None
-  * @retval None
-  */
-__WEAK void CPUcontextRestore(void)
-{
 }
 
 /**

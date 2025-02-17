@@ -1746,12 +1746,12 @@ uint8_t HAL_RADIO_ReceivePacketWithAck(uint8_t channel, uint32_t wakeup_time, ui
 
 #endif /* USE_RADIO_PROPRIETARY_DRIVER */
 
-__weak void HAL_RADIO_TxRxCallback(uint32_t flags)
+__weak void _HAL_RADIO_TxRxCallback(uint32_t flags)
 {
 }
 
 
-__weak void HAL_RADIO_TxRxSeqCallback(void)
+__weak void _HAL_RADIO_TxRxSeqCallback(void)
 {
 }
 

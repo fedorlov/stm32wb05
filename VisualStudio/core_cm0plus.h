@@ -12,6 +12,10 @@
 
 #define __WEAK
 
+#define __USED
+
+#define __PACKED_STRUCT struct
+
 #define __STATIC_INLINE static inline
 
 #define __disable_irq()
@@ -25,6 +29,8 @@
 #define __asm(x)
 
 #define __attribute__(x)
+
+static inline uint32_t __CLZ(uint32_t a) { unsigned long z = 0; if(_BitScanReverse(&z, a)) return 31 - z; else return 32; }
 
 static inline void __NOP(void) {}
 

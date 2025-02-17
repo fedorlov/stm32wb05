@@ -1765,12 +1765,12 @@ static uint8_t TIMER_GetRadioTimerValue(uint32_t *time)
   }
 }
 
-__weak void HAL_RADIO_TIMER_CpuWakeUpCallback(void)
+__weak void _HAL_RADIO_TIMER_CpuWakeUpCallback(void)
 {
 }
 
 
-__weak void HAL_RADIO_TIMER_TxRxWakeUpCallback(void)
+__weak void _HAL_RADIO_TIMER_TxRxWakeUpCallback(void)
 {
 }
 

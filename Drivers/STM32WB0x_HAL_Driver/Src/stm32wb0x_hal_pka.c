@@ -542,7 +542,7 @@ HAL_StatusTypeDef HAL_PKA_DeInit(PKA_HandleTypeDef *hpka)
   * @param  hpka PKA handle
   * @retval None
   */
-__weak void HAL_PKA_MspInit(PKA_HandleTypeDef *hpka)
+__weak void _HAL_PKA_MspInit(PKA_HandleTypeDef *hpka)
 {
   /* Prevent unused argument(s) compilation warning */
   UNUSED(hpka);
@@ -557,7 +557,7 @@ __weak void HAL_PKA_MspInit(PKA_HandleTypeDef *hpka)
   * @param  hpka PKA handle
   * @retval None
   */
-__weak void HAL_PKA_MspDeInit(PKA_HandleTypeDef *hpka)
+__weak void _HAL_PKA_MspDeInit(PKA_HandleTypeDef *hpka)
 {
   /* Prevent unused argument(s) compilation warning */
   UNUSED(hpka);
@@ -1842,7 +1842,7 @@ void HAL_PKA_IRQHandler(PKA_HandleTypeDef *hpka)
   * @param  hpka PKA handle
   * @retval None
   */
-__weak void HAL_PKA_OperationCpltCallback(PKA_HandleTypeDef *hpka)
+__weak void _HAL_PKA_OperationCpltCallback(PKA_HandleTypeDef *hpka)
 {
   /* Prevent unused argument(s) compilation warning */
   UNUSED(hpka);
@@ -1857,7 +1857,7 @@ __weak void HAL_PKA_OperationCpltCallback(PKA_HandleTypeDef *hpka)
   * @param  hpka PKA handle
   * @retval None
   */
-__weak void HAL_PKA_ErrorCallback(PKA_HandleTypeDef *hpka)
+__weak void _HAL_PKA_ErrorCallback(PKA_HandleTypeDef *hpka)
 {
   /* Prevent unused argument(s) compilation warning */
   UNUSED(hpka);
