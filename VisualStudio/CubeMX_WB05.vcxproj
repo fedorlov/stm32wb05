@@ -154,10 +154,12 @@
     <ClInclude Include="..\Core\Inc\app_common.h" />
     <ClInclude Include="..\Core\Inc\app_conf.h" />
     <ClInclude Include="..\Core\Inc\asm.h" />
+    <ClInclude Include="..\Core\Inc\conversion.h" />
     <ClInclude Include="..\Core\Inc\main.h" />
     <ClInclude Include="..\Core\Inc\stm32wb0x_hal_conf.h" />
     <ClInclude Include="..\Core\Inc\stm32wb0x_it.h" />
     <ClInclude Include="..\Core\Inc\stm32wb0x_nucleo_conf.h" />
+    <ClInclude Include="..\Core\Inc\system.h" />
     <ClInclude Include="..\Core\Inc\utilities_conf.h" />
     <ClInclude Include="..\Drivers\STM32WB0x-nucleo\stm32wb0x_nucleo.h" />
     <ClInclude Include="..\Drivers\STM32WB0x-nucleo\stm32wb0x_nucleo_errno.h" />
@@ -280,9 +282,11 @@
     <ClCompile Include="..\BLE\Modules\RTDebug\RTDebug.c" />
     <ClCompile Include="..\BLE\Modules\stm_list.c" />
     <ClCompile Include="..\BLE\Startup\device_context_switch.c" />
+    <ClCompile Include="..\Core\Src\conversion.c" />
     <ClCompile Include="..\Core\Src\main.c" />
     <ClCompile Include="..\Core\Src\stm32wb0x_hal_msp.c" />
     <ClCompile Include="..\Core\Src\stm32wb0x_it.c" />
+    <ClCompile Include="..\Core\Src\system.c" />
     <ClCompile Include="..\Core\Src\system_stm32wb0x.c" />
     <ClCompile Include="..\Drivers\STM32WB0x-nucleo\stm32wb0x_nucleo.c" />
     <ClCompile Include="..\Drivers\STM32WB0x_HAL_Driver\Src\stm32wb0x_hal.c" />

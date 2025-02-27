@@ -1,24 +1,3 @@
-/* USER CODE BEGIN Header */
-/**
-  ******************************************************************************
-  * @file           : main.h
-  * @brief          : Header for main.c file.
-  *                   This file contains the common defines of the application.
-  ******************************************************************************
-  * @attention
-  *
-  * Copyright (c) 2025 STMicroelectronics.
-  * All rights reserved.
-  *
-  * This software is licensed under terms that can be found in the LICENSE file
-  * in the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
-  *
-  ******************************************************************************
-  */
-/* USER CODE END Header */
-
-/* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __MAIN_H
 #define __MAIN_H
 
@@ -32,34 +11,34 @@ extern "C" {
 #include "app_common.h"
 #include "app_debug.h"
 
-/* Private includes ----------------------------------------------------------*/
-/* USER CODE BEGIN Includes */
 #include "stm32wb0x_nucleo.h"
-/* USER CODE END Includes */
 
-/* Exported types ------------------------------------------------------------*/
-/* USER CODE BEGIN ET */
-
-/* USER CODE END ET */
-
-/* Exported constants --------------------------------------------------------*/
-/* USER CODE BEGIN EC */
-
-/* USER CODE END EC */
-
-/* Exported macro ------------------------------------------------------------*/
-/* USER CODE BEGIN EM */
-
-/* USER CODE END EM */
-
-/* Exported functions prototypes ---------------------------------------------*/
 void Error_Handler(void);
+	
+extern volatile unsigned long SystickHigh;
+	
+static inline unsigned long get_global_timer(void)
+{
+	unsigned long hi;
+	unsigned long lo;
+	
+	do
+	{
+		hi = SystickHigh;
+		lo = SysTick->VAL;
+	}while(hi != SystickHigh);
+	
+	return hi - lo;
+}
 
-/* USER CODE BEGIN EFP */
+// дл€ переменных, которые измен€ютс€ в прерывани€х важно чтобы значение переменной
+// попадало в регистр до чтени€ таймера - это реализовано с помощью global_timer_delta
+static inline unsigned long global_timer_delta(volatile unsigned long* x) { return get_global_timer() - *x; }
 
-/* USER CODE END EFP */
+#define GLOBAL_TIMER         (get_global_timer())
+#define GLOBAL_DELTA_TIME(x) (global_timer_delta(&(x)))
 
-/* Private defines -----------------------------------------------------------*/
+
 #define LD1_Pin       GPIO_PIN_1 // Blue
 #define LD1_GPIO_Port GPIOB
 #define LD2_Pin       GPIO_PIN_4 // Green
@@ -73,9 +52,6 @@ void Error_Handler(void);
 #define BTN2_GPIO_Port GPIOB
 #define BTN3_Pin       GPIO_PIN_14
 #define BTN3_GPIO_Port GPIOB
-/* USER CODE BEGIN Private defines */
-
-/* USER CODE END Private defines */
 
 #ifdef __cplusplus
 }

@@ -500,6 +500,12 @@
     <ClInclude Include="..\System\Interfaces\usart_if.h">
       <Filter>System\Interfaces</Filter>
     </ClInclude>
+    <ClInclude Include="..\Core\Inc\conversion.h">
+      <Filter>Core\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Core\Inc\system.h">
+      <Filter>Core\Inc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Core\Src\main.c">
@@ -777,6 +783,12 @@
     </ClCompile>
     <ClCompile Include="..\System\Interfaces\usart_if.c">
       <Filter>System\Interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Core\Src\conversion.c">
+      <Filter>Core\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Core\Src\system.c">
+      <Filter>Core\Src</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
