@@ -67,7 +67,7 @@ EXPORT_FUNC(CPUcontextSave)
 
                 ENDFUNC
 
-EXPORT_FUNC(CPUcontextRestore)
+EXPORT_FUNC(_CPUcontextRestore)
                 /* Even if we fall through the WFI instruction, we will immediately
                  * execute a context restore and end up where we left off with no
                  * ill effects.  Normally at this point the core will either be

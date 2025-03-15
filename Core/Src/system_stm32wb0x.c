@@ -181,7 +181,7 @@
 /** @addtogroup STM32WB0x_System_Private_Functions
   * @{
   */
-extern void CPUcontextRestore(void);
+  void CPUcontextRestore(void) { }
 /**
   * @brief  Setup the microcontroller system.
   * @param  None

@@ -38,20 +38,49 @@ static inline unsigned long global_timer_delta(volatile unsigned long* x) { retu
 #define GLOBAL_TIMER         (get_global_timer())
 #define GLOBAL_DELTA_TIME(x) (global_timer_delta(&(x)))
 
+//#define MOTHERBOARD_STM
 
-#define LD1_Pin       GPIO_PIN_1 // Blue
-#define LD1_GPIO_Port GPIOB
-#define LD2_Pin       GPIO_PIN_4 // Green
-#define LD2_GPIO_Port GPIOB
-#define LD3_Pin       GPIO_PIN_2 // Red
-#define LD3_GPIO_Port GPIOB
+#ifdef MOTHERBOARD_STM
 
-#define BTN1_Pin       GPIO_PIN_0
-#define BTN1_GPIO_Port GPIOA
-#define BTN2_Pin       GPIO_PIN_5
-#define BTN2_GPIO_Port GPIOB
-#define BTN3_Pin       GPIO_PIN_14
-#define BTN3_GPIO_Port GPIOB
+	#define LD1_Pin       GPIO_PIN_1 // Blue
+	#define LD1_GPIO_Port GPIOB
+	#define LD2_Pin       GPIO_PIN_4 // Green
+	#define LD2_GPIO_Port GPIOB
+	#define LD3_Pin       GPIO_PIN_2 // Red
+	#define LD3_GPIO_Port GPIOB
+
+	#define BTN1_Pin       GPIO_PIN_0
+	#define BTN1_GPIO_Port GPIOA
+	#define BTN2_Pin       GPIO_PIN_5
+	#define BTN2_GPIO_Port GPIOB
+	#define BTN3_Pin       GPIO_PIN_14
+	#define BTN3_GPIO_Port GPIOB
+
+	// When PB14 is used as input for User Button 3 (USER3), 
+	// GPIO MUST be configured by software with a pull-up
+	// to avoid destructive damages.
+
+#else
+
+	#define LD1_Pin       GPIO_PIN_15 // Red
+	#define LD1_GPIO_Port GPIOB
+	#define LD2_Pin       GPIO_PIN_4  // Yellow
+	#define LD2_GPIO_Port GPIOB
+	#define LD3_Pin       GPIO_PIN_2  // Green
+	#define LD3_GPIO_Port GPIOB
+
+	#define BTN1_Pin       GPIO_PIN_0
+	#define BTN1_GPIO_Port GPIOA
+	#define BTN2_Pin       GPIO_PIN_1
+	#define BTN2_GPIO_Port GPIOA
+	#define BTN3_Pin       GPIO_PIN_14
+	#define BTN3_GPIO_Port GPIOB	
+
+	// When PB14 is used as input for User Button 3 (USER3), 
+	// GPIO MUST be configured by software with a pull-up
+	// to avoid destructive damages.
+
+#endif
 
 #ifdef __cplusplus
 }

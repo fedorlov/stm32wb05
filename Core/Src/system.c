@@ -2,8 +2,6 @@
 
 PKA_HandleTypeDef hpka;
 
-RTC_HandleTypeDef hrtc;
-
 volatile unsigned long SystickHigh;
 
 #ifdef  USE_FULL_ASSERT
@@ -156,8 +154,10 @@ static void MX_PKA_Init(void)
   * @param None
   * @retval None
   */
-static void MX_RTC_Init(void)
+void MX_RTC_Init(void)
 {
+	RTC_HandleTypeDef hrtc = { 0 };
+
 	hrtc.Instance = RTC;
 	hrtc.Init.HourFormat = RTC_HOURFORMAT_24;
 	hrtc.Init.AsynchPrediv = 0x7F;
@@ -212,7 +212,7 @@ static void MX_GPIO_Init(void)
 	GPIO_InitStruct.Pull = GPIO_PULLUP;
 	HAL_GPIO_Init(BTN1_GPIO_Port, &GPIO_InitStruct);
 
-	RT_DEBUG_GPIO_Init();
+	//RT_DEBUG_GPIO_Init();
 
 	//  /*Configure GPIO pin : PA2 */
 	//  GPIO_InitStruct.Pin = GPIO_PIN_2 | GPIO_PIN_3;
@@ -229,6 +229,27 @@ static void MX_GPIO_Init(void)
 	  //GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
 	  //GPIO_InitStruct.Alternate = GPIO_AF1_LCO;
 	  //HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+}
+
+void MX_GPIO_Deinit(void)
+{
+	GPIO_InitTypeDef GPIO_InitStruct = { 0 };
+
+	HAL_PWR_EnableWakeUpPin(PWR_WAKEUP_PA0, PWR_WUP_FALLEDG);
+
+	GPIO_InitStruct.Pin = 0xFFFF & (~GPIO_PIN_0);
+	GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
+	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+	GPIO_InitStruct.Pin = 0xFFFF;
+	HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+	HAL_PWREx_EnableGPIORetention();
+
+	__HAL_RCC_GPIOB_CLK_DISABLE();
+	__HAL_RCC_GPIOA_CLK_DISABLE();
 }
 
 void Error_Handler(void)
@@ -261,8 +282,8 @@ void PepiphInit(void)
 	PeriphCommonClock_Config();
 
 	MX_GPIO_Init();
-	//MX_RADIO_Init();	
-	//MX_RADIO_TIMER_Init();	
+	MX_RADIO_Init();	
+	MX_RADIO_TIMER_Init();	
 	//MX_PKA_Init();
 	//MX_RTC_Init();
 }
@@ -273,3 +294,4 @@ void SysTick_Handler(void)
 
 	SystickHigh += SysTick->LOAD + 1;
 }
+
