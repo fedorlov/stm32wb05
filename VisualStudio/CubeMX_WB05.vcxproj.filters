@@ -706,18 +706,6 @@
     <ClCompile Include="..\System\Config\Debug_GPIO\app_debug.c">
       <Filter>System\Config\Debug_GPIO</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\Users\orlov\STM32Cube\Repository\STM32Cube_FW_WB0_V1.1.0\Projects\NUCLEO-WB05KZ\Applications\BLE\BLE_HealthThermometer\Core\Src\app_entry.c">
-      <Filter>Core\Src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Users\orlov\STM32Cube\Repository\STM32Cube_FW_WB0_V1.1.0\Projects\NUCLEO-WB05KZ\Applications\BLE\BLE_HealthThermometer\STM32_BLE\Target\bleplat_cntr.c">
-      <Filter>STM32_BLE\Target</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Users\orlov\STM32Cube\Repository\STM32Cube_FW_WB0_V1.1.0\Projects\NUCLEO-WB05KZ\Applications\BLE\BLE_HealthThermometer\STM32_BLE\Target\blenvm.c">
-      <Filter>STM32_BLE\Target</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Users\orlov\STM32Cube\Repository\STM32Cube_FW_WB0_V1.1.0\Projects\NUCLEO-WB05KZ\Applications\BLE\BLE_HealthThermometer\STM32_BLE\Target\bleplat.c">
-      <Filter>STM32_BLE\Target</Filter>
-    </ClCompile>
     <ClCompile Include="..\STM32_BLE\Stack\ble_stack_user_cfg.c">
       <Filter>STM32_BLE\Stack</Filter>
     </ClCompile>
@@ -789,6 +777,18 @@
     </ClCompile>
     <ClCompile Include="..\Core\Src\system.c">
       <Filter>Core\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Core\Src\app_entry.c">
+      <Filter>Core\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\STM32_BLE\Target\blenvm.c">
+      <Filter>STM32_BLE\Target</Filter>
+    </ClCompile>
+    <ClCompile Include="..\STM32_BLE\Target\bleplat.c">
+      <Filter>STM32_BLE\Target</Filter>
+    </ClCompile>
+    <ClCompile Include="..\STM32_BLE\Target\bleplat_cntr.c">
+      <Filter>STM32_BLE\Target</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -99,12 +99,12 @@ void HAL_ADC_MspInit(ADC_HandleTypeDef* hadc)
     PB3     ------> ADC1_VINP0
     PB5     ------> ADC1_VINP3
     */
-    GPIO_InitStruct.Pin = GPIO_PIN_3|GPIO_PIN_5;
-    GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+    //GPIO_InitStruct.Pin = GPIO_PIN_3|GPIO_PIN_5;
+    //GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
+    //GPIO_InitStruct.Pull = GPIO_NOPULL;
+    //HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-    LL_PWR_SetNoPullB(LL_PWR_GPIO_BIT_3|LL_PWR_GPIO_BIT_5);
+    //LL_PWR_SetNoPullB(LL_PWR_GPIO_BIT_3|LL_PWR_GPIO_BIT_5);
 
   /* USER CODE BEGIN ADC1_MspInit 1 */
 
@@ -135,7 +135,7 @@ void HAL_ADC_MspDeInit(ADC_HandleTypeDef* hadc)
     PB3     ------> ADC1_VINP0
     PB5     ------> ADC1_VINP3
     */
-    HAL_GPIO_DeInit(GPIOB, GPIO_PIN_3|GPIO_PIN_5);
+    //HAL_GPIO_DeInit(GPIOB, GPIO_PIN_3|GPIO_PIN_5);
 
   /* USER CODE BEGIN ADC1_MspDeInit 1 */
 
@@ -350,27 +350,27 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
         PB0     ------> USART1_RX
         PA1     ------> USART1_TX
         */
-        GPIO_InitStruct.Pin = GPIO_PIN_0;
-        GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-        GPIO_InitStruct.Pull = GPIO_NOPULL;
-        GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-        GPIO_InitStruct.Alternate = GPIO_AF0_USART1;
-        HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+        //GPIO_InitStruct.Pin = GPIO_PIN_0;
+        //GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+        //GPIO_InitStruct.Pull = GPIO_NOPULL;
+        //GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+        //GPIO_InitStruct.Alternate = GPIO_AF0_USART1;
+        //HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-        GPIO_InitStruct.Pin = GPIO_PIN_1;
-        GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-        GPIO_InitStruct.Pull = GPIO_NOPULL;
-        GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-        GPIO_InitStruct.Alternate = GPIO_AF2_USART1;
-        HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+        //GPIO_InitStruct.Pin = GPIO_PIN_1;
+        //GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+        //GPIO_InitStruct.Pull = GPIO_NOPULL;
+        //GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+        //GPIO_InitStruct.Alternate = GPIO_AF2_USART1;
+        //HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-        LL_PWR_SetNoPullB(LL_PWR_GPIO_BIT_0);
+        //LL_PWR_SetNoPullB(LL_PWR_GPIO_BIT_0);
 
-        LL_PWR_SetNoPullA(LL_PWR_GPIO_BIT_1);
+        //LL_PWR_SetNoPullA(LL_PWR_GPIO_BIT_1);
 
         /* USART1 interrupt Init */
-        HAL_NVIC_SetPriority(USART1_IRQn, 1, 0);
-        HAL_NVIC_EnableIRQ(USART1_IRQn);
+        //HAL_NVIC_SetPriority(USART1_IRQn, 1, 0);
+        //HAL_NVIC_EnableIRQ(USART1_IRQn);
         /* USER CODE BEGIN USART1_MspInit 1 */
 
         /* USER CODE END USART1_MspInit 1 */

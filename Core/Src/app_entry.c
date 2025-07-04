@@ -268,6 +268,13 @@ static void Button_Init( void )
   BSP_PB_Init(B3, BUTTON_MODE_EXTI);
   
 #if (CFG_LPM_SUPPORTED == 1)
+
+#ifdef NUCLEO_WB05KZ_BLUETOOTH_SENSOR
+  HAL_PWR_EnableWakeUpPin(B1_PWR_WAKEUP, PWR_WUP_FALLEDG);
+  HAL_PWR_EnableWakeUpPin(B2_PWR_WAKEUP, PWR_WUP_FALLEDG);
+  HAL_PWR_EnableWakeUpPin(B3_PWR_WAKEUP, PWR_WUP_FALLEDG);
+#else
+
   HAL_PWR_EnableWakeUpPin(PWR_WAKEUP_PA0, PWR_WUP_FALLEDG);
   HAL_PWR_EnableWakeUpPin(PWR_WAKEUP_PB5, PWR_WUP_FALLEDG);
 #if defined(STM32WB06) || defined(STM32WB07)
@@ -275,6 +282,9 @@ static void Button_Init( void )
 #else
   HAL_PWR_EnableWakeUpPin(PWR_WAKEUP_PB14, PWR_WUP_FALLEDG);
 #endif  
+
+#endif
+
 #endif  
   
   /* Register tasks associated to buttons */
@@ -508,7 +518,13 @@ void BSP_PB_Callback(Button_TypeDef Button)
 #if (CFG_LPM_SUPPORTED == 1)
 void HAL_PWR_WKUPx_Callback(uint32_t wakeupIOs)
 {
-  if (wakeupIOs & PWR_WAKEUP_PA0)
+#ifdef NUCLEO_WB05KZ_BLUETOOTH_SENSOR
+	if(wakeupIOs & B1_PWR_WAKEUP) BSP_PB_Callback(B1);
+	if(wakeupIOs & B2_PWR_WAKEUP) BSP_PB_Callback(B2);
+	if(wakeupIOs & B3_PWR_WAKEUP) BSP_PB_Callback(B3);
+#else 
+
+  if (wakeupIOs & B1_PWR_WAKEUP)
   {
     BSP_PB_Callback(B1);
   }
@@ -527,6 +543,8 @@ void HAL_PWR_WKUPx_Callback(uint32_t wakeupIOs)
   {
     BSP_PB_Callback(B3);
   }
+#endif
+
 #endif
 
 }

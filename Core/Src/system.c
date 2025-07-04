@@ -3,6 +3,7 @@
 PKA_HandleTypeDef hpka;
 
 volatile unsigned long SystickHigh;
+unsigned long TimClock;
 
 #ifdef  USE_FULL_ASSERT
 void assert_failed(uint8_t* file, uint32_t line)
@@ -14,30 +15,6 @@ void assert_failed(uint8_t* file, uint32_t line)
 void __ARM_argv_veneer(void)
 {
 
-}
-
-void SystemClock_Config(void)
-{
-	RCC_OscInitTypeDef RCC_OscInitStruct = { 0 };
-	RCC_ClkInitTypeDef RCC_ClkInitStruct = { 0 };
-
-	RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_LSE | RCC_OSCILLATORTYPE_HSE;
-	RCC_OscInitStruct.LSEState = RCC_LSE_ON;
-	RCC_OscInitStruct.HSEState = RCC_HSE_ON;
-	if(HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
-	{
-		Error_Handler();
-	}
-
-	/** Configure the SYSCLKSource and SYSCLKDivider
-	*/
-	RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_RC64MPLL;
-	RCC_ClkInitStruct.SYSCLKDivider = RCC_RC64MPLL_DIV2;
-
-	if(HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_WAIT_STATES_0) != HAL_OK)
-	{
-		Error_Handler();
-	}
 }
 
 /**
@@ -154,7 +131,7 @@ static void MX_PKA_Init(void)
   * @param None
   * @retval None
   */
-void MX_RTC_Init(void)
+void MX_RTC_Init(int sleeptime)
 {
 	RTC_HandleTypeDef hrtc = { 0 };
 
@@ -171,7 +148,10 @@ void MX_RTC_Init(void)
 	/* USER CODE BEGIN RTC_Init 2 */
 	/** Enable the WakeUp
 	*/
-	if(HAL_RTCEx_SetWakeUpTimer(&hrtc, 8192, RTC_WAKEUPCLOCK_RTCCLK_DIV16) != HAL_OK)
+
+	sleeptime = sleeptime * 32768 / 16;
+
+	if(HAL_RTCEx_SetWakeUpTimer(&hrtc, sleeptime, RTC_WAKEUPCLOCK_RTCCLK_DIV16) != HAL_OK)
 	{
 		Error_Handler();
 	}
@@ -197,22 +177,27 @@ static void MX_GPIO_Init(void)
 	__HAL_RCC_GPIOA_CLK_ENABLE();
 
 	/*Configure GPIO pin Output Level */
-	HAL_GPIO_WritePin(GPIOB, LD3_Pin | LD1_Pin | LD2_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(GPIOB, LD3_PIN | LD1_PIN | LD2_PIN, GPIO_PIN_SET);
 
 	/*Configure GPIO pins : LD3_Pin LD1_Pin LD2_Pin */
-	GPIO_InitStruct.Pin = LD3_Pin | LD1_Pin | LD2_Pin;
+	GPIO_InitStruct.Pin = LD3_PIN | LD1_PIN | LD2_PIN;
 	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
 	GPIO_InitStruct.Pull = GPIO_PULLUP;
 	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
 	HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
+	// Подтяжка EN для преобразователя питания
+	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_SET);
+	GPIO_InitStruct.Pin = GPIO_PIN_11;
+	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+	LL_PWR_SetNoPullA(GPIO_PIN_11);
+
 	/*Configure GPIO pin : BTN1_Pin */
-	GPIO_InitStruct.Pin = BTN1_Pin;
+	GPIO_InitStruct.Pin = B1_PIN;
 	GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
 	GPIO_InitStruct.Pull = GPIO_PULLUP;
-	HAL_GPIO_Init(BTN1_GPIO_Port, &GPIO_InitStruct);
-
-	//RT_DEBUG_GPIO_Init();
+	HAL_GPIO_Init(B1_GPIO_PORT, &GPIO_InitStruct);
 
 	//  /*Configure GPIO pin : PA2 */
 	//  GPIO_InitStruct.Pin = GPIO_PIN_2 | GPIO_PIN_3;
@@ -237,7 +222,7 @@ void MX_GPIO_Deinit(void)
 
 	HAL_PWR_EnableWakeUpPin(PWR_WAKEUP_PA0, PWR_WUP_FALLEDG);
 
-	GPIO_InitStruct.Pin = 0xFFFF & (~GPIO_PIN_0);
+	GPIO_InitStruct.Pin = 0xFFFF & (~(GPIO_PIN_0 | GPIO_PIN_11));
 	GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
 	GPIO_InitStruct.Pull = GPIO_NOPULL;
 	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -262,30 +247,118 @@ void Error_Handler(void)
 
 	while(1)
 	{
-		HAL_GPIO_WritePin(GPIOB, LD3_Pin | LD1_Pin | LD2_Pin, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(GPIOB, LD3_PIN | LD1_PIN | LD2_PIN, GPIO_PIN_RESET);
 
 		for(int i = 0; i < 10000; i++) {}
 
-		HAL_GPIO_WritePin(GPIOB, LD3_Pin | LD1_Pin | LD2_Pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(GPIOB, LD3_PIN | LD1_PIN | LD2_PIN, GPIO_PIN_SET);
 
 		for(int i = 0; i < 500000; i++) {}
 	}
 	/* USER CODE END Error_Handler_Debug */
 }
 
+void SystemClock_Config(uint32_t SYSCLKSource, uint32_t SYSCLKDivider)
+{
+	RCC_OscInitTypeDef RCC_OscInitStruct = { 0 };
+	RCC_ClkInitTypeDef RCC_ClkInitStruct = { 0 };
+
+	RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_LSE | RCC_OSCILLATORTYPE_HSE;
+	RCC_OscInitStruct.LSEState = RCC_LSE_ON;
+	RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+	if(HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
+	{
+		Error_Handler();
+	}
+
+	/** Configure the SYSCLKSource and SYSCLKDivider
+	*/
+	RCC_ClkInitStruct.SYSCLKSource = SYSCLKSource;   //RCC_SYSCLKSOURCE_RC64MPLL;
+	RCC_ClkInitStruct.SYSCLKDivider = SYSCLKDivider; //RCC_RC64MPLL_DIV2;
+	
+	if(SYSCLKSource == RCC_SYSCLKSOURCE_RC64MPLL)
+	{
+		LL_RCC_HSI_Enable();
+		__HAL_RCC_RC64MPLL_ENABLE();
+	}
+
+	if(HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_WAIT_STATES_0) != HAL_OK)
+	{
+		Error_Handler();
+	}
+
+	if (SYSCLKSource == RCC_SYSCLKSOURCE_DIRECT_HSE)
+	{
+		switch(SYSCLKDivider)
+		{
+			case RCC_DIRECT_HSE_DIV1:  TimClock = SystemCoreClock * 1; break;
+			case RCC_DIRECT_HSE_DIV2:  TimClock = SystemCoreClock * 2; break;
+			case RCC_DIRECT_HSE_DIV4:  TimClock = SystemCoreClock * 4; break;
+			case RCC_DIRECT_HSE_DIV8:  TimClock = SystemCoreClock * 8; break;
+			case RCC_DIRECT_HSE_DIV16: TimClock = SystemCoreClock * 16; break;
+			case RCC_DIRECT_HSE_DIV32: TimClock = SystemCoreClock * 32; break;
+
+			default: Error_Handler();
+		}
+	}
+	else if (SYSCLKSource == RCC_SYSCLKSOURCE_RC64MPLL)
+	{
+		switch(SYSCLKDivider)
+		{
+			case RCC_RC64MPLL_DIV1:  TimClock = SystemCoreClock * 1; break;
+			case RCC_RC64MPLL_DIV2:  TimClock = SystemCoreClock * 2; break;
+			case RCC_RC64MPLL_DIV4:  TimClock = SystemCoreClock * 4; break;
+			case RCC_RC64MPLL_DIV8:  TimClock = SystemCoreClock * 8; break;
+			case RCC_RC64MPLL_DIV16: TimClock = SystemCoreClock * 16; break;
+			case RCC_RC64MPLL_DIV32: TimClock = SystemCoreClock * 32; break;
+			case RCC_RC64MPLL_DIV64: TimClock = SystemCoreClock * 32; break;
+
+			default: Error_Handler();
+		}
+	}
+	else
+	{
+		Error_Handler();
+	}
+}
+
+void SystemEnterStopMode(int sleeptime)
+{
+	MX_GPIO_Deinit();
+
+	SystemClock_Config(RCC_SYSCLKSOURCE_RC64MPLL, RCC_RC64MPLL_DIV2);
+
+	MX_RADIO_Init();
+	MX_RADIO_TIMER_Init();
+
+	MX_RTC_Init(sleeptime);
+
+	HAL_PWR_EnterDEEPSTOPMode();
+}
+
 void PepiphInit(void)
 {
 	HAL_Init();
-
-	SystemClock_Config();
+	
+#ifdef DISABLE_BLE
+	SystemClock_Config(RCC_SYSCLKSOURCE_DIRECT_HSE, RCC_DIRECT_HSE_DIV2);
+#else
+	SystemClock_Config(RCC_SYSCLKSOURCE_RC64MPLL, RCC_RC64MPLL_DIV1);
+#endif
 
 	PeriphCommonClock_Config();
 
 	MX_GPIO_Init();
-	MX_RADIO_Init();	
-	MX_RADIO_TIMER_Init();	
-	//MX_PKA_Init();
-	//MX_RTC_Init();
+
+#ifndef DISABLE_BLE
+	RT_DEBUG_GPIO_Init();
+
+	MX_RADIO_Init();
+
+	MX_RADIO_TIMER_Init();
+
+	MX_PKA_Init();
+#endif
 }
 
 void SysTick_Handler(void)

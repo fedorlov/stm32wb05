@@ -29,7 +29,14 @@ extern "C" {
 /* Includes ------------------------------------------------------------------*/
 #include "stm32wb0x_hal.h"
 
-#define NUCLEO_WB05KZ
+//#define NUCLEO_WB05KZ
+
+#include "main.h"
+
+#define STM32WB0X_NUCLEO_BSP_BOARD_NAME  "NUCLEO_WB05KZ"
+#define STM32WB0X_NUCLEO_BSP_BOARD_ID    "NUCLEO$WB05KZ"
+
+
 
 /* Usage of nucleo board */
 #define USE_NUCLEO_64      1U

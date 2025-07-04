@@ -262,10 +262,6 @@
     <ClInclude Include="VirtualMain.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\Users\orlov\STM32Cube\Repository\STM32Cube_FW_WB0_V1.1.0\Projects\NUCLEO-WB05KZ\Applications\BLE\BLE_HealthThermometer\Core\Src\app_entry.c" />
-    <ClCompile Include="..\..\..\..\Users\orlov\STM32Cube\Repository\STM32Cube_FW_WB0_V1.1.0\Projects\NUCLEO-WB05KZ\Applications\BLE\BLE_HealthThermometer\STM32_BLE\Target\blenvm.c" />
-    <ClCompile Include="..\..\..\..\Users\orlov\STM32Cube\Repository\STM32Cube_FW_WB0_V1.1.0\Projects\NUCLEO-WB05KZ\Applications\BLE\BLE_HealthThermometer\STM32_BLE\Target\bleplat.c" />
-    <ClCompile Include="..\..\..\..\Users\orlov\STM32Cube\Repository\STM32Cube_FW_WB0_V1.1.0\Projects\NUCLEO-WB05KZ\Applications\BLE\BLE_HealthThermometer\STM32_BLE\Target\bleplat_cntr.c" />
     <ClCompile Include="..\BLE\Interfaces\cryptolib_hw_aes.c" />
     <ClCompile Include="..\BLE\Interfaces\hw_aes.c" />
     <ClCompile Include="..\BLE\Interfaces\hw_pka.c" />
@@ -282,6 +278,7 @@
     <ClCompile Include="..\BLE\Modules\RTDebug\RTDebug.c" />
     <ClCompile Include="..\BLE\Modules\stm_list.c" />
     <ClCompile Include="..\BLE\Startup\device_context_switch.c" />
+    <ClCompile Include="..\Core\Src\app_entry.c" />
     <ClCompile Include="..\Core\Src\conversion.c" />
     <ClCompile Include="..\Core\Src\main.c" />
     <ClCompile Include="..\Core\Src\stm32wb0x_hal_msp.c" />
@@ -348,6 +345,9 @@
     <ClCompile Include="..\STM32_BLE\App\hts_app.c" />
     <ClCompile Include="..\STM32_BLE\evt_handler\src\ble_evt.c" />
     <ClCompile Include="..\STM32_BLE\Stack\ble_stack_user_cfg.c" />
+    <ClCompile Include="..\STM32_BLE\Target\blenvm.c" />
+    <ClCompile Include="..\STM32_BLE\Target\bleplat.c" />
+    <ClCompile Include="..\STM32_BLE\Target\bleplat_cntr.c" />
     <ClCompile Include="..\System\Config\Debug_GPIO\app_debug.c" />
     <ClCompile Include="..\System\Interfaces\usart_if.c" />
     <ClCompile Include="..\Utilites\stm32_adv_trace.c" />

@@ -197,6 +197,25 @@ void SystemInit(void)
   uint32_t lsiBw;
 #endif
   uint8_t i;
+
+  // как только хватает питания на включение - сразу включаем подтяжку EN преобразователя
+  GPIO_InitTypeDef GPIO_InitStruct;
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_SET);
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pin = GPIO_PIN_11;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+  LL_PWR_SetNoPullA(GPIO_PIN_11);
+
+  __HAL_RCC_RC64MPLL_PRESC_CONFIG(LL_RCC_RC64MPLL_DIV_64);
+
+  for(volatile int i = 0; i < 6; i++)
+  {
+	  __asm("NOP");
+  }
+
+  SystemCoreClock = 1000000;
 	  
   if(LL_RCC_IsActiveFlag_PORRST())
   {

@@ -104,7 +104,7 @@ uint8_t NVMDB_TimeCheck(int32_t time)
 {
   uint32_t current_time, next_radio_activity_time;
 
-  current_time = HAL_RADIO_TIMER_GetCurrentSysTime();
+  current_time = (uint32_t)HAL_RADIO_TIMER_GetCurrentSysTime();
 
   if(BLE_STACK_ReadNextRadioActivity(&next_radio_activity_time) == LL_IDLE)
     return TRUE;

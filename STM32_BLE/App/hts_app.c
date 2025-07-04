@@ -29,7 +29,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "conversion.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -485,7 +485,7 @@ void HTS_APP_Measurement(void)
   else
   {
     HTS_FirstMeasurementDone=1;
-    measurement = ((HTS_APP_Read_RTC_SSR_SS()) + 37);
+    measurement = (uint32_t)(conv.U * 100); // ((HTS_APP_Read_RTC_SSR_SS()) + 37);
   }
   HTS_APP_Context.TemperatureMeasurementChar.MeasurementValue = measurement;
   APP_DBG_MSG("HTS_APP_Measurement: %d \n", (int)measurement);

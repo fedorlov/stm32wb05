@@ -167,7 +167,7 @@ typedef struct
 #define LD1_PIN                                GPIO_PIN_0
 #endif
 
-
+#if defined(NUCLEO_WB09KE) || defined(NUCLEO_WB05KZ) || defined(NUCLEO_WB07CC)
 #define LD2_GPIO_PORT                          GPIOB
 #define LD2_GPIO_CLK_ENABLE()                  __HAL_RCC_GPIOB_CLK_ENABLE()
 #define LD2_PIN                                GPIO_PIN_4
@@ -175,6 +175,7 @@ typedef struct
 #define LD3_GPIO_PORT                          GPIOB
 #define LD3_GPIO_CLK_ENABLE()                  __HAL_RCC_GPIOB_CLK_ENABLE()
 #define LD3_PIN                                GPIO_PIN_2
+#endif
 
 
 /**
@@ -186,6 +187,7 @@ typedef struct
   */
 #define BUTTONn                            3U
 
+#if defined(NUCLEO_WB09KE) || defined(NUCLEO_WB05KZ) || defined(NUCLEO_WB07CC)
 #define B1_GPIO_PORT                       GPIOA
 #define B1_GPIO_CLK_ENABLE()               __HAL_RCC_GPIOA_CLK_ENABLE()
 #define B1_PIN                             GPIO_PIN_0
@@ -195,6 +197,7 @@ typedef struct
 #define B2_GPIO_CLK_ENABLE()               __HAL_RCC_GPIOB_CLK_ENABLE()
 #define B2_PIN                             GPIO_PIN_5
 #define B2_EXTI_IRQn                       GPIOB_IRQn
+#endif 
 
 #if defined(NUCLEO_WB09KE) || defined(NUCLEO_WB05KZ)
 

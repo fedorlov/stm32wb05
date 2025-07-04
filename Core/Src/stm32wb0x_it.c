@@ -224,12 +224,23 @@ void RADIO_TXRX_SEQ_IRQHandler(void)
 /* USER CODE BEGIN 1 */
 void GPIOA_IRQHandler(void)
 {
-	BSP_PB_IRQHandler(B1_GPIO_PORT, B1_PIN);
+    BSP_PB_IRQHandler(B1_GPIO_PORT, B1_PIN);
+
+#ifdef MOTHERBOARD_STM
+	
+#else
+    BSP_PB_IRQHandler(B2_GPIO_PORT, B2_PIN);
+#endif
 }
 
 void GPIOB_IRQHandler(void)
 {
-	BSP_PB_IRQHandler(B2_GPIO_PORT, B2_PIN);
+#ifdef MOTHERBOARD_STM
+    BSP_PB_IRQHandler(B2_GPIO_PORT, B2_PIN);
+#else
+
+#endif
+	
 	BSP_PB_IRQHandler(B3_GPIO_PORT, B3_PIN);
 }
 /* USER CODE END 1 */

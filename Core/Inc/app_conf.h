@@ -392,7 +392,7 @@ typedef enum
 /**
  * Enable or disable debug prints.
  */
-#define CFG_DEBUG_APP_TRACE             (1)
+#define CFG_DEBUG_APP_TRACE             (0)
 
 /**
  * Use or not advanced trace module. UART interrupts to be enabled.

@@ -5,6 +5,8 @@
 extern "C" {
 #endif
 
+//#define DISABLE_BLE
+
 /* Includes ------------------------------------------------------------------*/
 #include "stm32wb0x_hal.h"
 #include "app_entry.h"
@@ -40,21 +42,41 @@ static inline unsigned long global_timer_delta(volatile unsigned long* x) { retu
 
 //#define MOTHERBOARD_STM
 
+#define NUCLEO_WB05KZ_BLUETOOTH_SENSOR
+
 #ifdef MOTHERBOARD_STM
 
-	#define LD1_Pin       GPIO_PIN_1 // Blue
-	#define LD1_GPIO_Port GPIOB
-	#define LD2_Pin       GPIO_PIN_4 // Green
-	#define LD2_GPIO_Port GPIOB
-	#define LD3_Pin       GPIO_PIN_2 // Red
-	#define LD3_GPIO_Port GPIOB
+	// Blue
+	#define LD1_GPIO_PORT                          GPIOB
+	#define LD1_GPIO_CLK_ENABLE()                  __HAL_RCC_GPIOB_CLK_ENABLE()
+	#define LD1_PIN                                GPIO_PIN_1
 
-	#define BTN1_Pin       GPIO_PIN_0
-	#define BTN1_GPIO_Port GPIOA
-	#define BTN2_Pin       GPIO_PIN_5
-	#define BTN2_GPIO_Port GPIOB
-	#define BTN3_Pin       GPIO_PIN_14
-	#define BTN3_GPIO_Port GPIOB
+	// Green
+	#define LD2_GPIO_PORT                          GPIOB
+	#define LD2_GPIO_CLK_ENABLE()                  __HAL_RCC_GPIOB_CLK_ENABLE()
+	#define LD2_PIN                                GPIO_PIN_4
+
+	// Red
+	#define LD3_GPIO_PORT                          GPIOB
+	#define LD3_GPIO_CLK_ENABLE()                  __HAL_RCC_GPIOB_CLK_ENABLE()
+	#define LD3_PIN                                GPIO_PIN_2
+
+	#define B1_GPIO_PORT                       GPIOA
+	#define B1_GPIO_CLK_ENABLE()               __HAL_RCC_GPIOA_CLK_ENABLE()
+	#define B1_PIN                             GPIO_PIN_0
+	#define B1_EXTI_IRQn                       GPIOA_IRQn
+	#define B1_PWR_WAKEUP                      PWR_WAKEUP_PA0
+
+	#define B2_GPIO_PORT                       GPIOB
+	#define B2_GPIO_CLK_ENABLE()               __HAL_RCC_GPIOB_CLK_ENABLE()
+	#define B2_PIN                             GPIO_PIN_5
+	#define B2_EXTI_IRQn                       GPIOB_IRQn	
+	#define B2_PWR_WAKEUP                      PWR_WAKEUP_PB5
+
+	#define B3_GPIO_PORT                       GPIOB
+	#define B3_GPIO_CLK_ENABLE()               __HAL_RCC_GPIOB_CLK_ENABLE()
+	#define B3_PIN                             GPIO_PIN_14
+	#define B3_EXTI_IRQn                       GPIOB_IRQn
 
 	// When PB14 is used as input for User Button 3 (USER3), 
 	// GPIO MUST be configured by software with a pull-up
@@ -62,23 +84,76 @@ static inline unsigned long global_timer_delta(volatile unsigned long* x) { retu
 
 #else
 
-	#define LD1_Pin       GPIO_PIN_15 // Red
-	#define LD1_GPIO_Port GPIOB
-	#define LD2_Pin       GPIO_PIN_4  // Yellow
-	#define LD2_GPIO_Port GPIOB
-	#define LD3_Pin       GPIO_PIN_2  // Green
-	#define LD3_GPIO_Port GPIOB
+	// Red
+	#define LD1_GPIO_PORT                          GPIOB
+	#define LD1_GPIO_CLK_ENABLE()                  __HAL_RCC_GPIOB_CLK_ENABLE()
+	#define LD1_PIN                                GPIO_PIN_15
 
-	#define BTN1_Pin       GPIO_PIN_0
-	#define BTN1_GPIO_Port GPIOA
-	#define BTN2_Pin       GPIO_PIN_1
-	#define BTN2_GPIO_Port GPIOA
-	#define BTN3_Pin       GPIO_PIN_14
-	#define BTN3_GPIO_Port GPIOB	
+	// Yellow
+	#define LD2_GPIO_PORT                          GPIOB
+	#define LD2_GPIO_CLK_ENABLE()                  __HAL_RCC_GPIOB_CLK_ENABLE()
+	#define LD2_PIN                                GPIO_PIN_4
+
+	// Green
+	#define LD3_GPIO_PORT                          GPIOB
+	#define LD3_GPIO_CLK_ENABLE()                  __HAL_RCC_GPIOB_CLK_ENABLE()
+	#define LD3_PIN                                GPIO_PIN_2
+
+	#define B1_GPIO_PORT                       GPIOA
+	#define B1_GPIO_CLK_ENABLE()               __HAL_RCC_GPIOA_CLK_ENABLE()
+	#define B1_PIN                             GPIO_PIN_0
+	#define B1_EXTI_IRQn                       GPIOA_IRQn
+	#define B1_PWR_WAKEUP                      PWR_WAKEUP_PA0
+
+	#define B2_GPIO_PORT                       GPIOA
+	#define B2_GPIO_CLK_ENABLE()               __HAL_RCC_GPIOA_CLK_ENABLE()
+	#define B2_PIN                             GPIO_PIN_1
+	#define B2_EXTI_IRQn                       GPIOA_IRQn
+	#define B2_PWR_WAKEUP                      PWR_WAKEUP_PA1
+
+	#define B3_GPIO_PORT                       GPIOB
+	#define B3_GPIO_CLK_ENABLE()               __HAL_RCC_GPIOB_CLK_ENABLE()
+	#define B3_PIN                             GPIO_PIN_14
+	#define B3_EXTI_IRQn                       GPIOB_IRQn
+	#define B3_PWR_WAKEUP                      PWR_WAKEUP_PB14
 
 	// When PB14 is used as input for User Button 3 (USER3), 
 	// GPIO MUST be configured by software with a pull-up
 	// to avoid destructive damages.
+
+	#define ADC_CURRENT_PORT     GPIOB
+	#define ADC_CURRENT_PIN      GPIO_PIN_3
+	#define ADC_CURRENT_CH       ADC_CHANNEL_VINP0
+
+	#define ADC_CURRENT_GND_PORT GPIOB
+	#define ADC_CURRENT_GND_PIN  GPIO_PIN_0
+
+
+
+	#define ADC_VOLTAGE_PORT     GPIOB
+	#define ADC_VOLTAGE_PIN      GPIO_PIN_5
+	#define ADC_VOLTAGE_CH       ADC_CHANNEL_VINP3
+
+	#define ADC_VOLTAGE_GND_PORT GPIOB
+	#define ADC_VOLTAGE_GND_PIN  GPIO_PIN_0
+
+
+
+	#define ADC_VIN_TEMP_PORT    GPIOB
+	#define ADC_VIN_TEMP_PIN     GPIO_PIN_1
+	#define ADC_VIN_TEMP_CH      ADC_CHANNEL_VINP1	
+
+	#define ADC_VIN_GND_PORT     GPIOA
+	#define ADC_VIN_GND_PIN      GPIO_PIN_8
+
+	#define ADC_VIN_EN_PORT      GPIOA
+	#define ADC_VIN_EN_PIN       GPIO_PIN_9
+
+	#define ADC_TEMP_GND_PORT    GPIOB
+	#define ADC_TEMP_GND_PIN     GPIO_PIN_6
+
+	#define ADC_TEMP_VCC_PORT    GPIOB
+	#define ADC_TEMP_VCC_PIN     GPIO_PIN_7
 
 #endif
 
