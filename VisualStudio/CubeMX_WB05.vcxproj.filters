@@ -123,6 +123,9 @@
     <Filter Include="STM32_BLE\cryptolib\Inc">
       <UniqueIdentifier>{14742150-da77-4668-a09c-e7602c95189f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Config">
+      <UniqueIdentifier>{5267a363-3df8-4d62-8b3d-3a0a7c9358ba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Core\Inc\main.h">
@@ -790,5 +793,16 @@
     <ClCompile Include="..\STM32_BLE\Target\bleplat_cntr.c">
       <Filter>STM32_BLE\Target</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\.gitconfig">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\.gitignore">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\.hgignore">
+      <Filter>Config</Filter>
+    </None>
   </ItemGroup>
 </Project>

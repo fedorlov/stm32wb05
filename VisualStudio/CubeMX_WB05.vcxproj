@@ -74,7 +74,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;USE_HAL_DRIVER;STM32WB05;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;USE_HAL_DRIVER;STM32WB05;__EMULATOR__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard_C>stdc11</LanguageStandard_C>
       <AdditionalIncludeDirectories>.;..\Core\Inc;..\Drivers\STM32WB0x-nucleo;..\Drivers\STM32WB0x_HAL_Driver\Inc;..\BLE\Interfaces;..\BLE\Modules;..\BLE\Modules\NVMDB\Inc;..\BLE\Modules\PKAMGR\Inc;..\BLE\Modules\Profiles\Inc;..\BLE\Modules\RADIO_utils\Inc;..\BLE\Modules\RTDebug;..\BLE\Startup;..\STM32_BLE\;..\STM32_BLE\App;..\STM32_BLE\cryptolib\Inc;..\STM32_BLE\evt_handler\inc;..\STM32_BLE\Stack;..\STM32_BLE\Target;..\System\Config\Debug_GPIO;..\Utilites;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -105,7 +105,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;USE_HAL_DRIVER;STM32WB05;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;USE_HAL_DRIVER;STM32WB05;__EMULATOR__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>.;..\Core\Inc;..\Drivers\STM32WB0x-nucleo;..\Drivers\STM32WB0x_HAL_Driver\Inc;..\BLE\Interfaces;..\BLE\Modules;..\BLE\Modules\NVMDB\Inc;..\BLE\Modules\PKAMGR\Inc;..\BLE\Modules\Profiles\Inc;..\BLE\Modules\RADIO_utils\Inc;..\BLE\Modules\RTDebug;..\BLE\Startup;..\STM32_BLE\;..\STM32_BLE\App;..\STM32_BLE\cryptolib\Inc;..\STM32_BLE\evt_handler\inc;..\STM32_BLE\Stack;..\STM32_BLE\Target;..\System\Config\Debug_GPIO;..\Utilites;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard_C>stdc11</LanguageStandard_C>
@@ -356,6 +356,11 @@
     <ClCompile Include="..\Utilites\stm32_seq.c" />
     <ClCompile Include="VirtualBLEstack.c" />
     <ClCompile Include="VirtualMain.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\.gitconfig" />
+    <None Include="..\.gitignore" />
+    <None Include="..\.hgignore" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

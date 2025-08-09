@@ -55,7 +55,7 @@
 /* USER CODE END ExternalFunctions */
 
 /* USER CODE BEGIN 0 */
-
+#ifndef __EMULATOR__
 /* USER CODE END 0 */
 /**
   * Initializes the Global MSP.
@@ -413,5 +413,5 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* huart)
 }
 
 /* USER CODE BEGIN 1 */
-
+#endif // __EMULATOR__
 /* USER CODE END 1 */
