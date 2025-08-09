@@ -2,7 +2,7 @@
 #include "crypto.h"
 
 void CPUcontextSave(void) {}
-//void CPUcontextRestore(void) {}
+void CPUcontextRestore(void) {}
 
 uint32_t mul32(uint32_t a, uint32_t b)
 {

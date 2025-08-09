@@ -16,46 +16,48 @@ int main(void)
 
 	PepiphInit();
 
+	ConversionInit();
+
+	// если нажата кнопка - не запускаем BLE - режим прошивки
+	// TODO - добавить отслеживание состояния пинов SWDIO и SWCLK
+	if(HAL_GPIO_ReadPin(B1_GPIO_PORT, B1_PIN) == GPIO_PIN_RESET)
+	{
+		while(1)
+		{
+			unsigned short leds[] = { LD_GREEN, LD_YELLOW, LD_RED, LD_YELLOW };
+
+			for(int i = 0; i < ARRAY_SIZE(leds); i++)
+			{
+				HAL_GPIO_WritePin(GPIOB, leds[i], GPIO_PIN_RESET);
+
+				HAL_Delay(500);
+
+				HAL_GPIO_WritePin(GPIOB, leds[i], GPIO_PIN_SET);
+			}
+		}
+	}
+
 	int sleeptime = 5;
 	int nosleep = 1;
-
-#ifdef DISABLE_BLE
-	ConversionInit();
-#endif
 	
-	// если нажата кнопка или в режиме отладки
-	// TODO - добавить отслеживание состояния пинов SWDIO и SWCLK
 	if(HAL_GPIO_ReadPin(B1_GPIO_PORT, B1_PIN) == GPIO_PIN_RESET || nosleep)
 	{
 		// зажигаем зеленый светодиод и не уходим в сон
-		HAL_GPIO_WritePin(GPIOB, LD3_PIN, GPIO_PIN_RESET);
-		//sleep = 0;
-
-		// Init code for STM32_BLE
-		// при включении BLE - не забыть MX_PKA_Init в PepiphInit
-#ifndef DISABLE_BLE
-		ConversionInit();
+		HAL_GPIO_WritePin(GPIOB, LD_YELLOW, GPIO_PIN_RESET);
 
 		MX_APPE_Init(NULL);
-#endif
 		
-		while (1) // при нажатой кнопке не запускаем BLE!
+		while (1)
 		{
-			//SystemClock_Config();
-
-			//MX_GPIO_Init();
-
-			//HAL_GPIO_WritePin(GPIOB, LD1_PIN, GPIO_PIN_RESET);
-
-			//HAL_Delay(100);
-
-			//HAL_GPIO_WritePin(GPIOB, LD1_PIN, GPIO_PIN_SET);
-			
-			//HAL_Delay(2000);
-
 #ifndef DISABLE_BLE
-			MX_APPE_Process();
+			 MX_APPE_Process();
 #endif
+
+			 // перезагрузка, чтобы при нажатии кнопки можно было прошивать контроллер
+			 if(HAL_GPIO_ReadPin(B1_GPIO_PORT, B1_PIN) == GPIO_PIN_RESET)
+			 {
+				 NVIC_SystemReset();
+			 }
 		}
 	}
 	else

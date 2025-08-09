@@ -70,7 +70,7 @@ typedef struct
 
 /* Private defines -----------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define DEFAULT_HTS_MEASUREMENT_INTERVAL   (1000)  /**< 1s */
+#define DEFAULT_HTS_MEASUREMENT_INTERVAL   (10)  /**< 1s */
 #define DEFAULT_TEMPERATURE_TYPE           TT_Armpit
 #define NB_SAVED_MEASURES                  10
 /* USER CODE END PD */
@@ -480,7 +480,7 @@ void HTS_APP_Measurement(void)
 
   if((HTS_APP_Context.Int_Notification_Status == Int_NOTIFICATION_ON)&&(HTS_FirstMeasurementDone==1))
   {
-    measurement = HTS_APP_Context.IntermediateTemperatureChar.MeasurementValue;
+    measurement = (uint32_t)(conv.U * 100);//HTS_APP_Context.IntermediateTemperatureChar.MeasurementValue;
   }
   else
   {
@@ -577,7 +577,7 @@ static void HTS_APP_IntermediateTemperature(void)
                     ];
   uint8_t tm_char_length;  
 
-  HTS_APP_Context.IntermediateTemperatureChar.MeasurementValue = ((HTS_APP_Read_RTC_SSR_SS()) + 37);
+  HTS_APP_Context.IntermediateTemperatureChar.MeasurementValue = (uint32_t)(conv.U * 100); //((HTS_APP_Read_RTC_SSR_SS()) + 37);
 
   if(HTS_APP_Context.Int_Notification_Status == Int_NOTIFICATION_ON)
   {

@@ -379,7 +379,7 @@ void ConversionInit(void)
 	conv.KU = 1.0f;// / 65535;
 
 	conv.DCI = 1226;
-	conv.DCU = 1210;
+	conv.DCU = 1748;
 
 	ConversionGetPowerVoltage();
 	
