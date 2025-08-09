@@ -23,7 +23,7 @@
 
 #include "app_conf.h"
 
-#if (RT_DEBUG_GPIO_MODULE == 1)
+#if(RT_DEBUG_GPIO_MODULE == 1)
 
 /*********************************/
 /** GPIO debug signal selection **/
@@ -51,13 +51,13 @@
    CAN BE MODIFIED BY USER */
 
 #define USE_RT_DEBUG_APP_APPE_INIT                            (1)
-#define GPIO_DEBUG_APP_APPE_INIT                              {GPIOB, GPIO_PIN_1}
+#define GPIO_DEBUG_APP_APPE_INIT                              {GPIOA, GPIO_PIN_8}
 
 #define USE_RT_DEBUG_APP_STACK_PROCESS                        (0)
-#define GPIO_DEBUG_APP_STACK_PROCESS                          {GPIOB, GPIO_PIN_2}
+#define GPIO_DEBUG_APP_STACK_PROCESS                          {GPIOA, GPIO_PIN_9}
 
 #define USE_RT_DEBUG_APP_BLE_NOTIF                            (0)
-#define GPIO_DEBUG_APP_BLE_NOTIF                              {GPIOB, GPIO_PIN_2}
+#define GPIO_DEBUG_APP_BLE_NOTIF                              {GPIOA, GPIO_PIN_11}
 
 #define USE_RT_DEBUG_APP_BLE_NO_RESOURCES                     (0)
 #define GPIO_DEBUG_APP_BLE_NO_RESOURCES                       {GPIOB, GPIO_PIN_8}
@@ -70,7 +70,7 @@
 
 #include "debug_signals.h"
 
-#if (RT_DEBUG_GPIO_MODULE == 1)
+#if(RT_DEBUG_GPIO_MODULE == 1)
 
 #include "stm32wb0x_hal.h"
 

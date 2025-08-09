@@ -69,7 +69,6 @@ typedef struct clockContextS
   uint8_t  directHSEenabled;
   uint8_t  LSEenabled;
   uint8_t  LSIenabled;
-  uint32_t clkDiv;
 } clockContextT;
 
 /* USER CODE BEGIN Private_Define */
@@ -115,11 +114,6 @@ void PWR_EnterOffMode( void )
   {
     clockContext.directHSEenabled = TRUE;
   }
-#if defined(STM32WB07)
-  clockContext.clkDiv =  LL_RCC_GetRC64MPLLPrescaler();
-#else
-  clockContext.clkDiv = LL_RCC_GetCLKSYSPrescalerStatus();
-#endif
   if (LL_RCC_LSE_IsEnabled())
   {
     clockContext.LSEenabled = TRUE;
@@ -152,12 +146,6 @@ void PWR_EnterOffMode( void )
 
   /* Set SLEEPDEEP bit of Cortex System Control Register */
   SET_BIT(SCB->SCR, SCB_SCR_SLEEPDEEP_Msk);
-
-  /* Setup the SYS CLK DIV with the reset value */
-  if (clockContext.clkDiv == LL_RCC_RC64MPLL_DIV_1)
-  {
-    LL_RCC_SetRC64MPLLPrescaler(LL_RCC_RC64MPLL_DIV_4);
-  }
 
   SYSTEM_DEBUG_SIGNAL_SET(LOW_POWER_STANDBY_MODE_ACTIVE);
 
@@ -200,12 +188,6 @@ void PWR_ExitOffMode( void )
   LL_PWR_DisableGPIORET();
 #endif
 
-  /* Restore the CLK SYS DIV */
-  if (clockContext.clkDiv == LL_RCC_RC64MPLL_DIV_1)
-  {
-    LL_RCC_SetRC64MPLLPrescaler(LL_RCC_RC64MPLL_DIV_1);
-  }
-
   /* Wait until the HSE is ready */
   while(LL_RCC_HSE_IsReady() == 0U);
 
@@ -236,6 +218,9 @@ void PWR_ExitOffMode( void )
     /* Handler to manage the IOs IRQ if needed */
     HAL_PWR_WKUP_IRQHandler();
   }
+  
+  /* Wait until the Low Power regulator is ready */
+  while(LL_PWR_IsActiveFlag_REGLPS() == 0);
 
   /* USER CODE BEGIN PWR_ExitOffMode_2 */
 
@@ -262,11 +247,6 @@ void PWR_EnterStopMode( void )
   {
     clockContext.directHSEenabled = TRUE;
   }
-#if defined(STM32WB07)
-  clockContext.clkDiv =  LL_RCC_GetRC64MPLLPrescaler();
-#else
-  clockContext.clkDiv = LL_RCC_GetCLKSYSPrescalerStatus();
-#endif
 
   /* Setup the wakeup sources */
   HAL_PWR_EnableWakeUpPin(PWR_WAKEUP_BLEHOST|PWR_WAKEUP_BLE, 0);
@@ -291,14 +271,15 @@ void PWR_EnterStopMode( void )
 
   /* Set SLEEPDEEP bit of Cortex System Control Register */
   SET_BIT(SCB->SCR, SCB_SCR_SLEEPDEEP_Msk);
-
-  /* Setup the SYS CLK DIV with the reset value */
-  if (clockContext.clkDiv == LL_RCC_RC64MPLL_DIV_1)
-  {
-    LL_RCC_SetRC64MPLLPrescaler(LL_RCC_RC64MPLL_DIV_4);
-  }
-
+  
   SYSTEM_DEBUG_SIGNAL_SET(LOW_POWER_STOP_MODE_ACTIVE);
+  
+#if (CFG_LPM_EMULATED == 1)
+#if defined(PWR_CR2_GPIORET)
+  LL_PWR_DisableGPIORET();
+#endif
+  LL_PWR_EnableDEEPSTOP2();
+#endif
 
   /* Save the CPU context & Wait for Interrupt Request to enter in DEEPSTOP */
   CPUcontextSave();
@@ -315,7 +296,7 @@ void PWR_ExitStopMode( void )
   /* USER CODE BEGIN PWR_ExitStopMode_1 */
 
   /* USER CODE END PWR_ExitStopMode_1 */
-
+  
   /* Clear SLEEPDEEP bit of Cortex System Control Register */
   CLEAR_BIT(SCB->SCR, SCB_SCR_SLEEPDEEP_Msk);
 
@@ -328,12 +309,6 @@ void PWR_ExitStopMode( void )
   /* Disable the GPIO retention at wake DEEPSTOP configuration */
   LL_PWR_DisableGPIORET();
 #endif
-
-  /* Restore the CLK SYS DIV */
-  if (clockContext.clkDiv == LL_RCC_RC64MPLL_DIV_1)
-  {
-    LL_RCC_SetRC64MPLLPrescaler(LL_RCC_RC64MPLL_DIV_1);
-  }
 
   /* Wait until the HSE is ready */
   while(LL_RCC_HSE_IsReady() == 0U);
@@ -350,6 +325,9 @@ void PWR_ExitStopMode( void )
     /* Handler to manage the IOs IRQ if needed */
     HAL_PWR_WKUP_IRQHandler();
   }
+  
+  /* Wait until the Low Power regulator is ready */
+  while(LL_PWR_IsActiveFlag_REGLPS() == 0);
 
   /* USER CODE BEGIN PWR_ExitStopMode_2 */
 

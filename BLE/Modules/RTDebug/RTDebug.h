@@ -23,7 +23,7 @@
 
 #include "debug_config.h"
 
-#if (RT_DEBUG_GPIO_MODULE == 1)
+#if(RT_DEBUG_GPIO_MODULE == 1)
 
 /**************************************************************/
 /** Generic macros for local signal table index recuperation **/

@@ -90,22 +90,22 @@ static inline unsigned long global_timer_delta(volatile unsigned long* x) { retu
 #else
 
 	// Red
-	#define LD1_GPIO_PORT                          GPIOB
-	#define LD1_GPIO_CLK_ENABLE()                  __HAL_RCC_GPIOB_CLK_ENABLE()
-	#define LD1_PIN                                GPIO_PIN_15
-	#define LD_RED                                 LD1_PIN
+	#define LD1_GPIO_PORT                      GPIOB
+	#define LD1_GPIO_CLK_ENABLE()              __HAL_RCC_GPIOB_CLK_ENABLE()
+	#define LD1_PIN                            GPIO_PIN_15
+	#define LD_RED                             LD1_PIN
 
 	// Yellow
-	#define LD2_GPIO_PORT                          GPIOB
-	#define LD2_GPIO_CLK_ENABLE()                  __HAL_RCC_GPIOB_CLK_ENABLE()
-	#define LD2_PIN                                GPIO_PIN_4
-	#define LD_YELLOW                              LD2_PIN
+	#define LD2_GPIO_PORT                      GPIOB
+	#define LD2_GPIO_CLK_ENABLE()              __HAL_RCC_GPIOB_CLK_ENABLE()
+	#define LD2_PIN                            GPIO_PIN_4
+	#define LD_YELLOW                          LD2_PIN
 
 	// Green
-	#define LD3_GPIO_PORT                          GPIOB
-	#define LD3_GPIO_CLK_ENABLE()                  __HAL_RCC_GPIOB_CLK_ENABLE()
-	#define LD3_PIN                                GPIO_PIN_2
-	#define LD_GREEN                               LD3_PIN
+	#define LD3_GPIO_PORT                      GPIOB
+	#define LD3_GPIO_CLK_ENABLE()              __HAL_RCC_GPIOB_CLK_ENABLE()
+	#define LD3_PIN                            GPIO_PIN_2
+	#define LD_GREEN                           LD3_PIN
 
 	#define B1_GPIO_PORT                       GPIOA
 	#define B1_GPIO_CLK_ENABLE()               __HAL_RCC_GPIOA_CLK_ENABLE()

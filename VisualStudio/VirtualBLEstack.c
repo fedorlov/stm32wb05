@@ -102,6 +102,10 @@ void LL_init(uint8_t dataLenExt,
 tBleStatus L2C_init(uint8_t cos_enabled) { return 0; }
 tBleStatus llc_conn_multi_link_connection(uint8_t enable) { return 0; }
 void llc_conn_peripheral_roll_back_params_tsk(uint16_t task_idx) {}
+void llc_phy_upd_register_cpf(void) {}
+void llc_cpe_tsk(uint16_t task_idx) {}
+void llc_chc_notify_all_conn_links(uint8_t* chmap_p, uint8_t* local_chclass_p) {}
+void llc_conn_mem_allocate(uint8_t phy_upd_en, uint8_t cte_en, uint8_t pcl_en, uint8_t cns_en, uint8_t chc_en, uint8_t padv_en) {}
 void LLC_authenticated_payload_timeout_processing(uint16_t task_idx) {}
 uint8_t LLC_pcl_get_number_of_phys(void) { return 0; }
 void LLC_offline_control_procedures_processing(uint16_t task_idx) {}

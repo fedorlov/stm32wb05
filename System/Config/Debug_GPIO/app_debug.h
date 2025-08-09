@@ -33,7 +33,7 @@ typedef enum {
   APP_BLE_NO_RESOURCES,
 } app_debug_signal_t;
 
-#if (RT_DEBUG_GPIO_MODULE == 1)
+#if(RT_DEBUG_GPIO_MODULE == 1)
 
 /************************************/
 /** Application local signal table **/

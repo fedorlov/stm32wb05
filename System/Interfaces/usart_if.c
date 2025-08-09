@@ -16,9 +16,9 @@
   *
   ******************************************************************************
   */
-  /* USER CODE END Header */
+/* USER CODE END Header */
 
-  /* Includes ------------------------------------------------------------------*/
+/* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "stm32_adv_trace.h"
 #include "usart_if.h"
@@ -43,11 +43,7 @@
 /**
   * @brief USART1 handle
   */
-#if (CFG_DEBUG_APP_ADV_TRACE != 0)
-UART_HandleTypeDef huart1;
-DMA_HandleTypeDef hdma_usart1_tx;
-DMA_HandleTypeDef hdma_usart1_rx;
-#endif
+extern UART_HandleTypeDef huart1;
 
 /* USER CODE BEGIN EV */
 
@@ -90,8 +86,8 @@ uint8_t charRx;
   * @brief  TX complete callback
   * @return none
   */
-static void (*TxCpltCallback)(void*);
-static void (*RxCpltCallback)(uint8_t* pdata, uint16_t size, uint8_t error);
+static void (*TxCpltCallback)(void *);
+static void (*RxCpltCallback)(uint8_t *pdata, uint16_t size, uint8_t error);
 
 #endif /* (CFG_DEBUG_APP_ADV_TRACE != 0) */
 
@@ -121,274 +117,229 @@ static void USART1_DMA_MspDeInit(void);
 
 /* USER CODE END 0 */
 
-#if (CFG_DEBUG_APP_ADV_TRACE != 0)
-static void MX_USART1_UART_Init(void)
-{
-
-	/* USER CODE BEGIN USART1_Init 0 */
-
-	/* USER CODE END USART1_Init 0 */
-
-	/* USER CODE BEGIN USART1_Init 1 */
-
-	/* USER CODE END USART1_Init 1 */
-	huart1.Instance = USART1;
-	huart1.Init.BaudRate = 115200;
-	huart1.Init.WordLength = UART_WORDLENGTH_8B;
-	huart1.Init.StopBits = UART_STOPBITS_1;
-	huart1.Init.Parity = UART_PARITY_ODD;
-	huart1.Init.Mode = UART_MODE_TX_RX;
-	huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
-	huart1.Init.OverSampling = UART_OVERSAMPLING_16;
-	huart1.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
-	huart1.Init.ClockPrescaler = UART_PRESCALER_DIV1;
-	huart1.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
-	if(HAL_UART_Init(&huart1) != HAL_OK)
-	{
-		Error_Handler();
-	}
-	if(HAL_UARTEx_SetTxFifoThreshold(&huart1, UART_TXFIFO_THRESHOLD_1_8) != HAL_OK)
-	{
-		Error_Handler();
-	}
-	if(HAL_UARTEx_SetRxFifoThreshold(&huart1, UART_RXFIFO_THRESHOLD_1_8) != HAL_OK)
-	{
-		Error_Handler();
-	}
-	if(HAL_UARTEx_DisableFifoMode(&huart1) != HAL_OK)
-	{
-		Error_Handler();
-	}
-	/* USER CODE BEGIN USART1_Init 2 */
-
-	/* USER CODE END USART1_Init 2 */
-
-}
-#endif
-
-UTIL_ADV_TRACE_Status_t UART_Init(void (*cb)(void*))
+UTIL_ADV_TRACE_Status_t UART_Init(  void (*cb)(void *))
 {
 
 #if (CFG_DEBUG_APP_ADV_TRACE != 0)
 
-	/* USER CODE BEGIN UART_Init 1 */
+  /* USER CODE BEGIN UART_Init 1 */
 
-	/* USER CODE END UART_Init 1 */
+  /* USER CODE END UART_Init 1 */
 
-	/* Init done in main : GPIO */
-	HAL_UART_MspInit(&huart1);
-	MX_USART1_UART_Init();
+  /* Init done in main : GPIO */
+  HAL_UART_MspInit(&huart1);
+  MX_USART1_UART_Init();
 
-	/* USER CODE BEGIN UART_Init 2 */
+  /* USER CODE BEGIN UART_Init 2 */
 
-	/* USER CODE END UART_Init 2 */
+  /* USER CODE END UART_Init 2 */
 
-	TxCpltCallback = cb;
+  TxCpltCallback = cb;
 
-	/* USER CODE BEGIN UART_Init 3 */
+  /* USER CODE BEGIN UART_Init 3 */
 
-	/* USER CODE END UART_Init 3 */
+  /* USER CODE END UART_Init 3 */
 
 #endif /* (CFG_DEBUG_APP_ADV_TRACE != 0) */
 
-	return UTIL_ADV_TRACE_OK;
+  return UTIL_ADV_TRACE_OK;
 
-	/* USER CODE BEGIN UART_Init 4 */
+  /* USER CODE BEGIN UART_Init 4 */
 
-	/* USER CODE END UART_Init 4 */
+  /* USER CODE END UART_Init 4 */
 }
 
-UTIL_ADV_TRACE_Status_t UART_DeInit(void)
+UTIL_ADV_TRACE_Status_t UART_DeInit( void )
 {
 #if (CFG_DEBUG_APP_ADV_TRACE != 0)
 
-	/* USER CODE BEGIN UART_DeInit 1 */
+  /* USER CODE BEGIN UART_DeInit 1 */
 
-	/* USER CODE END UART_DeInit 1 */
+  /* USER CODE END UART_DeInit 1 */
 
-	HAL_StatusTypeDef result;
+  HAL_StatusTypeDef result;
 
-	USART1_DMA_MspDeInit();
+  USART1_DMA_MspDeInit();
 
-	/* USER CODE BEGIN UART_DeInit 2 */
+  /* USER CODE BEGIN UART_DeInit 2 */
 
-	/* USER CODE END UART_DeInit 2 */
+  /* USER CODE END UART_DeInit 2 */
 
-	result = HAL_UART_DeInit(&huart1);
-	if(result != HAL_OK)
-	{
-		TxCpltCallback = NULL;
-		return UTIL_ADV_TRACE_UNKNOWN_ERROR;
-	}
+  result = HAL_UART_DeInit(&huart1);
+  if (result != HAL_OK)
+  {
+    TxCpltCallback = NULL;
+    return UTIL_ADV_TRACE_UNKNOWN_ERROR;
+  }
 
-	/* USER CODE BEGIN UART_DeInit 3 */
+  /* USER CODE BEGIN UART_DeInit 3 */
 
-	/* USER CODE END UART_DeInit 3 */
+  /* USER CODE END UART_DeInit 3 */
 
-	if(huart1.hdmatx)
-	{
-		result = HAL_DMA_DeInit(huart1.hdmatx);
-		if(result != HAL_OK)
-		{
-			return UTIL_ADV_TRACE_UNKNOWN_ERROR;
-		}
-	}
+  if(huart1.hdmatx)
+  {
+    result = HAL_DMA_DeInit(huart1.hdmatx);
+    if (result != HAL_OK)
+    {
+      return UTIL_ADV_TRACE_UNKNOWN_ERROR;
+    }
+  }
 
-	/* USER CODE BEGIN UART_DeInit 4 */
+  /* USER CODE BEGIN UART_DeInit 4 */
 
-	/* USER CODE END UART_DeInit 4 */
+  /* USER CODE END UART_DeInit 4 */
 
-	if(huart1.hdmarx)
-	{
-		result = HAL_DMA_DeInit(huart1.hdmarx);
-		if(result != HAL_OK)
-		{
-			return UTIL_ADV_TRACE_UNKNOWN_ERROR;
-		}
-	}
+  if(huart1.hdmarx)
+  {
+    result = HAL_DMA_DeInit(huart1.hdmarx);
+    if (result != HAL_OK)
+    {
+      return UTIL_ADV_TRACE_UNKNOWN_ERROR;
+    }
+  }
 
-	/* USER CODE BEGIN UART_DeInit 5 */
+  /* USER CODE BEGIN UART_DeInit 5 */
 
-	/* USER CODE END UART_DeInit 5 */
+  /* USER CODE END UART_DeInit 5 */
 
 #endif /* (CFG_DEBUG_APP_ADV_TRACE != 0) */
 
-	return UTIL_ADV_TRACE_OK;
+  return UTIL_ADV_TRACE_OK;
 
-	/* USER CODE BEGIN UART_DeInit 6 */
+  /* USER CODE BEGIN UART_DeInit 6 */
 
-	/* USER CODE END UART_DeInit 6 */
+  /* USER CODE END UART_DeInit 6 */
 }
 
-UTIL_ADV_TRACE_Status_t UART_StartRx(void (*cb)(uint8_t* pdata, uint16_t size, uint8_t error))
+UTIL_ADV_TRACE_Status_t UART_StartRx(void (*cb)(uint8_t *pdata, uint16_t size, uint8_t error))
 {
 #if (CFG_DEBUG_APP_ADV_TRACE != 0)
 
-	/* USER CODE BEGIN UART_StartRx 1 */
+  /* USER CODE BEGIN UART_StartRx 1 */
 
-	/* USER CODE END UART_StartRx 1 */
+  /* USER CODE END UART_StartRx 1 */
 
-	/* Configure USART1 in Receive mode */
-	HAL_UART_Receive_IT(&huart1, &charRx, 1);
+  /* Configure USART1 in Receive mode */
+  HAL_UART_Receive_IT(&huart1, &charRx, 1);
 
-	if(cb != NULL)
-	{
-		RxCpltCallback = cb;
-	}
+  if (cb != NULL)
+  {
+    RxCpltCallback = cb;
+  }
 
-	/* USER CODE BEGIN UART_StartRx 2 */
+  /* USER CODE BEGIN UART_StartRx 2 */
 
-	/* USER CODE END UART_StartRx 2 */
+  /* USER CODE END UART_StartRx 2 */
 
 #endif /* (CFG_DEBUG_APP_ADV_TRACE != 0) */
 
-	return UTIL_ADV_TRACE_OK;
+  return UTIL_ADV_TRACE_OK;
 
-	/* USER CODE BEGIN UART_StartRx 3 */
+  /* USER CODE BEGIN UART_StartRx 3 */
 
-	/* USER CODE END UART_StartRx 3 */
+  /* USER CODE END UART_StartRx 3 */
 }
 
-UTIL_ADV_TRACE_Status_t UART_TransmitDMA(uint8_t* pdata, uint16_t size)
+UTIL_ADV_TRACE_Status_t UART_TransmitDMA ( uint8_t *pdata, uint16_t size )
 {
-	/* USER CODE BEGIN UART_TransmitDMA 1 */
+  /* USER CODE BEGIN UART_TransmitDMA 1 */
 
-	/* USER CODE END UART_TransmitDMA 1 */
+  /* USER CODE END UART_TransmitDMA 1 */
 
-	UTIL_ADV_TRACE_Status_t status = UTIL_ADV_TRACE_OK;
+  UTIL_ADV_TRACE_Status_t status = UTIL_ADV_TRACE_OK;
 
 #if (CFG_DEBUG_APP_ADV_TRACE != 0)
 
-	/* USER CODE BEGIN UART_TransmitDMA 2 */
+  /* USER CODE BEGIN UART_TransmitDMA 2 */
 
-	/* USER CODE END UART_TransmitDMA 2 */
+  /* USER CODE END UART_TransmitDMA 2 */
 
-	HAL_StatusTypeDef result;
+  HAL_StatusTypeDef result;
 
-	if(huart1.hdmatx)
-	{
-		result = HAL_UART_Transmit_DMA(&huart1, pdata, size);
-	}
-	else
-	{
-		result = HAL_UART_Transmit_IT(&huart1, pdata, size);
-	}
+  if(huart1.hdmatx)
+  {
+    result = HAL_UART_Transmit_DMA(&huart1, pdata, size);
+  }
+  else
+  {
+    result = HAL_UART_Transmit_IT(&huart1, pdata, size);
+  }
 
-	if(result != HAL_OK)
-	{
-		status = UTIL_ADV_TRACE_HW_ERROR;
-	}
+  if (result != HAL_OK)
+  {
+    status = UTIL_ADV_TRACE_HW_ERROR;
+  }
 
 #if RECEIVE_AFTER_TRANSMIT
-	HAL_UART_Receive_IT(&huart1, &charRx, 1);
+    HAL_UART_Receive_IT(&huart1, &charRx, 1);
 #endif
 
-	/* USER CODE BEGIN UART_TransmitDMA 3 */
+  /* USER CODE BEGIN UART_TransmitDMA 3 */
 
-	/* USER CODE END UART_TransmitDMA 3 */
+  /* USER CODE END UART_TransmitDMA 3 */
 
 #endif /* (CFG_DEBUG_APP_ADV_TRACE != 0) */
 
-	return status;
+  return status;
 
-	/* USER CODE BEGIN UART_TransmitDMA 4 */
+  /* USER CODE BEGIN UART_TransmitDMA 4 */
 
-	/* USER CODE END UART_TransmitDMA 4 */
+  /* USER CODE END UART_TransmitDMA 4 */
 }
 
 #if (CFG_DEBUG_APP_ADV_TRACE != 0)
 
 static void USART1_DMA_MspDeInit(void)
 {
-	/* USER CODE BEGIN USART1_DMA_MspDeInit 1 */
+  /* USER CODE BEGIN USART1_DMA_MspDeInit 1 */
 
-	/* USER CODE END USART1_DMA_MspDeInit 1 */
+  /* USER CODE END USART1_DMA_MspDeInit 1 */
 
-	/* Disable USART1 clock */
-	__HAL_RCC_USART1_CLK_DISABLE();
+  /* Disable USART1 clock */
+  __HAL_RCC_USART1_CLK_DISABLE();
 
-	/* Disable interrupts for USART1 */
-	HAL_NVIC_DisableIRQ(USART1_IRQn);
+  /* Disable interrupts for USART1 */
+  HAL_NVIC_DisableIRQ(USART1_IRQn);
 
-	/* GPDMA1 controller clock disable */
-	__HAL_RCC_DMA_CLK_DISABLE();
+  /* GPDMA1 controller clock disable */
+  __HAL_RCC_DMA_CLK_DISABLE();
 
-	/* DMA interrupt init */
-	HAL_NVIC_DisableIRQ(DMA_IRQn);
+  /* DMA interrupt init */
+  HAL_NVIC_DisableIRQ(DMA_IRQn);
 
-	/* USER CODE BEGIN USART1_DMA_MspDeInit 2 */
+  /* USER CODE BEGIN USART1_DMA_MspDeInit 2 */
 
-	/* USER CODE END USART1_DMA_MspDeInit 2 */
+  /* USER CODE END USART1_DMA_MspDeInit 2 */
 }
 
-void HAL_UART_TxCpltCallback(UART_HandleTypeDef* huart)
+void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
 {
-	/* USER CODE BEGIN UsartIf_TxCpltCallback 1 */
+  /* USER CODE BEGIN UsartIf_TxCpltCallback 1 */
 
-	/* USER CODE END UsartIf_TxCpltCallback 1 */
+  /* USER CODE END UsartIf_TxCpltCallback 1 */
 
-	/* ADV Trace callback */
-	if(TxCpltCallback)
-		TxCpltCallback(NULL);
+  /* ADV Trace callback */
+  if(TxCpltCallback)
+    TxCpltCallback(NULL);
 
-	/* USER CODE BEGIN UsartIf_TxCpltCallback 2 */
+  /* USER CODE BEGIN UsartIf_TxCpltCallback 2 */
 
-	/* USER CODE END UsartIf_TxCpltCallback 2 */
+  /* USER CODE END UsartIf_TxCpltCallback 2 */
 
 }
 
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef* huart)
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
-	/* USER CODE BEGIN UsartIf_RxCpltCallback 1 */
+  /* USER CODE BEGIN UsartIf_RxCpltCallback 1 */
 
-	/* USER CODE END UsartIf_RxCpltCallback 1 */
+  /* USER CODE END UsartIf_RxCpltCallback 1 */
 
-	RxCpltCallback(&charRx, 1, 0);
-	HAL_UART_Receive_IT(&huart1, &charRx, 1);
+  RxCpltCallback(&charRx, 1, 0);
+  HAL_UART_Receive_IT(&huart1, &charRx, 1);
 
-	/* USER CODE BEGIN UsartIf_RxCpltCallback 2 */
+  /* USER CODE BEGIN UsartIf_RxCpltCallback 2 */
 
-	/* USER CODE END UsartIf_RxCpltCallback 2 */
+  /* USER CODE END UsartIf_RxCpltCallback 2 */
 }
 
 #endif /* (CFG_DEBUG_APP_ADV_TRACE != 0) */

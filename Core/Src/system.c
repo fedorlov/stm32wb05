@@ -336,6 +336,10 @@ void SystemEnterStopMode(int sleeptime)
 	HAL_PWR_EnterDEEPSTOPMode();
 }
 
+#if CFG_LPM_SUPPORTED == 0
+void HAL_PWR_WKUPx_Callback(uint32_t WakeupIOs) {}
+#endif
+
 void PepiphInit(void)
 {
 	HAL_Init();
