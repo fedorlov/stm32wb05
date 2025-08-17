@@ -120,7 +120,7 @@
  * Maximum number of attributes that can be stored in the GATT database in addition to the attributes number already defined for the GATT and GAP services
  * (BLE_STACK_NUM_GATT_MANDATORY_ATTRIBUTES value on STM32_BLE middleware, ble_stack.h header file).
  */
-#define CFG_BLE_NUM_GATT_ATTRIBUTES                     (17)
+#define CFG_BLE_NUM_GATT_ATTRIBUTES                     (25)
 
 /**
  * Maximum number of concurrent Client's Procedures. This value must be less
@@ -455,6 +455,10 @@ typedef enum
   CFG_TASK_HTS_MEAS_REQ_ID,
   CFG_TASK_HTS_INTERMEDIATE_TEMPERATURE_REQ_ID,
   CFG_TASK_HTS_MEAS_INTERVAL_REQ_ID,
+
+  /** NEW **/
+  CFG_TASK_HTS_CNV_REQ_ID,
+  /** NEW END **/
   /* USER CODE END CFG_Task_Id_t */
   CFG_TASK_NBR,  /**< Shall be LAST in the list */
 } CFG_Task_Id_t;

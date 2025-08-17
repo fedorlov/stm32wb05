@@ -36,7 +36,6 @@ extern "C" {
 /* USER CODE BEGIN ED */
 #define BLE_CFG_HTS_TEMPERATURE_INTERVAL_MIN_VALUE               1  /**< Min Interval Value supported */
 #define BLE_CFG_HTS_TEMPERATURE_INTERVAL_MAX_VALUE               UINT16_MAX /**< Max Interval Value supported */
-
 /* USER CODE END ED */
 
 /* Exported types ------------------------------------------------------------*/
@@ -48,7 +47,9 @@ typedef enum
   HTS_MEI,
 
   /* USER CODE BEGIN Service2_CharOpcode_t */
-
+  /** NEW **/
+  HTS_CNV,
+  /** NEW END **/
   /* USER CODE END Service2_CharOpcode_t */
 
   HTS_CHAROPCODE_LAST
@@ -67,7 +68,10 @@ typedef enum
   HTS_MEI_INDICATE_DISABLED_EVT,
 
   /* USER CODE BEGIN Service2_OpcodeEvt_t */
-  
+  /** NEW **/
+  HTS_CNV_NOTIFY_ENABLED_EVT,
+  HTS_CNV_NOTIFY_DISABLED_EVT,
+  /** NEW END **/
   /* USER CODE END Service2_OpcodeEvt_t */
 
   HTS_BOOT_REQUEST_EVT

@@ -47,7 +47,10 @@ typedef enum
   Mei_INDICATION_OFF,
   Mei_INDICATION_ON,
   /* USER CODE BEGIN Service2_APP_SendInformation_t */
-
+  /** NEW **/
+  Conv_NOTIFICATION_OFF,
+  Conv_NOTIFICATION_ON,
+  /** NEW END **/
   /* USER CODE END Service2_APP_SendInformation_t */
   HTS_APP_SENDINFORMATION_LAST
 } HTS_APP_SendInformation_t;
@@ -58,21 +61,30 @@ typedef struct
   HTS_APP_SendInformation_t     Int_Notification_Status;
   HTS_APP_SendInformation_t     Mei_Indication_Status;
   /* USER CODE BEGIN Service2_APP_Context_t */
+  /** NEW **/
+  HTS_APP_SendInformation_t     Conv_Notification_Status;
+  /** NEW END **/
   HTS_TemperatureValue_t        IntermediateTemperatureChar;
   HTS_TemperatureValue_t        TemperatureMeasurementChar;
   uint16_t                      MeasurementIntervalChar;
   VTIMER_HandleType           TimerIntTemp_Id;
   VTIMER_HandleType           TimerMeasurement_Id;
   VTIMER_HandleType           TimerMeasInt_Id;
+  /** NEW **/
+  VTIMER_HandleType           TimerConv_Id;
+  /** NEW END **/
   /* USER CODE END Service2_APP_Context_t */
   uint16_t              ConnectionHandle;
 } HTS_APP_Context_t;
 
 /* Private defines -----------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define DEFAULT_HTS_MEASUREMENT_INTERVAL   (10)  /**< 1s */
+#define DEFAULT_HTS_MEASUREMENT_INTERVAL   (100)  /**< 1s */
 #define DEFAULT_TEMPERATURE_TYPE           TT_Armpit
 #define NB_SAVED_MEASURES                  10
+/** NEW **/
+#define DEFAULT_CONVERSION_INTERVAL        (100) /**< 1s, interval for V/I measurements */
+/** NEW END **/
 /* USER CODE END PD */
 
 /* External variables --------------------------------------------------------*/
@@ -94,6 +106,9 @@ uint8_t a_HTS_UpdateCharData[247];
 uint16_t HTS_Temm_interval = DEFAULT_HTS_MEASUREMENT_INTERVAL;
 uint16_t HTS_Int_interval = DEFAULT_HTS_MEASUREMENT_INTERVAL;
 uint16_t HTS_Mei_interval = DEFAULT_HTS_MEASUREMENT_INTERVAL;
+/** NEW **/
+uint16_t HTS_Conv_interval = DEFAULT_CONVERSION_INTERVAL;
+/** NEW END **/
 
 static HTS_TemperatureValue_t HTS_Measurement[NB_SAVED_MEASURES];
 static int8_t HTS_CurrentIndex, HTS_OldIndex;
@@ -109,6 +124,11 @@ static void HTS_Mei_SendIndication(void);
 static void HTS_APP_UpdateMeasurementInterval_timCb(void *arg);
 static void HTS_APP_UpdateIntermediateTemperature_timCb(void *arg);
 static void HTS_APP_Measurements_timCb(void *arg);
+
+/** NEW **/
+static void HTS_APP_UpdateConv_timCb(void* arg);
+static void HTS_APP_SendConversions(void);
+/** NEW END **/
 
 static void HTS_APP_IntermediateTemperature(void);
 static void HTS_APP_MeasurementInterval(void);
@@ -226,6 +246,21 @@ void HTS_Notification(HTS_NotificationEvt_t *p_Notification)
       /* USER CODE END Service2Char4_INDICATE_DISABLED_EVT */
       break;
 
+	/** NEW **/
+	case HTS_CNV_NOTIFY_ENABLED_EVT:
+		APP_DBG_MSG("CNV_NOTIFY_ENABLED_EVT\n");
+		HTS_APP_Context.Conv_Notification_Status = Conv_NOTIFICATION_ON;
+		HAL_RADIO_TIMER_StopVirtualTimer(&HTS_APP_Context.TimerConv_Id);
+		HAL_RADIO_TIMER_StartVirtualTimer(&HTS_APP_Context.TimerConv_Id, HTS_Conv_interval);
+		break;
+
+	case HTS_CNV_NOTIFY_DISABLED_EVT:
+		APP_DBG_MSG("CNV_NOTIFY_DISABLED_EVT\n");
+		HTS_APP_Context.Conv_Notification_Status = Conv_NOTIFICATION_OFF;
+		HAL_RADIO_TIMER_StopVirtualTimer(&HTS_APP_Context.TimerConv_Id);
+		break;
+    /** NEW END **/
+
     default:
       /* USER CODE BEGIN Service2_Notification_default */
 
@@ -261,6 +296,9 @@ void HTS_APP_EvtRx(HTS_APP_ConnHandleNotEvt_t *p_Notification)
       HAL_RADIO_TIMER_StopVirtualTimer(&(HTS_APP_Context.TimerMeasurement_Id));
       HAL_RADIO_TIMER_StopVirtualTimer(&(HTS_APP_Context.TimerIntTemp_Id));
       HAL_RADIO_TIMER_StopVirtualTimer(&(HTS_APP_Context.TimerMeasInt_Id));
+	  /** NEW **/
+	  HAL_RADIO_TIMER_StopVirtualTimer(&(HTS_APP_Context.TimerConv_Id));
+	  /** NEW END **/
       /* USER CODE END Service2_APP_DISCON_HANDLE_EVT */
       break;
 
@@ -290,6 +328,9 @@ void HTS_APP_Init(void)
   UTIL_SEQ_RegTask( 1<< CFG_TASK_HTS_MEAS_INTERVAL_REQ_ID, UTIL_SEQ_RFU, HTS_APP_MeasurementInterval);
   UTIL_SEQ_RegTask( 1<< CFG_TASK_HTS_INTERMEDIATE_TEMPERATURE_REQ_ID, UTIL_SEQ_RFU, HTS_APP_IntermediateTemperature);
 
+  /** NEW **/
+  UTIL_SEQ_RegTask(1 << CFG_TASK_HTS_CNV_REQ_ID, UTIL_SEQ_RFU, HTS_APP_SendConversions);
+  /** NEW END **/
   /**
    * Initialize Flags
    */
@@ -341,6 +382,14 @@ void HTS_APP_Init(void)
    */
   HTS_APP_Context.TimerIntTemp_Id.callback = HTS_APP_UpdateIntermediateTemperature_timCb;
 
+  /** NEW **/
+  /**
+   * Create timers for Voltage and Current
+   */
+  HTS_APP_Context.TimerConv_Id.callback = HTS_APP_UpdateConv_timCb;
+  HTS_APP_Context.Conv_Notification_Status = Conv_NOTIFICATION_OFF;
+  /** NEW END **/
+
   HTS_CurrentIndex = -1;
   HTS_OldIndex = 0;
 
@@ -384,6 +433,14 @@ static void HTS_APP_UpdateIntermediateTemperature_timCb(void *arg)
   HAL_RADIO_TIMER_StartVirtualTimer(&HTS_APP_Context.TimerIntTemp_Id, HTS_Int_interval);
   return;
 }
+
+/** NEW **/
+static void HTS_APP_UpdateConv_timCb(void* arg)
+{
+	UTIL_SEQ_SetTask(1 << CFG_TASK_HTS_CNV_REQ_ID, CFG_SEQ_PRIO_0);
+	HAL_RADIO_TIMER_StartVirtualTimer(&HTS_APP_Context.TimerConv_Id, HTS_Conv_interval);
+}
+/** NEW END **/
 /* USER CODE END FD */
 
 /*************************************************************
@@ -464,6 +521,40 @@ __USED void HTS_Mei_SendIndication(void) /* Property Indication */
 }
 
 /* USER CODE BEGIN FD_LOCAL_FUNCTIONS*/
+
+typedef struct
+{
+	int32_t T;
+	uint32_t U;
+	uint32_t I;
+	uint32_t VCC;
+}HTS_ConvValues;
+
+/** NEW **/
+void HTS_APP_SendConversions(void)
+{
+	HTS_Data_t msg_conf;
+    HTS_ConvValues values;
+
+	if(HTS_APP_Context.Conv_Notification_Status == Conv_NOTIFICATION_ON)
+	{
+        values.T = conv.T;                       // T, 0.1 C
+		values.U = (uint32_t)(conv.U * 1000.0f); // voltage, mV
+		values.I = (uint32_t)(conv.I * 1000.0f); // current, mA
+        values.VCC = conv.VCC;                   // supply voltage, mV
+
+		APP_DBG_MSG("Sending Conv data");
+
+        memcpy(a_HTS_UpdateCharData, &values, sizeof(values));
+
+		msg_conf.p_Payload = a_HTS_UpdateCharData;
+		msg_conf.Length = sizeof(values);
+
+		HTS_NotifyValue(HTS_CNV, &msg_conf, HTS_APP_Context.ConnectionHandle);
+	}
+}
+/** NEW END **/
+
 void HTS_APP_Measurement(void)
 {
   uint32_t measurement;

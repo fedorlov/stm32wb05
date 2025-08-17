@@ -40,6 +40,7 @@ int main(void)
 	int sleeptime = 5;
 	int nosleep = 1;
 	
+	
 	if(HAL_GPIO_ReadPin(B1_GPIO_PORT, B1_PIN) == GPIO_PIN_RESET || nosleep)
 	{
 		// зажигаем зеленый светодиод и не уходим в сон

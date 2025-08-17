@@ -326,6 +326,8 @@ void ConversionTest(void)
 
 void ConversionProcess(void)
 {
+	static unsigned char vcc = 0;
+
 	Traw += __LL_ADC_CALC_TEMPERATURE(dmadata[0], LL_ADC_DS_DATA_WIDTH_16_BIT);
 
 	Tindex++;
@@ -352,9 +354,10 @@ void ConversionProcess(void)
 
 	if(++conv.Kw >= WLEN)
 	{
+		conv.T = conv.st * 10 / WLEN;
 		conv.I = sqrtf(conv.si);
 		conv.U = sqrtf(conv.su);
-		conv.T = conv.st * 10 / WLEN;
+		conv.VCC = 3300 + vcc++;
 
 		conv.Idc = conv.Idc * 0.9f + conv.sidc * 0.1f;
 		conv.Udc = conv.Udc * 0.9f + conv.sudc * 0.1f;

@@ -43,7 +43,9 @@ typedef struct{
   uint16_t  MeiCharHdle;			/**< MEI Characteristic Handle */
 /* USER CODE BEGIN Context */
   /* Place holder for Characteristic Descriptors Handle*/
-
+  /** NEW **/
+  uint16_t  ConvCharHdle;           /**< Conversions Characteristic Handle */
+  /** NEW END **/
 /* USER CODE END Context */
 }HTS_Context_t;
 
@@ -100,6 +102,10 @@ static HTS_Context_t HTS_Context;
 #define INTERMEDIATE_TEMPERATURE_UUID			(0x2A1E)
 #define MEASUREMENT_INTERVAL_UUID			(0x2A21)
 
+ /** NEW **/
+#define CONVERSIONS_UUID (0x5501)
+/** NEW END **/
+
 BLE_GATT_SRV_CCCD_DECLARE(temm, CFG_BLE_NUM_RADIO_TASKS, BLE_GATT_SRV_CCCD_PERM_DEFAULT,
                           BLE_GATT_SRV_OP_MODIFIED_EVT_ENABLE_FLAG);
 BLE_GATT_SRV_CCCD_DECLARE(int, CFG_BLE_NUM_RADIO_TASKS, BLE_GATT_SRV_CCCD_PERM_DEFAULT,
@@ -108,7 +114,9 @@ BLE_GATT_SRV_CCCD_DECLARE(mei, CFG_BLE_NUM_RADIO_TASKS, BLE_GATT_SRV_CCCD_PERM_D
                           BLE_GATT_SRV_OP_MODIFIED_EVT_ENABLE_FLAG);
 
 /* USER CODE BEGIN DESCRIPTORS DECLARATION */
-
+/** NEW **/
+BLE_GATT_SRV_CCCD_DECLARE(cnv, CFG_BLE_NUM_RADIO_TASKS, BLE_GATT_SRV_CCCD_PERM_DEFAULT, BLE_GATT_SRV_OP_MODIFIED_EVT_ENABLE_FLAG);
+/** NEW END **/
 /* USER CODE END DESCRIPTORS DECLARATION */
 
 uint8_t tet_val_buffer[TET_SIZE];
@@ -169,6 +177,18 @@ static const ble_gatt_chr_def_t hts_chars[] = {
         },
         .val_buffer_p = &mei_val_buffer_def
     },
+	/** NEW **/
+	{
+		.properties = BLE_GATT_SRV_CHAR_PROP_NOTIFY,
+		.permissions = BLE_GATT_SRV_PERM_NONE,
+		.min_key_size = 0x10,
+		.uuid = BLE_UUID_INIT_16(CONVERSIONS_UUID),
+		.descrs = {
+			.descrs_p = &BLE_GATT_SRV_CCCD_DEF_NAME(cnv),
+			.descr_count = 1U,
+		},
+	},
+	/** NEW END **/
 };
 
 /* Health Thermometer service definition */
@@ -177,7 +197,7 @@ static const ble_gatt_srv_def_t hts_service = {
    .uuid = BLE_UUID_INIT_16(HEALTH_THERMOMETER_UUID),
    .chrs = {
        .chrs_p = (ble_gatt_chr_def_t *)hts_chars,
-       .chr_count = 4U,
+       .chr_count = 5U, /** NEW: Updated count from 4 to 6 **/
    },
 };
 
@@ -346,7 +366,22 @@ static BLEEVT_EvtAckStatus_t HTS_EventHandler(aci_blecore_event *p_evt)
           break;
         }
       }  /* if(p_attribute_modified->Attr_Handle == (HTS_Context.MEIHdle + CHARACTERISTIC_DESCRIPTOR_ATTRIBUTE_OFFSET))*/
-
+	  /** NEW **/
+	  else if(p_attribute_modified->Attr_Handle == (HTS_Context.ConvCharHdle + CHARACTERISTIC_DESCRIPTOR_ATTRIBUTE_OFFSET))
+	  {
+		  return_value = BLEEVT_Ack;
+		  if(p_attribute_modified->Attr_Data[0] & BLE_GATT_SRV_CCCD_NOTIFICATION)
+		  {
+			  notification.EvtOpcode = HTS_CNV_NOTIFY_ENABLED_EVT;
+			  HTS_Notification(&notification);
+		  }
+		  else
+		  {
+			  notification.EvtOpcode = HTS_CNV_NOTIFY_DISABLED_EVT;
+			  HTS_Notification(&notification);
+		  }
+	  }
+	  /** NEW END **/
       /* USER CODE BEGIN EVT_BLUE_GATT_ATTRIBUTE_MODIFIED_END */
       
       /* USER CODE END EVT_BLUE_GATT_ATTRIBUTE_MODIFIED_END */
@@ -531,6 +566,9 @@ void HTS_Init(void)
   HTS_Context.TetCharHdle = aci_gatt_srv_get_char_decl_handle((ble_gatt_chr_def_t *)&hts_chars[1]);
   HTS_Context.IntCharHdle = aci_gatt_srv_get_char_decl_handle((ble_gatt_chr_def_t *)&hts_chars[2]);
   HTS_Context.MeiCharHdle = aci_gatt_srv_get_char_decl_handle((ble_gatt_chr_def_t *)&hts_chars[3]);
+  /** NEW **/
+  HTS_Context.ConvCharHdle = aci_gatt_srv_get_char_decl_handle((ble_gatt_chr_def_t*)&hts_chars[4]);
+  /** NEW END **/
 
   /* USER CODE BEGIN InitService1Svc_2 */
 
@@ -667,6 +705,17 @@ tBleStatus HTS_NotifyValue(HTS_CharOpcode_t CharOpcode, HTS_Data_t *pData, uint1
 
       /* USER CODE END Service2_Char_Value_4*/
       break;
+
+      /** NEW **/
+      case HTS_CNV:
+        ret = aci_gatt_srv_notify(ConnectionHandle,
+                                  BLE_GATT_UNENHANCED_ATT_L2CAP_CID,
+                                  HTS_Context.ConvCharHdle + 1,
+                                  GATT_NOTIFICATION,
+                                  pData->Length,
+                                  (uint8_t *)pData->p_Payload);
+        break;
+      /** NEW END **/
 
     default:
       break;

@@ -27,6 +27,7 @@ typedef struct
 	float I;
 	float U;
 	short T;
+	short VCC;
 
 	unsigned long time; // время на измерения (GLOBAL_TIMER)
 }TConversion;
