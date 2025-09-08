@@ -84,7 +84,7 @@ void HAL_MspInit(void)
 */
 void HAL_ADC_MspInit(ADC_HandleTypeDef* hadc)
 {
-  GPIO_InitTypeDef GPIO_InitStruct = {0};
+  //GPIO_InitTypeDef GPIO_InitStruct = {0};
   if(hadc->Instance==ADC1)
   {
   /* USER CODE BEGIN ADC1_MspInit 0 */
@@ -335,7 +335,7 @@ void HAL_RTC_MspDeInit(RTC_HandleTypeDef* hrtc)
 */
 void HAL_UART_MspInit(UART_HandleTypeDef* huart)
 {
-    GPIO_InitTypeDef GPIO_InitStruct = { 0 };
+    //GPIO_InitTypeDef GPIO_InitStruct = { 0 };
     if(huart->Instance == USART1)
     {
         /* USER CODE BEGIN USART1_MspInit 0 */

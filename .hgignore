@@ -9,4 +9,6 @@ VisualStudio/CubeMX_WB05/
 VisualStudio/Debug/
 VisualStudio/.*user
 
+Debug/
+
 .git/

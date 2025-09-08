@@ -5,18 +5,20 @@
 
 #include <math.h>
 
-// 0 - TEMP CPU
-// 1 - CURRENT
-// 2 - VOLTAGE
-// 3 - VIP / TEMP EXT
-#define ADC_CH_COUNT 2
+// 0 - CURRENT
+// 1 - VOLTAGE
+// 2 - VIP / TEMP EXT
+#define ADC_CH_COUNT 5
+#define DMA_BUF_COUNT (ADC_CH_COUNT * 50) // Р±СѓС„С„РµСЂ РґР»СЏ DMA РЅР° 25 РјСЃ
 
 #define PI 3.14159265f
 
 unsigned short vinraw;
 unsigned short vin;
 
-unsigned short dmadata[ADC_CH_COUNT];
+unsigned short dmadata[DMA_BUF_COUNT];
+unsigned short rawdata[5];
+unsigned short adcdata[3];
 int T;
 int Traw;
 int Tindex;
@@ -29,44 +31,61 @@ TIM_HandleTypeDef htim2 = { 0 };
 #define ENABLE_VIN       2
 #define DISABLE_TEMP_VIN 3
 
-void TempVinConfig(int cmd)
+void PinDisconnect(GPIO_TypeDef* port, uint32_t pin)
 {
+	GPIO_InitTypeDef GPIO_InitStruct = { 0 };
 
+	GPIO_InitStruct.Pin = pin;
+	GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
+	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+	HAL_GPIO_Init(port, &GPIO_InitStruct);
 }
 
-void ConversionInitTimer(void)
-{	
-	TIM_ClockConfigTypeDef sClockSourceConfig = { 0 };	
+void TempVinConfig(int cmd)
+{
+	GPIO_InitTypeDef GPIO_InitStruct = { 0 };
 
-	__HAL_RCC_TIM2_CLK_ENABLE();
+	PinDisconnect(ADC_VREF_EN_PORT, ADC_VREF_EN_PIN);
+	PinDisconnect(ADC_VREF_GND_PORT, ADC_VREF_GND_PIN);
 
-	// частота таймера 32 МГц
-	// таймер считает 250 мкс (2000 Гц = 0,004 мгц, 40 точек на период)
-	// делитель = 32 мгц / 0,002 мгц = 16000
-	htim2.Instance = TIM2;
-	htim2.Init.Prescaler = 0;
-	htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-	htim2.Init.Period = TimClock / 2000 - 1;
-	htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-	htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
-	if(HAL_TIM_Base_Init(&htim2) != HAL_OK)
+	PinDisconnect(ADC_TEMP_VCC_PORT, ADC_TEMP_VCC_PIN);
+	PinDisconnect(ADC_TEMP_GND_PORT, ADC_TEMP_GND_PIN);
+
+	switch(cmd)
 	{
-		Error_Handler();
+		case ENABLE_TEMP: 
+			GPIO_InitStruct.Pin = ADC_TEMP_VCC_PIN;
+			GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+			GPIO_InitStruct.Pull = GPIO_NOPULL;
+			GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+			HAL_GPIO_Init(ADC_TEMP_VCC_PORT, &GPIO_InitStruct);
+			HAL_GPIO_WritePin(ADC_TEMP_VCC_PORT, ADC_TEMP_VCC_PIN, GPIO_PIN_SET);   // TEMP VDD Connect and ON
+
+			GPIO_InitStruct.Pin = ADC_TEMP_GND_PIN;
+			GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+			GPIO_InitStruct.Pull = GPIO_NOPULL;
+			GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+			HAL_GPIO_Init(ADC_TEMP_GND_PORT, &GPIO_InitStruct);
+			HAL_GPIO_WritePin(ADC_TEMP_GND_PORT, ADC_TEMP_GND_PIN, GPIO_PIN_RESET); // TEMP GND Connect and OFF
+			break;
+
+		case ENABLE_VIN:
+			GPIO_InitStruct.Pin = ADC_VREF_EN_PIN;
+			GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+			GPIO_InitStruct.Pull = GPIO_NOPULL;
+			GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+			HAL_GPIO_Init(ADC_VREF_EN_PORT, &GPIO_InitStruct);
+			HAL_GPIO_WritePin(ADC_VREF_EN_PORT, ADC_VREF_EN_PIN, GPIO_PIN_SET);     // VREF EN Connect and ON
+
+			GPIO_InitStruct.Pin = ADC_VREF_GND_PIN;
+			GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+			GPIO_InitStruct.Pull = GPIO_NOPULL;
+			GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+			HAL_GPIO_Init(ADC_VREF_GND_PORT, &GPIO_InitStruct);
+			HAL_GPIO_WritePin(ADC_VREF_GND_PORT, ADC_VREF_GND_PIN, GPIO_PIN_RESET); // VREF GND Connect and OFF
+			break;
 	}
-
-	sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
-	if(HAL_TIM_ConfigClockSource(&htim2, &sClockSourceConfig) != HAL_OK)
-	{
-		Error_Handler();
-	}
-
-	__HAL_TIM_CLEAR_IT(&htim2, TIM_IT_UPDATE);
-	__HAL_TIM_ENABLE_IT(&htim2, TIM_IT_UPDATE);
-
-	HAL_NVIC_SetPriority(TIM2_IRQn, 1, 0);
-	HAL_NVIC_EnableIRQ(TIM2_IRQn);
-
-	HAL_TIM_Base_Start(&htim2);
 }
 
 void ConversionInitGPIO(void)
@@ -103,12 +122,12 @@ void ConversionInitGPIO(void)
 	HAL_GPIO_Init(ADC_VOLTAGE_GND_PORT, &GPIO_InitStruct);
 	HAL_GPIO_WritePin(ADC_VOLTAGE_GND_PORT, ADC_VOLTAGE_GND_PIN, GPIO_PIN_RESET);
 
-	// Temp / VIN - Analog
-	GPIO_InitStruct.Pin = ADC_VIN_TEMP_PIN;
+	// Temp / VREF - Analog
+	GPIO_InitStruct.Pin = ADC_VREF_TEMP_PIN;
 	GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
 	GPIO_InitStruct.Pull = GPIO_NOPULL;
 	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-	HAL_GPIO_Init(ADC_VIN_TEMP_PORT, &GPIO_InitStruct);
+	HAL_GPIO_Init(ADC_VREF_TEMP_PORT, &GPIO_InitStruct);
 
 	// Temp GND - OD
 	GPIO_InitStruct.Pin = ADC_TEMP_GND_PIN;
@@ -124,10 +143,28 @@ void ConversionInitGPIO(void)
 	GPIO_InitStruct.Pull = GPIO_NOPULL;
 	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
 	HAL_GPIO_Init(ADC_TEMP_VCC_PORT, &GPIO_InitStruct);
-	HAL_GPIO_WritePin(ADC_TEMP_VCC_PORT, ADC_TEMP_VCC_PIN, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(ADC_TEMP_VCC_PORT, ADC_TEMP_VCC_PIN, GPIO_PIN_RESET);
 
-	// GND для входов тока и напряжения включены, для отключения - записать в GND пины единицу
-	// вход Temp / VIN настроен на температуру, для переключения - вызвать TempVinConfig()
+	// VREF_EN - PP (1 - active)
+	GPIO_InitStruct.Pin = ADC_VREF_EN_PIN;
+	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+	HAL_GPIO_Init(ADC_VREF_EN_PORT, &GPIO_InitStruct);
+	HAL_GPIO_WritePin(ADC_VREF_EN_PORT, ADC_VREF_EN_PIN, GPIO_PIN_RESET);
+
+	// VREF GND - OD
+	GPIO_InitStruct.Pin = ADC_VREF_GND_PIN;
+	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
+	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+	HAL_GPIO_Init(ADC_VREF_GND_PORT, &GPIO_InitStruct);
+	HAL_GPIO_WritePin(ADC_VREF_GND_PORT, ADC_VREF_GND_PIN, GPIO_PIN_SET);
+
+	// GND РґР»СЏ РІС…РѕРґРѕРІ С‚РѕРєР° Рё РЅР°РїСЂСЏР¶РµРЅРёСЏ РІРєР»СЋС‡РµРЅС‹, РґР»СЏ РѕС‚РєР»СЋС‡РµРЅРёСЏ - Р·Р°РїРёСЃР°С‚СЊ РІ GND РїРёРЅС‹ РµРґРёРЅРёС†Сѓ
+	// РІС…РѕРґ Temp / VIN РЅР°СЃС‚СЂРѕРµРЅ РЅР° VREF, РґР»СЏ РїРµСЂРµРєР»СЋС‡РµРЅРёСЏ - РІС‹Р·РІР°С‚СЊ TempVinConfig()
+
+	TempVinConfig(ENABLE_VIN);
 }
 
 void ConversionInitADC(void)
@@ -135,6 +172,11 @@ void ConversionInitADC(void)
 	ADC_HandleTypeDef hadc1 = { 0 };
 	ADC_ChannelConfTypeDef ch = { 0 };
 	DMA_HandleTypeDef hdma = { 0 };
+
+	// An IO booster block has been added to boost the voltage on the command of those analog
+	// switches when the VBAT goes below a threshold(2.7V) to guarantee the good behavior of
+	// those switches.
+	LL_RCC_IOBOOST_Enable();
 
 	__HAL_RCC_DMA_CLK_ENABLE();
 	
@@ -145,29 +187,33 @@ void ConversionInitADC(void)
 	hdma.Init.MemInc = DMA_MINC_ENABLE;
 	hdma.Init.PeriphDataAlignment = DMA_PDATAALIGN_HALFWORD;
 	hdma.Init.MemDataAlignment = DMA_MDATAALIGN_HALFWORD;
-	hdma.Init.Mode = DMA_NORMAL;
-	hdma.Init.Priority = DMA_PRIORITY_HIGH;
+	hdma.Init.Mode = DMA_CIRCULAR;
+	hdma.Init.Priority = DMA_PRIORITY_VERY_HIGH;
 	if(HAL_DMA_Init(&hdma) != HAL_OK) { Error_Handler(); }
 
 	DMA1_Channel1->CCR &= ~DMA_CCR_EN;
 
 	DMA1->IFCR = DMA_IFCR_CTCIF1;
 
-	DMA1_Channel1->CNDTR = ADC_CH_COUNT;
+	DMA1_Channel1->CNDTR = DMA_BUF_COUNT;
 	DMA1_Channel1->CPAR = (uint32_t)&ADC1->DS_DATAOUT;
 	DMA1_Channel1->CMAR = (uint32_t)dmadata;
 	DMA1_Channel1->CCR |= DMA_CCR_EN;
 
+	// SampleRate, DownSamplerConfig.DataRatio Рё С‡РёСЃР»Рѕ РєР°РЅР°Р»РѕРІ РїРѕРґРѕР±СЂР°РЅРѕ С‚Р°Рє, 
+	// С‡С‚РѕР±С‹ РјРµР¶РґСѓ РІС‹Р±РѕСЂРєР°РјРё РІСЃРµС… РєР°РЅР°Р»РѕРІ Р±С‹Р»Рѕ 500 РјРєСЃ
+	// ADC CLK = 32000000
+	// us = 1000000 / (CLK / SampleRate / DownSampler / Channels)
 	hadc1.Instance = ADC1;
 	hadc1.Init.ConversionType = ADC_CONVERSION_WITH_DS;
 	hadc1.Init.SequenceLength = ADC_CH_COUNT;
 	hadc1.Init.SamplingMode = ADC_SAMPLING_AT_START;
-	hadc1.Init.SampleRate = ADC_SAMPLE_RATE_128;
+	hadc1.Init.SampleRate = ADC_SAMPLE_RATE_100;
 	hadc1.Init.InvertOutputMode = ADC_DATA_INVERT_NONE;
 	hadc1.Init.Overrun = ADC_NEW_DATA_IS_LOST;
-	hadc1.Init.ContinuousConvMode = DISABLE;
+	hadc1.Init.ContinuousConvMode = ENABLE;
 	hadc1.Init.DownSamplerConfig.DataWidth = ADC_DS_DATA_WIDTH_12_BIT;
-	hadc1.Init.DownSamplerConfig.DataRatio = ADC_DS_RATIO_8;
+	hadc1.Init.DownSamplerConfig.DataRatio = ADC_DS_RATIO_32;
 	HAL_ADC_DeInit(&hadc1);
 	if(HAL_ADC_Init(&hadc1) != HAL_OK) { Error_Handler(); }
 
@@ -191,18 +237,24 @@ void ConversionInitADC(void)
 	ch.CalibrationPoint.Offset = LL_ADC_GET_CALIB_OFFSET_FOR_VINPX_3V6();
 	if(ch.CalibrationPoint.Gain == 0xFFF)
 	{
-		ch.CalibrationPoint.Gain = LL_ADC_DEFAULT_RANGE_VALUE_2V4;
+		ch.CalibrationPoint.Gain = LL_ADC_DEFAULT_RANGE_VALUE_3V6;
 		ch.CalibrationPoint.Offset = 0UL;
 	}
 
 	ch.Channel = ADC_CURRENT_CH;
 	ch.Rank = ADC_RANK_1; if(HAL_ADC_ConfigChannel(&hadc1, &ch) != HAL_OK) Error_Handler();
 
-	ch.Channel = ADC_VOLTAGE_CH;
+	ch.Channel = ADC_CURRENT_CH;
 	ch.Rank = ADC_RANK_2; if(HAL_ADC_ConfigChannel(&hadc1, &ch) != HAL_OK) Error_Handler();
 
-	//ch.Channel = ADC_VIN_TEMP_CH;
-	//ch.Rank = ADC_RANK_4; if(HAL_ADC_ConfigChannel(&hadc1, &ch) != HAL_OK) Error_Handler();
+	ch.Channel = ADC_VOLTAGE_CH;
+	ch.Rank = ADC_RANK_3; if(HAL_ADC_ConfigChannel(&hadc1, &ch) != HAL_OK) Error_Handler();
+
+	ch.Channel = ADC_VOLTAGE_CH;
+	ch.Rank = ADC_RANK_4; if(HAL_ADC_ConfigChannel(&hadc1, &ch) != HAL_OK) Error_Handler();
+
+	ch.Channel = ADC_VREF_TEMP_CH;
+	ch.Rank = ADC_RANK_5; if(HAL_ADC_ConfigChannel(&hadc1, &ch) != HAL_OK) Error_Handler();
 
 	ADC1->CONF |= ADC_CONF_DMA_DS_ENA;
 
@@ -215,30 +267,30 @@ void ConversionGetPowerVoltage(void)
 	ADC_ChannelConfTypeDef ch = { 0 };
 	GPIO_InitTypeDef GPIO_InitStruct = { 0 };
 
-	// VIN GND - OD
-	GPIO_InitStruct.Pin = ADC_VIN_GND_PIN;
+	// VREF GND - OD
+	GPIO_InitStruct.Pin = ADC_VREF_GND_PIN;
 	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
 	GPIO_InitStruct.Pull = GPIO_NOPULL;
 	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-	HAL_GPIO_Init(ADC_VIN_GND_PORT, &GPIO_InitStruct);
-	HAL_GPIO_WritePin(ADC_VIN_GND_PORT, ADC_VIN_GND_PIN, GPIO_PIN_RESET);
+	HAL_GPIO_Init(ADC_VREF_GND_PORT, &GPIO_InitStruct);
+	HAL_GPIO_WritePin(ADC_VREF_GND_PORT, ADC_VREF_GND_PIN, GPIO_PIN_RESET);
 
 	// VIN_EN (1 - active)
-	GPIO_InitStruct.Pin = ADC_VIN_EN_PIN;
+	GPIO_InitStruct.Pin = ADC_VREF_EN_PIN;
 	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
 	GPIO_InitStruct.Pull = GPIO_NOPULL;
 	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-	HAL_GPIO_Init(ADC_VIN_EN_PORT, &GPIO_InitStruct);
-	HAL_GPIO_WritePin(ADC_VIN_EN_PORT, ADC_VIN_EN_PIN, GPIO_PIN_SET);
+	HAL_GPIO_Init(ADC_VREF_EN_PORT, &GPIO_InitStruct);
+	HAL_GPIO_WritePin(ADC_VREF_EN_PORT, ADC_VREF_EN_PIN, GPIO_PIN_SET);
 
 	LL_PWR_SetNoPullA(LL_PWR_GPIO_BIT_8 | LL_PWR_GPIO_BIT_9);
 
 	// VIN_TEMP - Analog
-	GPIO_InitStruct.Pin = ADC_VIN_TEMP_PIN;
+	GPIO_InitStruct.Pin = ADC_VREF_TEMP_PIN;
 	GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
 	GPIO_InitStruct.Pull = GPIO_NOPULL;
 	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-	HAL_GPIO_Init(ADC_VIN_TEMP_PORT, &GPIO_InitStruct);
+	HAL_GPIO_Init(ADC_VREF_TEMP_PORT, &GPIO_InitStruct);
 
 	LL_PWR_SetNoPullB(LL_PWR_GPIO_BIT_1);
 
@@ -251,10 +303,10 @@ void ConversionGetPowerVoltage(void)
 	hadc1.Init.Overrun = ADC_NEW_DATA_IS_LOST;
 	hadc1.Init.ContinuousConvMode = DISABLE;
 	hadc1.Init.DownSamplerConfig.DataWidth = ADC_DS_DATA_WIDTH_16_BIT;
-	hadc1.Init.DownSamplerConfig.DataRatio = ADC_DS_RATIO_128;
+	hadc1.Init.DownSamplerConfig.DataRatio = ADC_DS_RATIO_64;
 	if(HAL_ADC_Init(&hadc1) != HAL_OK) { Error_Handler(); }
 	
-	ch.Channel = ADC_VIN_TEMP_CH;
+	ch.Channel = ADC_VREF_TEMP_CH;
 	ch.VoltRange = ADC_VIN_RANGE_3V6;
 	ch.CalibrationPoint.Number = ADC_CALIB_POINT_2;
 	ch.CalibrationPoint.Gain = LL_ADC_GET_CALIB_GAIN_FOR_VINPX_3V6();
@@ -285,7 +337,7 @@ void ConversionGetPowerVoltage(void)
 	//	
 	//	vin = ((HAL_ADC_GetValue(&hadc1) * 41) >> 8) - 1719; 
 
-	//	// для калибровки: vin сделать float, усреднить фильтром калмана
+	//	// РґР»СЏ РєР°Р»РёР±СЂРѕРІРєРё: vin СЃРґРµР»Р°С‚СЊ float, СѓСЃСЂРµРґРЅРёС‚СЊ С„РёР»СЊС‚СЂРѕРј РєР°Р»РјР°РЅР°
 	//	// vin = vin * 0.999f + HAL_ADC_GetValue(&hadc1) * 0.001f;
 	//}
 
@@ -300,7 +352,7 @@ void ConversionTest(void)
 	for(int i = 0; i < WLEN; i++)
 		summ += window[i];
 
-	// измерение идеальной синусоиды
+	// РёР·РјРµСЂРµРЅРёРµ РёРґРµР°Р»СЊРЅРѕР№ СЃРёРЅСѓСЃРѕРёРґС‹
 	#define TN 16
 	float urms[TN] = { 0 };
 	float udc[TN] = { 0 };
@@ -322,13 +374,16 @@ void ConversionTest(void)
 		urms[t] = sqrtf(rms);
 		udc[t] = dc;
 	}
+
+	conv.U = urms[0];
+	conv.Udc = udc[0];
 }
 
 void ConversionProcess(void)
 {
-	static unsigned char vcc = 0;
+	float rawi, rawu;
 
-	Traw += __LL_ADC_CALC_TEMPERATURE(dmadata[0], LL_ADC_DS_DATA_WIDTH_16_BIT);
+	Traw += __LL_ADC_CALC_TEMPERATURE(rawdata[0], LL_ADC_DS_DATA_WIDTH_16_BIT);
 
 	Tindex++;
 
@@ -341,8 +396,8 @@ void ConversionProcess(void)
 
 	float w = window[conv.Kw];
 
-	float di = ((short)(dmadata[0] - conv.DCI)) * conv.KI;
-	float du = ((short)(dmadata[1] - conv.DCU)) * conv.KU;
+	float di = ((short)(adcdata[0] - 0*conv.DCI)) * conv.KI;
+	float du = ((short)(adcdata[1] - 0*conv.DCU)) * conv.KU;
 
 	conv.si += di * di * w;
 	conv.su += du * du * w;
@@ -350,17 +405,27 @@ void ConversionProcess(void)
 	conv.sidc += di * w;
 	conv.sudc += du * w;
 
-	conv.st += dmadata[0];
+	conv.st += adcdata[0];
 
 	if(++conv.Kw >= WLEN)
 	{
-		conv.T = conv.st * 10 / WLEN;
-		conv.I = sqrtf(conv.si);
-		conv.U = sqrtf(conv.su);
-		conv.VCC = 3300 + vcc++;
+		if(conv.Init == 0)
+		{
+			conv.Idc = conv.sidc;
+			conv.Udc = conv.sudc;
+			conv.Init = 1;
+		}
 
-		conv.Idc = conv.Idc * 0.9f + conv.sidc * 0.1f;
-		conv.Udc = conv.Udc * 0.9f + conv.sudc * 0.1f;
+		conv.Idc = conv.Idc * 0.1f + conv.sidc * 0.9f;
+		conv.Udc = conv.Udc * 0.1f + conv.sudc * 0.9f;
+
+		conv.T = conv.st * 10 / WLEN;
+		rawi = sqrtf(conv.si) - conv.Idc; if(rawi < 0) rawi = 0;
+		rawu = sqrtf(conv.su) - conv.Udc; if(rawu < 0) rawu = 0;
+
+		conv.I = rawi;
+		conv.U = rawu;
+		conv.VCC = adcdata[2];
 
 		conv.si = 0;
 		conv.su = 0;
@@ -373,11 +438,55 @@ void ConversionProcess(void)
 		conv.Kw = 0;
 	}
 
-	vin = (vin * 255 + ((dmadata[0] * 41) >> 8) - 1719) >> 8;
+	//vin = (vin * 255 + ((rawdata[0] * 41) >> 8) - 1719) >> 8;
+}
+
+volatile unsigned long delta;
+volatile unsigned long timer;
+volatile unsigned long point;
+int pointCount;
+unsigned short iraw[400];
+unsigned short uraw[400];
+
+void ConversionMain(void)
+{
+	int pcount = 0;
+
+	while(conv.NDTR != DMA1_Channel1->CNDTR)
+	{
+		pcount++;
+		rawdata[conv.CH] = dmadata[DMA_BUF_COUNT - conv.NDTR];
+
+		conv.CH++;
+		if(conv.CH >= ADC_CH_COUNT)
+		{
+			conv.CH = 0;
+
+			delta = GLOBAL_DELTA_TIME(timer);
+			timer = GLOBAL_TIMER;
+
+			adcdata[0] = (rawdata[0] + rawdata[1]) / 2;
+			adcdata[1] = (rawdata[2] + rawdata[3]) / 2;
+			adcdata[2] = rawdata[4];
+
+			ConversionProcess();
+
+			conv.time = GLOBAL_DELTA_TIME(timer);
+		}
+
+		conv.NDTR--;
+		if(conv.NDTR == 0) 
+			conv.NDTR = DMA_BUF_COUNT;
+	}
+
+	if(pcount > 1)
+		pointCount = pcount;
 }
 
 void ConversionInit(void)
 {
+	conv.NDTR = DMA_BUF_COUNT;
+
 	conv.KI = 1.0f;// / 65535;
 	conv.KU = 1.0f;// / 65535;
 
@@ -388,46 +497,4 @@ void ConversionInit(void)
 	
 	ConversionInitGPIO();
 	ConversionInitADC();
-	ConversionInitTimer();
-}
-
-volatile unsigned long dmacnt;
-volatile unsigned long adcstatus;
-volatile unsigned long delta;
-volatile unsigned long timer;
-volatile unsigned long point;
-unsigned short iraw[400];
-unsigned short uraw[400];
-
-void TIM2_IRQHandler(void)
-{
-	delta = GLOBAL_DELTA_TIME(timer);
-	timer = GLOBAL_TIMER;
-
-	TIM2->SR &= ~TIM_IT_UPDATE;
-
-	adcstatus = ADC1->IRQ_STATUS;
-	dmacnt = DMA1_Channel1->CNDTR;
-
-	if (!(adcstatus & ADC_IRQ_FLAG_EOS))
-	{
-		dmacnt++;
-	}
-	
-	iraw[point] = dmadata[0] - conv.DCI;
-	uraw[point] = dmadata[1] - conv.DCU;
-
-	if(++point >= 400) point = 0;
-
-	ConversionProcess();
-
-	DMA1_Channel1->CCR &= ~DMA_CCR_EN;
-	DMA1->IFCR = DMA_IFCR_CTCIF1;
-	DMA1_Channel1->CNDTR = ADC_CH_COUNT;
-	DMA1_Channel1->CCR |= DMA_CCR_EN;
-
-	ADC1->IRQ_STATUS = ADC_IRQ_FLAG_EODS | ADC_IRQ_FLAG_EOS | ADC_IRQ_FLAG_OVRDS;
-	ADC1->CTRL |= ADC_CTRL_START_CONV;
-
-	conv.time = GLOBAL_DELTA_TIME(timer);
 }

@@ -347,7 +347,7 @@ void PepiphInit(void)
 #ifdef DISABLE_BLE
 	SystemClock_Config(RCC_SYSCLKSOURCE_DIRECT_HSE, RCC_DIRECT_HSE_DIV2);
 #else
-	SystemClock_Config(RCC_SYSCLKSOURCE_RC64MPLL, RCC_RC64MPLL_DIV1);
+	SystemClock_Config(RCC_SYSCLKSOURCE_RC64MPLL, RCC_RC64MPLL_DIV2);
 #endif
 
 	PeriphCommonClock_Config();

@@ -134,7 +134,7 @@ static void HTS_APP_IntermediateTemperature(void);
 static void HTS_APP_MeasurementInterval(void);
 static void HTS_APP_Measurement(void);
 static void HTS_APP_Update_TimeStamp(void);
-static uint32_t HTS_APP_Read_RTC_SSR_SS ( void );
+//static uint32_t HTS_APP_Read_RTC_SSR_SS ( void );
 static void HTS_APP_Suppress(void);
 static void HTS_APP_Store(void);
 /* USER CODE END PFP */
@@ -756,13 +756,13 @@ static void HTS_APP_MeasurementInterval(void)
   return;
 }
 
-static uint32_t HTS_APP_Read_RTC_SSR_SS ( void )
-{ 
-  uint8_t rand_num[8];
-  
-  hci_le_rand(rand_num);
-  return ((uint32_t) (rand_num[0] % 4));
-}
+//static uint32_t HTS_APP_Read_RTC_SSR_SS ( void )
+//{
+//  uint8_t rand_num[8];
+//
+//  hci_le_rand(rand_num);
+//  return ((uint32_t) (rand_num[0] % 4));
+//}
 
 static void HTS_APP_Update_TimeStamp(void)
 {

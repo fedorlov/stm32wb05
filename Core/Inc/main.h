@@ -147,15 +147,15 @@ static inline unsigned long global_timer_delta(volatile unsigned long* x) { retu
 
 
 
-	#define ADC_VIN_TEMP_PORT    GPIOB
-	#define ADC_VIN_TEMP_PIN     GPIO_PIN_1
-	#define ADC_VIN_TEMP_CH      ADC_CHANNEL_VINP1	
+	#define ADC_VREF_TEMP_PORT    GPIOB
+	#define ADC_VREF_TEMP_PIN     GPIO_PIN_1
+	#define ADC_VREF_TEMP_CH      ADC_CHANNEL_VINP1	
 
-	#define ADC_VIN_GND_PORT     GPIOA
-	#define ADC_VIN_GND_PIN      GPIO_PIN_8
+	#define ADC_VREF_GND_PORT     GPIOA
+	#define ADC_VREF_GND_PIN      GPIO_PIN_8
 
-	#define ADC_VIN_EN_PORT      GPIOA
-	#define ADC_VIN_EN_PIN       GPIO_PIN_9
+	#define ADC_VREF_EN_PORT      GPIOA
+	#define ADC_VREF_EN_PIN       GPIO_PIN_9
 
 	#define ADC_TEMP_GND_PORT    GPIOB
 	#define ADC_TEMP_GND_PIN     GPIO_PIN_6

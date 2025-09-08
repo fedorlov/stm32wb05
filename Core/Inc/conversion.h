@@ -13,6 +13,7 @@ typedef struct
 	unsigned short DCU;// смещение постоянной составляющей по напряжению
 
 	short Kw;          // индекс в окне усреднения
+	short Init;        // при первом проходе инициализируем фильтры постоянной составляющие
 
 	float si;
 	float su;
@@ -29,9 +30,13 @@ typedef struct
 	short T;
 	short VCC;
 
-	unsigned long time; // время на измерения (GLOBAL_TIMER)
+	unsigned short NDTR; // счетчик обработанных данных - догоняет счетчик DMA
+	unsigned short CH;   // номер измеренного канала
+
+	unsigned long time;  // время на измерения (GLOBAL_TIMER)
 }TConversion;
 
+void ConversionMain(void);
 void ConversionInit(void);
 void ConversionTest(void);
 

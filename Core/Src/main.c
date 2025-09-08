@@ -1,4 +1,4 @@
-#include "main.h"
+п»ї#include "main.h"
 #include "system.h"
 #include "conversion.h"
 
@@ -18,8 +18,8 @@ int main(void)
 
 	ConversionInit();
 
-	// если нажата кнопка - не запускаем BLE - режим прошивки
-	// TODO - добавить отслеживание состояния пинов SWDIO и SWCLK
+	// РµСЃР»Рё РЅР°Р¶Р°С‚Р° РєРЅРѕРїРєР° - РЅРµ Р·Р°РїСѓСЃРєР°РµРј BLE - СЂРµР¶РёРј РїСЂРѕС€РёРІРєРё
+	// TODO - РґРѕР±Р°РІРёС‚СЊ РѕС‚СЃР»РµР¶РёРІР°РЅРёРµ СЃРѕСЃС‚РѕСЏРЅРёСЏ РїРёРЅРѕРІ SWDIO Рё SWCLK
 	if(HAL_GPIO_ReadPin(B1_GPIO_PORT, B1_PIN) == GPIO_PIN_RESET)
 	{
 		while(1)
@@ -43,7 +43,7 @@ int main(void)
 	
 	if(HAL_GPIO_ReadPin(B1_GPIO_PORT, B1_PIN) == GPIO_PIN_RESET || nosleep)
 	{
-		// зажигаем зеленый светодиод и не уходим в сон
+		// Р·Р°Р¶РёРіР°РµРј Р·РµР»РµРЅС‹Р№ СЃРІРµС‚РѕРґРёРѕРґ Рё РЅРµ СѓС…РѕРґРёРј РІ СЃРѕРЅ
 		HAL_GPIO_WritePin(GPIOB, LD_YELLOW, GPIO_PIN_RESET);
 
 		MX_APPE_Init(NULL);
@@ -54,7 +54,9 @@ int main(void)
 			 MX_APPE_Process();
 #endif
 
-			 // перезагрузка, чтобы при нажатии кнопки можно было прошивать контроллер
+			 ConversionMain();
+
+			 // РїРµСЂРµР·Р°РіСЂСѓР·РєР°, С‡С‚РѕР±С‹ РїСЂРё РЅР°Р¶Р°С‚РёРё РєРЅРѕРїРєРё РјРѕР¶РЅРѕ Р±С‹Р»Рѕ РїСЂРѕС€РёРІР°С‚СЊ РєРѕРЅС‚СЂРѕР»Р»РµСЂ
 			 if(HAL_GPIO_ReadPin(B1_GPIO_PORT, B1_PIN) == GPIO_PIN_RESET)
 			 {
 				 NVIC_SystemReset();
@@ -63,7 +65,7 @@ int main(void)
 	}
 	else
 	{
-		// в зависимости от напряжения зажигаем один из светодиодов
+		// РІ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё РѕС‚ РЅР°РїСЂСЏР¶РµРЅРёСЏ Р·Р°Р¶РёРіР°РµРј РѕРґРёРЅ РёР· СЃРІРµС‚РѕРґРёРѕРґРѕРІ
 		if(vin > 5200)
 		{
 			HAL_GPIO_WritePin(GPIOB, LD3_PIN, GPIO_PIN_RESET);
