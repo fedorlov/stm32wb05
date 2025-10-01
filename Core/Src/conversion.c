@@ -19,17 +19,14 @@ unsigned short vin;
 unsigned short dmadata[DMA_BUF_COUNT];
 unsigned short rawdata[5];
 unsigned short adcdata[3];
-int T;
-int Traw;
-int Tindex;
 
 TConversion conv;
 
 TIM_HandleTypeDef htim2 = { 0 };
 
 #define ENABLE_TEMP      1
-#define ENABLE_VIN       2
-#define DISABLE_TEMP_VIN 3
+#define ENABLE_VCC       2
+#define DISABLE_TEMP_VCC 3
 
 void PinDisconnect(GPIO_TypeDef* port, uint32_t pin)
 {
@@ -70,7 +67,7 @@ void TempVinConfig(int cmd)
 			HAL_GPIO_WritePin(ADC_TEMP_GND_PORT, ADC_TEMP_GND_PIN, GPIO_PIN_RESET); // TEMP GND Connect and OFF
 			break;
 
-		case ENABLE_VIN:
+		case ENABLE_VCC:
 			GPIO_InitStruct.Pin = ADC_VREF_EN_PIN;
 			GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
 			GPIO_InitStruct.Pull = GPIO_NOPULL;
@@ -78,12 +75,12 @@ void TempVinConfig(int cmd)
 			HAL_GPIO_Init(ADC_VREF_EN_PORT, &GPIO_InitStruct);
 			HAL_GPIO_WritePin(ADC_VREF_EN_PORT, ADC_VREF_EN_PIN, GPIO_PIN_SET);     // VREF EN Connect and ON
 
-			GPIO_InitStruct.Pin = ADC_VREF_GND_PIN;
-			GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-			GPIO_InitStruct.Pull = GPIO_NOPULL;
-			GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-			HAL_GPIO_Init(ADC_VREF_GND_PORT, &GPIO_InitStruct);
-			HAL_GPIO_WritePin(ADC_VREF_GND_PORT, ADC_VREF_GND_PIN, GPIO_PIN_RESET); // VREF GND Connect and OFF
+			//GPIO_InitStruct.Pin = ADC_VREF_GND_PIN;
+			//GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+			//GPIO_InitStruct.Pull = GPIO_NOPULL;
+			//GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+			//HAL_GPIO_Init(ADC_VREF_GND_PORT, &GPIO_InitStruct);
+			//HAL_GPIO_WritePin(ADC_VREF_GND_PORT, ADC_VREF_GND_PIN, GPIO_PIN_RESET); // VREF GND Connect and OFF
 			break;
 	}
 }
@@ -164,7 +161,7 @@ void ConversionInitGPIO(void)
 	// GND для входов тока и напряжения включены, для отключения - записать в GND пины единицу
 	// вход Temp / VIN настроен на VREF, для переключения - вызвать TempVinConfig()
 
-	TempVinConfig(ENABLE_VIN);
+	TempVinConfig(ENABLE_VCC);
 }
 
 void ConversionInitADC(void)
@@ -376,74 +373,162 @@ void ConversionTest(void)
 	}
 
 	conv.U = urms[0];
-	conv.Udc = udc[0];
+	conv.Ufast = udc[0];
+}
+
+short ConversionFindTemperature(int adc)
+{
+	static const short temper[53] =
+	{
+		3373, 3360, 3342, 3318, 3287, 3245, 3192, 3126, 3044, 2946, 
+		2832, 2701, 2554, 2395, 2226, 2051, 1874, 1700, 1531, 1371, 
+		1222, 1084, 959, 847, 746, 657, 579, 510, 450, 397, 351, 
+		311, 276, 245, 218, 195, 174, 156, 140, 126, 114, 103, 
+		93, 85, 77, 70, 64, 59, 54, 49, 45, 42, 39, 
+	};
+
+	int index = 1;
+	int t_delta; // размер диапазона
+	int t_value; // значение от начала диапазона
+	short t_min; // начало диапазона
+
+	if(adc >= temper[0])
+		return (-800);
+	if(adc <= temper[array_length(temper) - 1])
+		return (2200);
+
+	// найдем диапазон в который попала температура
+	while(adc < temper[index])
+	{
+		if(index + 10 < array_length(temper) && adc < temper[index + 10])
+			index += 10;
+		else
+			index++;
+	}
+
+	// кусочно-линейная интерполяция
+	t_min = -600 + index * 50;
+	t_value = (adc - temper[index]) * 50;
+	t_delta = (temper[index] - temper[index - 1]);
+	return t_min + divr(t_value, t_delta / 2, t_delta);
+}
+
+void ConversionProcessAverage(void)
+{
+	if(++conv.Kslow >= PPP)
+	{
+		conv.Kslow = 0;
+
+		int N = 30;
+		float rN = 1.0f / N;
+
+		int KavN = conv.Kav - N; if(KavN < 0) KavN += AV_P_CNT; // k - N
+		int Kav = conv.Kav; // индекс для макроса AVERAGE (x[k])
+		int Ks = conv.KavS + 1 >= N; // флаг стабилизации усредняющих фильтров 
+
+		// усреднение скользящим окном
+		// x[k] = x0 / N; y[k] = x[k] - x[k - N] + y[k - 1], 
+		// один раз за период усреднения сумма вычисляется напрямую
+		// и подставляется в рекурсивный фильтр - это устраняет накопление ошибки
+#define AVERAGE(Y, X0, X, S) { \
+			float x = X0 * rN; S += x; \
+			if(Ks)                     \
+				{ Y = S; S = 0; }      \
+			else                       \
+				Y = x - X[KavN] + Y;   \
+			X[Kav] = x; }
+
+		int Kws = conv.Kws;
+
+		conv.Ufast = sqrtf(conv.SU[Kws]); conv.SU[Kws] = 0;
+		conv.Ifast = sqrtf(conv.SI[Kws]); conv.SI[Kws] = 0;
+
+		AVERAGE(conv.Uraw, conv.Ufast, conv.UPrev, conv.US);
+		AVERAGE(conv.Iraw, conv.Ifast, conv.IPrev, conv.IS);
+
+		conv.U = conv.Uraw * 10;
+		conv.I = conv.Iraw * 0.202f;
+
+		if(++conv.Kws >= WS_CNT) conv.Kws = 0;
+		if(++conv.Kav >= AV_P_CNT) conv.Kav = 0;
+		if(++conv.KavS >= N) conv.KavS = 0;
+	}
 }
 
 void ConversionProcess(void)
 {
-	float rawi, rawu;
+	if(conv.TVCCstate < 1 * WLEN / 4) { if(conv.TVCCstate == 0) TempVinConfig(ENABLE_TEMP); }
+	else if(conv.TVCCstate < 2 * WLEN / 4) conv.st += adcdata[2];
+	else if(conv.TVCCstate < 3 * WLEN / 4) { if(conv.TVCCstate == WLEN / 2) TempVinConfig(ENABLE_VCC); }
+	else if(conv.TVCCstate < 4 * WLEN / 4) conv.svcc += adcdata[2];
 
-	Traw += __LL_ADC_CALC_TEMPERATURE(rawdata[0], LL_ADC_DS_DATA_WIDTH_16_BIT);
+	conv.TVCCstate++;
 
-	Tindex++;
+	conv.is2 = conv.is1; conv.is1 = conv.is0;
+	conv.us2 = conv.us1; conv.us1 = conv.us0;
 
-	if(Tindex >= 4000)
+	conv.is0 = ((short)adcdata[0]) * conv.KI;
+	conv.us0 = ((short)adcdata[1]) * conv.KU;
+
+	if(conv.Init == 0)
 	{
-		T = Traw / 400;
-		Traw = 0;
-		Tindex = 0;
+		conv.is2 = conv.is0; conv.is1 = conv.is0;
+		conv.us2 = conv.us0; conv.us1 = conv.us0;
+
+		for(int i = 0; i < VCOUNT; i++)
+		{
+			conv.vi[i] = conv.is0;
+			conv.vu[i] = conv.us0;
+		}
+
+		conv.Init = 1;
 	}
 
-	float w = window[conv.Kw];
+	// фильтр постоянной составляющей
+	// x[k] - 2 * x[k-1] + x[k-2] + 2.00008 * y[k-1] - 0.9862 * y[k-2]
+	int K0 = conv.Kv;
+	int K1 = conv.Kv - 1; if(K1 < 0) K1 += VCOUNT; // K - 1
+	int K2 = conv.Kv - 2; if(K2 < 0) K2 += VCOUNT; // K - 2
 
-	float di = ((short)(adcdata[0] - 0*conv.DCI)) * conv.KI;
-	float du = ((short)(adcdata[1] - 0*conv.DCU)) * conv.KU;
+	conv.vi[K0] = conv.M * (conv.is0 - 2 * conv.is1 + conv.is2 + conv.A * conv.vi[K1] - conv.B * conv.vi[K2]);
+	conv.vu[K0] = conv.M * (conv.us0 - 2 * conv.us1 + conv.us2 + conv.A * conv.vu[K1] - conv.B * conv.vu[K2]);
 
-	conv.si += di * di * w;
-	conv.su += du * du * w;
+	float vi = conv.vi[K0];
+	float vu = conv.vu[K0];
 
-	conv.sidc += di * w;
-	conv.sudc += du * w;
+	for(int s = 0; s < WS_CNT; s++)
+	{
+		// окна усреднения сдвинуты друг от друга на N точек, 
+		// каждый период по очереди выбирается одно из окон, после чего обнуляется
+		float w = window[(conv.Kw - (s - (WS_CNT - 1)) * PPP) % WLEN];
 
-	conv.st += adcdata[0];
+		// фильтры RMS
+		conv.SI[s] += vi * vi * w;
+		conv.SU[s] += vu * vu * w;
+	}
+
+	ConversionProcessAverage();
+
+	if(++conv.Kv >= VCOUNT) conv.Kv = 0;
 
 	if(++conv.Kw >= WLEN)
 	{
-		if(conv.Init == 0)
-		{
-			conv.Idc = conv.sidc;
-			conv.Udc = conv.sudc;
-			conv.Init = 1;
-		}
+		conv.Kw = 0;
 
-		conv.Idc = conv.Idc * 0.1f + conv.sidc * 0.9f;
-		conv.Udc = conv.Udc * 0.1f + conv.sudc * 0.9f;
-
-		conv.T = conv.st * 10 / WLEN;
-		rawi = sqrtf(conv.si) - conv.Idc; if(rawi < 0) rawi = 0;
-		rawu = sqrtf(conv.su) - conv.Udc; if(rawu < 0) rawu = 0;
-
-		conv.I = rawi;
-		conv.U = rawu;
-		conv.VCC = adcdata[2];
-
-		conv.si = 0;
-		conv.su = 0;
-
-		conv.sidc = 0;
-		conv.sudc = 0;
+		conv.VCCraw = conv.svcc / (WLEN / 4);
+		conv.VCC = conv.VCCraw * 3120 / 3498; // 3.120 -> 3498
+		conv.Temp = ConversionFindTemperature(conv.st / (WLEN / 4) * 2900 / conv.VCCraw); // 2900 - подгоночный параметр
 
 		conv.st = 0;
+		conv.svcc = 0;
 
-		conv.Kw = 0;
+		conv.TVCCstate = 0;
 	}
-
-	//vin = (vin * 255 + ((rawdata[0] * 41) >> 8) - 1719) >> 8;
 }
 
-volatile unsigned long delta;
-volatile unsigned long timer;
-volatile unsigned long point;
+unsigned long delta;
+unsigned long timer;
+unsigned long point;
 int pointCount;
 unsigned short iraw[400];
 unsigned short uraw[400];
@@ -465,9 +550,15 @@ void ConversionMain(void)
 			delta = GLOBAL_DELTA_TIME(timer);
 			timer = GLOBAL_TIMER;
 
-			adcdata[0] = (rawdata[0] + rawdata[1]) / 2;
-			adcdata[1] = (rawdata[2] + rawdata[3]) / 2;
+			adcdata[0] = (rawdata[0] + rawdata[1]) * 3500 / 2 / conv.VCCraw;
+			adcdata[1] = (rawdata[2] + rawdata[3]) * 3500 / 2 / conv.VCCraw;
 			adcdata[2] = rawdata[4];
+
+			iraw[point] = adcdata[1];
+			uraw[point] = adcdata[1];
+
+			if(++point >= 400)
+				point = 0;
 
 			ConversionProcess();
 
@@ -487,13 +578,24 @@ void ConversionInit(void)
 {
 	conv.NDTR = DMA_BUF_COUNT;
 
-	conv.KI = 1.0f;// / 65535;
-	conv.KU = 1.0f;// / 65535;
+	conv.VCCraw = 3500;
 
-	conv.DCI = 1226;
-	conv.DCU = 1748;
+	conv.KI = 1.0f;
+	conv.KU = 1.0f;
 
-	ConversionGetPowerVoltage();
+	#define T0 (0.0005f)
+	#define A0 (280 / (9971 * T0))
+	#define B0 (4 / (9971 * T0 * T0))
+	#define M0 (49848.0f / 49855)
+
+	float T = 1.0f / 50 / PPP;
+
+	conv.A = (8 - 2 * B0 * T * T) / (4 * M0);
+	conv.B = (B0 * T * T + 4 - 2 * A0 * T) / (4 * M0);
+	conv.M = (4 * M0) / (B0 * T * T + 2 * A0 * T + 4);
+	conv.T = T;
+
+	//ConversionGetPowerVoltage();
 	
 	ConversionInitGPIO();
 	ConversionInitADC();

@@ -1,4 +1,4 @@
-﻿#include "main.h"
+#include "main.h"
 #include "system.h"
 #include "conversion.h"
 
@@ -40,13 +40,14 @@ int main(void)
 	int sleeptime = 5;
 	int nosleep = 1;
 	
-	
 	if(HAL_GPIO_ReadPin(B1_GPIO_PORT, B1_PIN) == GPIO_PIN_RESET || nosleep)
 	{
 		// зажигаем зеленый светодиод и не уходим в сон
 		HAL_GPIO_WritePin(GPIOB, LD_YELLOW, GPIO_PIN_RESET);
 
+#ifndef DISABLE_BLE
 		MX_APPE_Init(NULL);
+#endif
 		
 		while (1)
 		{

@@ -538,7 +538,7 @@ void HTS_APP_SendConversions(void)
 
 	if(HTS_APP_Context.Conv_Notification_Status == Conv_NOTIFICATION_ON)
 	{
-        values.T = conv.T;                       // T, 0.1 C
+        values.T = conv.Temp;                    // T, 0.1 C
 		values.U = (uint32_t)(conv.U * 1000.0f); // voltage, mV
 		values.I = (uint32_t)(conv.I * 1000.0f); // current, mA
         values.VCC = conv.VCC;                   // supply voltage, mV
